@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IIS.Repositories.Interfaces
 {
-    interface IStatisticsRepository
+    public interface IStatisticsRepository
     {
     }
 }

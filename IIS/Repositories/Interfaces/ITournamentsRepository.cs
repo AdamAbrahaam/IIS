@@ -1,11 +1,13 @@
-﻿using System;
+﻿using IIS.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace IIS.Repositories.Interfaces
 {
-    interface ITournamentsRepository
+    public interface ITournamentsRepository
     {
+        Task<Tournament[]> GetAllTournamentsAsync();
     }
 }

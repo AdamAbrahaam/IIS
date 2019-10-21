@@ -6,13 +6,14 @@ namespace IIS.Data.Entities
 {
     public class Tournament
     {
-        public int TournamentID { get; set; }
+        public int TournamentId { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
         public DateTime Date { get; set; } = DateTime.MinValue;
         public int Prize { get; set; }
         public int Entry { get; set; }
         public int Capacity { get; set; }
+        public User Organizer { get; set; }
         [NotMapped]
         public ICollection<string> Sponsors { get; set; } = new List<string>();
         public TournamentType Type { get; set; }

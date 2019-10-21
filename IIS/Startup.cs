@@ -11,6 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using IIS.VueCoreConnection;
+using IIS.Data;
+using IIS.Repositories.Interfaces;
+using IIS.Repositories;
+using AutoMapper;
+using IIS.Models;
 
 namespace IIS
 {
@@ -26,6 +31,11 @@ namespace IIS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<FifkaDBContext>();
+            services.AddScoped<ITournamentsRepository, TournamentsRepository>();
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
 
             // connect vue app - middleware  

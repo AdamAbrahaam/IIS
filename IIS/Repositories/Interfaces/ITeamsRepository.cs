@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IIS.Repositories.Interfaces
 {
-    interface ITeamsRepository
+    public interface ITeamsRepository
     {
     }
 }
