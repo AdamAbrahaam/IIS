@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IIS.Data
 {
     public class FifkaDBContext : DbContext
     {
         private readonly IConfiguration _config;
-
         public FifkaDBContext(DbContextOptions options, IConfiguration config) : base(options)
         {
             _config = config;
