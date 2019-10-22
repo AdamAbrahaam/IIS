@@ -6,7 +6,15 @@
           <p>Create an account, join a tournament and win amazing prices!</p>
           <v-dialog v-model="dialog" overlay-opacity="0.8" max-width="600px">
             <template v-slot:activator="{ on }">
-              <v-btn x-large color="#252423" depressed dark class="mt-8" v-on="on">Register now!</v-btn>
+              <v-btn
+                x-large
+                color="#252423"
+                depressed
+                dark
+                class="mt-8"
+                v-on="on"
+                >Register now!</v-btn
+              >
             </template>
             <RegisterPanel />
           </v-dialog>
@@ -19,7 +27,7 @@
       <v-container id="table">
         <v-data-table
           :headers="headers"
-          :items="desserts"
+          :items="tournaments"
           :sort-desc="[false, true]"
           multi-sort
           :mobile-breakpoint="0"
@@ -32,6 +40,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import RegisterPanel from "@/components/RegisterPanel.vue";
 
 export default {
@@ -43,61 +52,19 @@ export default {
     return {
       dialog: false,
       headers: [
-        {
-          text: "Name",
-          align: "left",
-          sortable: false,
-          value: "name"
-        },
-        { text: "Date", value: "calories" },
-        { text: "Location", value: "fat" },
-        { text: "Type", value: "carbs" },
-        { text: "Entry", value: "protein" },
-        { text: "Prize", value: "iron" }
-      ],
-      desserts: [
-        {
-          name: "Name1",
-          calories: 200,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%"
-        },
-        {
-          name: "Name2",
-          calories: 200,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%"
-        },
-        {
-          name: "Name3",
-          calories: 200,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%"
-        },
-        {
-          name: "Name4",
-          calories: 200,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%"
-        },
-        {
-          name: "Name5",
-          calories: 200,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: "1%"
-        }
+        { text: "Name", value: "name" },
+        { text: "Date", value: "date" },
+        { text: "Location", value: "location" },
+        { text: "Type", value: "type" },
+        { text: "Entry (€)", value: "entry" },
+        { text: "Prize (€)", value: "prize" }
       ]
     };
+  },
+  computed: {
+    ...mapState({
+      tournaments: state => state.tournaments.tournaments
+    })
   }
 };
 </script>
@@ -110,11 +77,12 @@ export default {
 }
 
 .fade-enter-active {
-  transition: opacity 2s ease-out;
+  transition: all 1.5s ease-out;
 }
 
 .fade-enter {
   opacity: 0;
+  letter-spacing: 0.1em;
 }
 
 .fade-enter-to {

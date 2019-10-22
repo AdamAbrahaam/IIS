@@ -36,6 +36,8 @@ namespace IIS
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddCors();
+
             services.AddControllers();
 
             // connect vue app - middleware  
@@ -49,6 +51,9 @@ namespace IIS
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseHttpsRedirection();
 

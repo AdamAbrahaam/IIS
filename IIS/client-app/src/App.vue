@@ -1,7 +1,10 @@
 <template>
   <v-app id="inspire">
     <v-app-bar flat max-height="90px" color="#252423">
-      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        class="hidden-md-and-up"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
 
       <v-btn
         class="hidden-sm-and-down logo-btn"
@@ -57,7 +60,12 @@
 
       <v-dialog v-model="dialog" overlay-opacity="0.8" max-width="600px">
         <template v-slot:activator="{ on }">
-          <v-btn class="white--text hidden-sm-and-down" outlined color="#e7e6e3" v-on="on">
+          <v-btn
+            class="white--text hidden-sm-and-down"
+            outlined
+            color="#e7e6e3"
+            v-on="on"
+          >
             <span>Login</span>
           </v-btn>
         </template>
@@ -65,10 +73,16 @@
       </v-dialog>
     </v-app-bar>
 
-    <v-navigation-drawer id="drawer" v-model="drawer" temporary absolute width="100vw"></v-navigation-drawer>
+    <v-navigation-drawer
+      id="drawer"
+      v-model="drawer"
+      temporary
+      absolute
+      width="100vw"
+    ></v-navigation-drawer>
 
     <v-content>
-      <Home />
+      <router-view />
     </v-content>
 
     <!-- <v-footer :fixed="fixed" app>
@@ -79,18 +93,19 @@
 
 <script>
 import LoginPanel from "@/components/LoginPanel.vue";
-import Home from "@/views/Home.vue";
 
 export default {
   name: "App",
   components: {
-    LoginPanel,
-    Home
+    LoginPanel
   },
   data: () => ({
     drawer: null,
     dialog: false
-  })
+  }),
+  created() {
+    this.$store.dispatch("tournaments/getAll");
+  }
 };
 </script>
 
@@ -118,4 +133,3 @@ export default {
   color: transparent;
 }
 </style>
-
