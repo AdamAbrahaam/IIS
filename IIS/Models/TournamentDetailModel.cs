@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IIS.Models
 {
-    public class TournamentModel
+    public class TournamentDetailModel
     {
         public string Name { get; set; }
         public string Location { get; set; }

@@ -13,30 +13,33 @@ namespace IIS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TournamentsController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly ITournamentsRepository _repository;
+        private readonly IUsersRepository _repository;
         private readonly IMapper _mapper;
         private readonly LinkGenerator _linkGenerator;
-        public TournamentsController(ITournamentsRepository repository, IMapper mapper, LinkGenerator linkGenerator)
+        public UsersController(IUsersRepository repository, IMapper mapper, LinkGenerator linkGenerator)
         {
             _repository = repository;
             _mapper = mapper;
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<TournamentTableModel[]>> Get() {
+        [HttpGet("user-by-email")]
+        public async Task<ActionResult<UserModel>> Get(string email)
+        {
             try
             {
-                var result = await _repository.GetAllTournamentsAsync();
+                var user = await _repository.GetUserByEmailAsync(email);
+                if (user == null) return NotFound("User Not Found!");
 
-                return _mapper.Map<TournamentTableModel[]>(result);
-            } 
+                return _mapper.Map<UserModel>(user);
+            }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Talks!");
             }
         }
+        
     }
 }
