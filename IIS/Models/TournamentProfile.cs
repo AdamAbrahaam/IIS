@@ -19,6 +19,10 @@ namespace IIS.Models
 
             this.CreateMap<User, UserModel>()
                 .ReverseMap();
+            this.CreateMap<User, UserModel>()
+                .ReverseMap();
         }
+
     }
+
 }
