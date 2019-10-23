@@ -25,32 +25,18 @@ namespace IIS.Controllers
             _linkGenerator = linkGenerator;
         }
 
-   /*     [HttpGet]
-        public async Task<ActionResult<TournamentModel[]>> Get() {
+        [HttpGet]
+        public async Task<ActionResult<TournamentTableModel[]>> Get() {
             try
             {
                 var result = await _repository.GetAllTournamentsAsync();
 
-                return _mapper.Map<TournamentModel[]>(result);
+                return _mapper.Map<TournamentTableModel[]>(result);
             } 
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
             }
-        }*/
-
-        [HttpGet]
-        public async Task<ActionResult<TournamentModel>> Get()
-        {
-            try
-            {
-                var result = await _repository.GetTournamentById(2);
-
-                return _mapper.Map<TournamentModel>(result);
-            } 
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
-}        }
+        }
     }
 }

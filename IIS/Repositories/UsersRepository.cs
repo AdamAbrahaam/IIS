@@ -10,24 +10,20 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace IIS.Repositories
-{
-    public class UsersRepository : IUsersRepository 
+{ 
+    public class UsersRepository : IUsersRepository
     {
         private readonly FifkaDBContext _context;
+
         public UsersRepository(FifkaDBContext context)
         {
             _context = context;
         }
-        
-        public void Add<T>(T entity) where T : class
-        {
-            _context.Add(entity);
-        }
 
-        public async Task<User[]> GetAllUsersAsync()
+        public async Task<User> GetUserByEmailAsync(string email)
         {
-            var query = _context.Users;
-            return await query.ToArrayAsync();
+            IQueryable<User> query = _context.Users.Where(t => t.Email == email);
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

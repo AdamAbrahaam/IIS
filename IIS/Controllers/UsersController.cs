@@ -25,19 +25,21 @@ namespace IIS.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<UserModel[]>> Get()
+        [HttpGet("user-by-email")]
+        public async Task<ActionResult<UserModel>> Get(string email)
         {
             try
             {
-                var result = await _repository.GetAllUsersAsync();
+                var user = await _repository.GetUserByEmailAsync(email);
+                if (user == null) return NotFound("User Not Found!");
 
-                return _mapper.Map<UserModel[]>(result);
+                return _mapper.Map<UserModel>(user);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Talks!");
             }
         }
+        
     }
 }

@@ -33,6 +33,14 @@ namespace IIS.Data
                     LastName = "Weis",
                     Email = "weisthejew@azet.sk",
                     Password = "pepemobil123"
+                },
+                new
+                {
+                    UserId = 2,
+                    FirstName = "Walter",
+                    LastName = "White",
+                    Email = "breaking@bad.bb",
+                    Password = "asd"
                 });
             bldr.Entity<Team>()
                 .HasData(new

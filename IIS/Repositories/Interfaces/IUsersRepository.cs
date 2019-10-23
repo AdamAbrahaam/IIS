@@ -9,8 +9,6 @@ namespace IIS.Repositories.Interfaces
 {
     public interface IUsersRepository
     {
-        void Add<T>(T entity) where T : class;
-
-        Task<User[]> GetAllUsersAsync();
+        Task<User> GetUserByEmailAsync(string email);
     }
 }
