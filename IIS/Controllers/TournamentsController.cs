@@ -25,7 +25,7 @@ namespace IIS.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet]
+   /*     [HttpGet]
         public async Task<ActionResult<TournamentModel[]>> Get() {
             try
             {
@@ -37,6 +37,20 @@ namespace IIS.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
             }
-        }
+        }*/
+
+        [HttpGet]
+        public async Task<ActionResult<TournamentModel>> Get()
+        {
+            try
+            {
+                var result = await _repository.GetTournamentById(2);
+
+                return _mapper.Map<TournamentModel>(result);
+            } 
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+}        }
     }
 }

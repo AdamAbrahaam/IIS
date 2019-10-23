@@ -1,4 +1,5 @@
-﻿using IIS.Models;
+﻿using IIS.Data.Entities;
+using IIS.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace IIS.Repositories.Interfaces
 {
     public interface IUsersRepository
     {
-        UserModel Create(UserModel user);
-        UserModel GetById(Guid id);
-        UserModel GetByEmail(string email);
+        void Add<T>(T entity) where T : class;
+
+        Task<User[]> GetAllUsersAsync();
     }
 }

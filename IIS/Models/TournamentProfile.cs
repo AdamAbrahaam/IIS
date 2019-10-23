@@ -13,6 +13,10 @@ namespace IIS.Models
         {
             this.CreateMap<Tournament, TournamentModel>()
                 .ReverseMap();
+            this.CreateMap<User, UserModel>()
+                .ReverseMap();
         }
+
     }
+
 }
