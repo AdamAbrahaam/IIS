@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Tournaments from "../views/Tournaments.vue";
+import Tournament from "../views/Tournament.vue";
 
 Vue.use(VueRouter);
 
@@ -9,6 +11,17 @@ const routes = [
     path: "/",
     name: "home",
     component: Home
+  },
+  {
+    path: "/tournaments",
+    name: "tournaments",
+    component: Tournaments
+  },
+  {
+    path: "/tournament/:id",
+    name: "tournament",
+    component: Tournament,
+    params: true
   },
   {
     path: "/about",
