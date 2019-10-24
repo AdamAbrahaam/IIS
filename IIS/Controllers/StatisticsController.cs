@@ -27,33 +27,6 @@ namespace IIS.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet("stats-for-user")]
-        public async Task<ActionResult<StatisticsModel[]>> Get(int id)
-        {
-            try
-            {
-                var result = await _repository.GetStatisticsForUser(id);
-                return _mapper.Map<StatisticsModel[]>(result);
-            }
-            catch(Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
-            }
-        }
-
-        [HttpGet("stats-for-team")]
-        public async Task<ActionResult<StatisticsModel>> GetStatisticsForTeam(int id)
-        {
-            try
-            {
-                var result = await _repository.GetStatisticsForTeam(id);
-                return _mapper.Map<StatisticsModel>(result);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
-            }
-        }
 
         [HttpGet("users_ranking")]
         public async Task<ActionResult<StatisticsModel[]>> GetUsersRanking()
@@ -83,7 +56,7 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpPost("add_to_user")]
+        [HttpPost("add_to_user{id: int}")]
         public async Task<ActionResult<StatisticsModel>> PostStatToUser(int id, StatisticsModel model)
         {
             try
@@ -108,7 +81,7 @@ namespace IIS.Controllers
             return BadRequest();
         }
 
-        [HttpPost("add_to_team")]
+        [HttpPost("add_to_team{id: int}")]
         public async Task<ActionResult<StatisticsModel>> PostStatToTeam(int id, StatisticsModel model)
         {
             try
@@ -122,7 +95,7 @@ namespace IIS.Controllers
                 {
                     var location = _linkGenerator.GetPathByAction(HttpContext,
                         "Get",
-                        values: new { id, sId = statistics.StatisticsId});
+                        values: new { id, sId = statistics.StatisticsId });
                     return Created(location, _mapper.Map<StatisticsModel>(statistics));
                 }
             }
@@ -133,7 +106,7 @@ namespace IIS.Controllers
             return BadRequest();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -152,7 +125,7 @@ namespace IIS.Controllers
             return BadRequest("Failed to delete statistics");
         }
 
-        [HttpPut]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<StatisticsModel>> Put(int id, StatisticsModel model)
         {
             try

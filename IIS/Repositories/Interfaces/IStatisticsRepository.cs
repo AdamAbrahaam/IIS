@@ -9,10 +9,8 @@ namespace IIS.Repositories.Interfaces
         void Add<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
-        Task<Statistics[]> GetStatisticsForUser(int id);
         Task<Statistics[]> GetStatisticsUserRanking();
         Task<Statistics[]> GetStatisticsTeamRanking();
-        Task<Statistics> GetStatisticsForTeam(int id);
         Task<Statistics> GetStatisticsById(int id);
         Task<User> GetUserById(int id);
         Task<Team> GetTeamById(int id);

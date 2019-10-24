@@ -30,6 +30,27 @@ namespace IIS.Repositories
             _context.Remove(entity);
         }
 
+        public Task<Statistics[]> GetStatistics(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public Task<Statistics[]> GetStatistics(int id)
+        {
+            IQueryable<Statistics> query = _context.Statistics;
+            if (incl)
+            {
+                query = query
+                  .Include(t => t.Speaker);
+            }
+        }*/
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            var query = _context.Users.Where(t => t.Email == email);
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<User> GetUserByIdAsync(int id)
         {
             var query = _context.Users.Where(t => t.UserId == id);

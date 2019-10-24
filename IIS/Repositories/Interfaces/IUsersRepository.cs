@@ -1,4 +1,5 @@
-﻿using IIS.Data.Entities;
+﻿using IIS.Data;
+using IIS.Data.Entities;
 using IIS.Models;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,7 @@ namespace IIS.Repositories.Interfaces
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
         Task<User> GetUserByIdAsync(int id);
+        Task<User> GetUserByEmailAsync(string email);
+        Task<Statistics[]> GetStatistics(int id);
     }
 }

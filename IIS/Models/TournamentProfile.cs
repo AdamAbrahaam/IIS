@@ -22,6 +22,7 @@ namespace IIS.Models
                 .ReverseMap();
             this.CreateMap<Team, TeamModel>()
                 .ReverseMap();
+                
         }
 
     }

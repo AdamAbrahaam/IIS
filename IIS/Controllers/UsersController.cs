@@ -26,7 +26,23 @@ namespace IIS.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet]
+        [HttpGet("user-by-email")]
+        public async Task<ActionResult<UserModel>> Get(string email)
+        {
+            try
+            {
+                var user = await _repository.GetUserByEmailAsync(email);
+                if (user == null) return NotFound("User Not Found!");
+
+                return _mapper.Map<UserModel>(user);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get User!");
+            }
+        }
+
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<UserModel>> Get(int id)
         {
             try
@@ -42,6 +58,20 @@ namespace IIS.Controllers
             }
         }
 
+        [HttpGet("stats-for-user{id: int}")]
+        public async Task<ActionResult<StatisticsModel[]>> GetStats(int id)
+        {
+            try
+            {
+                var result = await _repository.GetStatisticsForUser(id);
+                return _mapper.Map<StatisticsModel[]>(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<UserModel>> Post(UserModel model)
         {
@@ -50,7 +80,7 @@ namespace IIS.Controllers
                 var location = _linkGenerator.GetPathByAction(
                     "Get",
                     "Users",
-                    new { id = model.UserId });
+                    new { id = model.Id });
                 var user = _mapper.Map<User>(model);
                 _repository.Add(user);
                 if (await _repository.SaveChangesAsync())
@@ -65,7 +95,7 @@ namespace IIS.Controllers
             return BadRequest();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -83,6 +113,26 @@ namespace IIS.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
             }
             return BadRequest("Failed to delete statistics");
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<UserModel>> Put(int id, UserModel model)
+        {
+            try
+            {
+                var oldStat = await _repository.GetUserByIdAsync(id);
+                if (oldStat == null) return NotFound("Does not exists!");
+                _mapper.Map(model, oldStat);
+                if (await _repository.SaveChangesAsync())
+                {
+                    return _mapper.Map<UserModel>(oldStat);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
+            }
+            return BadRequest();
         }
 
     }
