@@ -39,6 +39,21 @@ namespace IIS.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<ActionResult<TournamentTableModel>> Get(int id)
+        {
+            try
+            {
+                var result = await _repository.GetTournamentById(id);
+
+                return _mapper.Map<TournamentTableModel>(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
+
         [HttpPost("add-tournament")]
         public async Task<ActionResult<TournamentDetailModel[]>> Post(TournamentDetailModel model)
         {

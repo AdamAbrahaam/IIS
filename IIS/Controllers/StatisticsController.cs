@@ -83,21 +83,46 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<StatisticsModel>> Post(StatisticsModel model)
+        [HttpPost("add_to_user")]
+        public async Task<ActionResult<StatisticsModel>> PostStatToUser(int id, StatisticsModel model)
         {
             try
             {
-                var location = _linkGenerator.GetPathByAction(
-                    "Get",
-                    "Statistics",
-                    new { hash = model.GetHashCode()});
+                var user = await _repository.GetUserById(id);
+                if (user == null) return NotFound("User not found!");
                 var statistics = _mapper.Map<Statistics>(model);
-                statistics.User = await _repository.GetUserById(model.User.UserId);
-                //statistics.Team = await _repository.GetTeamById(model.Team.TeamId);
+                statistics.User = user;
                 _repository.Add(statistics);
                 if (await _repository.SaveChangesAsync())
                 {
+                    var location = _linkGenerator.GetPathByAction(HttpContext,
+                        "Get",
+                        values: new { id, sId = statistics.StatisticsId });
+                    return Created(location, _mapper.Map<StatisticsModel>(statistics));
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("add_to_team")]
+        public async Task<ActionResult<StatisticsModel>> PostStatToTeam(int id, StatisticsModel model)
+        {
+            try
+            {
+                var team = await _repository.GetTeamById(id);
+                if (team == null) return NotFound("Team not found!");
+                var statistics = _mapper.Map<Statistics>(model);
+                statistics.Team = team;
+                _repository.Add(statistics);
+                if (await _repository.SaveChangesAsync())
+                {
+                    var location = _linkGenerator.GetPathByAction(HttpContext,
+                        "Get",
+                        values: new { id, sId = statistics.StatisticsId});
                     return Created(location, _mapper.Map<StatisticsModel>(statistics));
                 }
             }

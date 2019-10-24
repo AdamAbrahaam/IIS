@@ -20,10 +20,14 @@ namespace IIS.Repositories
             _context = context;
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
+        public void Add<T>(T entity) where T : class
         {
-            IQueryable<User> query = _context.Users.Where(t => t.Email == email);
-            return await query.FirstOrDefaultAsync();
+            _context.Add(entity);
+        }
+
+        public void Delete<T>(T entity) where T : class
+        {
+            _context.Remove(entity);
         }
 
         public async Task<User> GetUserByIdAsync(int id)
@@ -31,5 +35,11 @@ namespace IIS.Repositories
             var query = _context.Users.Where(t => t.UserId == id);
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync()) > 0;
+        }
+
     }
 }

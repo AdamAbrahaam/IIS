@@ -11,6 +11,7 @@ namespace IIS.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        //public ICollection<>
+        public string Password { get; set; }
+        public ICollection<StatisticsModel> Statistics { get; set; }
     }
 }
