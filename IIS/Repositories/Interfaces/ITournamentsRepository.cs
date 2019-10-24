@@ -9,8 +9,9 @@ namespace IIS.Repositories.Interfaces
     public interface ITournamentsRepository
     {
         void Add<T>(T entity) where T : class;
+        void Delete<T>(T entity) where T : class;
+        Task<bool> SaveChangesAsync();
         Task<Tournament[]> GetAllTournamentsAsync();
-        Task<Tournament[]> GetTournamentByDate();
         Task<Tournament> GetTournamentById(int id);
     }
 }

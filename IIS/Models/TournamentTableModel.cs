@@ -8,6 +8,7 @@ namespace IIS.Models
 {
     public class TournamentTableModel
     {
+        public int TournamentId { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
         public DateTime Date { get; set; } = DateTime.MinValue;

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IIS.Data;
 using IIS.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,13 @@ namespace IIS.Models
         {
             this.CreateMap<Tournament, TournamentTableModel>()
                 .ReverseMap();
-
             this.CreateMap<Tournament, TournamentDetailModel>()
                 .ReverseMap();
-
             this.CreateMap<User, UserModel>()
                 .ReverseMap();
-            this.CreateMap<User, UserModel>()
+            this.CreateMap<Statistics, StatisticsModel>()
+                .ReverseMap();
+            this.CreateMap<Team, TeamModel>()
                 .ReverseMap();
         }
 

@@ -34,6 +34,9 @@ namespace IIS
             services.AddDbContext<FifkaDBContext>();
             services.AddScoped<ITournamentsRepository, TournamentsRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+            services.AddScoped<IMatchesRepository, MatchesRepository>();
+            services.AddScoped<ITeamsRepository, TeamsRepository>();
 
             services.AddAutoMapper(typeof(Startup));
 

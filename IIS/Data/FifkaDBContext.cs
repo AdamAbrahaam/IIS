@@ -18,6 +18,7 @@ namespace IIS.Data
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Statistics> Statistics { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -45,13 +46,13 @@ namespace IIS.Data
             bldr.Entity<Team>()
                 .HasData(new
                 {
-                    TeamID = 1,
+                    TeamId = 1,
                     Name = "Sicaci",
                 });
             bldr.Entity<Match>()
                 .HasData(new
                 {
-                    MatchID = 1,
+                    MatchId = 1,
                     HomeTeam = "Hurbanovo",
                     AwayTeam = "Imel",
                     Date = new DateTime(2019,10,6),
@@ -143,13 +144,24 @@ namespace IIS.Data
             bldr.Entity<Statistics>()
                 .HasData(new
                 {
-                    StatisticsID = 1,
+                    StatisticsId = 1,
                     Goals = 5,
                     Games = 2,
                     Wins = 1,
                     Draws = 1,
-                    Loses = 0
-                });
+                    Loses = 0,
+                },
+                new
+                {
+                    StatisticsId = 2,
+                    Goals = 0,
+                    Games = 5,
+                    Wins = 0,
+                    Draws = 3,
+                    Loses = 2,
+                    TeamId = 1,
+                    UserId = 1
+                }); ;
         }
     }
 }

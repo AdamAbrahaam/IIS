@@ -7,7 +7,7 @@ namespace IIS.Data.Entities
 {
     public class TeamsInTournament
     {
-        public int TeamsInTournamentID { get; set; }
+        public int TeamsInTournamentId { get; set; }
         public Tournament Tournament { get; set; }
         public Team Team { get; set; }
     }

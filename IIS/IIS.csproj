@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191007175436_Fifka.cs" />
     <Compile Remove="Migrations\20191007175436_Fifka.Designer.cs" />
+    <Compile Remove="Migrations\20191023173027_StatsUpdate2.cs" />
+    <Compile Remove="Migrations\20191023173027_StatsUpdate2.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

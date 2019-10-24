@@ -17,6 +17,17 @@ namespace IIS.Repositories
         {
             _context = context;
         }
+
+        public void Add<T>(T entity) where T : class
+        {
+            _context.Add(entity);
+        }
+
+        public void Delete<T>(T entity) where T : class
+        {
+            _context.Remove(entity);
+        }
+
         public async Task<Tournament[]> GetAllTournamentsAsync()
         {
             var query = _context.Tournaments.OrderBy(t => t.Date);
@@ -28,6 +39,11 @@ namespace IIS.Repositories
         {
             var query = _context.Tournaments.Where(t => t.TournamentId == id);
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync()) > 0;
         }
     }
 }

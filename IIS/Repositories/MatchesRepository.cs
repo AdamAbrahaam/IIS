@@ -1,11 +1,12 @@
-﻿using System;
+﻿using IIS.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace IIS.Repositories
 {
-    public class MatchesRepository
+    public class MatchesRepository : IMatchesRepository
     {
     }
 }

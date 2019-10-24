@@ -25,5 +25,11 @@ namespace IIS.Repositories
             IQueryable<User> query = _context.Users.Where(t => t.Email == email);
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            var query = _context.Users.Where(t => t.UserId == id);
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

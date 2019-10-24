@@ -4,7 +4,7 @@ namespace IIS.Data.Entities
 {
     public class Team
     {
-        public int TeamID { get; set; }
+        public int TeamId { get; set; }
         public string Name { get; set; }
         public byte[] Logo { get; set; }
         public ICollection<TeamsInMatch> TeamsInMatches { get; set; } = new List<TeamsInMatch>();
