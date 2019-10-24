@@ -20,7 +20,7 @@ export default {
     async login({ commit }, loginInfo) {
       try {
         let response = await Api().get(
-          "/users/user-by-email?email=" + loginInfo.email
+          `/users/user-by-email?email=${loginInfo.email}`
         );
         let user = response.data;
 

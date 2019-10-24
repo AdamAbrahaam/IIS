@@ -18,10 +18,11 @@ const routes = [
     component: Tournaments
   },
   {
-    path: "/tournament/:id",
+    path: "/tournament/:tournamentId",
     name: "tournament",
     component: Tournament,
-    params: true
+    params: true,
+    props: true
   },
   {
     path: "/about",

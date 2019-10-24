@@ -56,7 +56,7 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpPost("add_to_user{id: int}")]
+        [HttpPost("add_to_user{id:int}")]
         public async Task<ActionResult<StatisticsModel>> PostStatToUser(int id, StatisticsModel model)
         {
             try
@@ -81,7 +81,7 @@ namespace IIS.Controllers
             return BadRequest();
         }
 
-        [HttpPost("add_to_team{id: int}")]
+        [HttpPost("add_to_team{id:int}")]
         public async Task<ActionResult<StatisticsModel>> PostStatToTeam(int id, StatisticsModel model)
         {
             try

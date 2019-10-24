@@ -3,8 +3,7 @@
     <div id="hero">
       <transition appear name="fade">
         <div class="content">
-          <img src="../static/logo.png" />
-          <p>Create an account, join a tournament and win amazing prizes!</p>
+          <p>Join a tournament and win amazing prizes!</p>
           <v-dialog v-model="dialog" overlay-opacity="0.8" max-width="600px">
             <template v-slot:activator="{ on }">
               <v-btn
@@ -24,7 +23,13 @@
     </div>
 
     <div id="tournaments">
+      <img src="../static/logo3.png" />
       <p class="upcoming">Check out our upcoming tournaments below</p>
+      <a v-scroll-to="'#table'">
+        <v-icon size="80px" color="black" class="mt-n10"
+          >mdi-menu-down</v-icon
+        ></a
+      >
       <v-container id="table">
         <v-data-table
           :headers="headers"
@@ -35,7 +40,10 @@
           hide-default-footer
           class="elevation-5"
           @click:row="
-            $router.push({ name: 'tournament', params: { id: $event.id } })
+            $router.push({
+              name: 'tournament',
+              params: { tournamentId: $event.tournamentId }
+            })
           "
         >
           <template v-slot:item.type="{ item }">
@@ -86,10 +94,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
+
 #hero {
   background: url("../static/bg1.jpg") center center;
   background-size: cover;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 300px);
 }
 
 .fade-enter-active {
@@ -111,22 +121,19 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding-bottom: 25vh;
+  padding-bottom: 10vh;
   background-image: radial-gradient(
     70% 50% at center,
-    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.6),
     transparent
   );
 
   p {
-    color: #e7e6e3;
-    font-weight: 700;
-    font-size: 2.3rem;
-  }
-
-  img {
-    height: 250px;
-    margin-bottom: 32px;
+    color: white;
+    font-size: 2.8rem;
+    font-family: "Raleway", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.012em;
   }
 }
 
@@ -134,22 +141,21 @@ export default {
   max-width: 1440px;
   width: 100%;
   margin: auto;
-  margin-top: -100px;
+  margin-top: -120px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
 
+  img {
+    height: 250px;
+  }
+
   p {
-    color: #e7e6e3;
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 0;
-    background-image: radial-gradient(
-      60% 50% at center,
-      rgba(0, 0, 0, 0.5),
-      transparent
-    );
+    color: black;
+    font-size: 2.5rem;
+    font-family: "Raleway", sans-serif;
+    text-transform: uppercase;
   }
 
   #table {

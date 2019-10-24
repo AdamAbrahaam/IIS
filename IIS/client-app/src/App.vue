@@ -111,9 +111,12 @@
       <router-view />
     </v-content>
 
-    <!-- <v-footer :fixed="fixed" app>
-      <span>&copy; 2019</span>
-    </v-footer>-->
+    <v-footer padless color="#252423">
+      <v-col class="text-center white--text" cols="12">
+        <strong> {{ new Date().getFullYear() }} IIS </strong> - Adam Abrahám,
+        Tomáš Žigo, Adrián Boros
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 

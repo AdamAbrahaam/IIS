@@ -32,14 +32,14 @@ namespace IIS.Controllers
                 var result = await _repository.GetAllTournamentsAsync();
 
                 return _mapper.Map<TournamentTableModel[]>(result);
-            } 
+            }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
             }
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<TournamentTableModel>> Get(int id)
         {
             try
