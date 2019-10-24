@@ -47,20 +47,20 @@
 
 <script>
 export default {
-  name: 'RegisterPanel',
+  name: "RegisterPanel",
   data() {
     return {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
       showPass: false
-    }
+    };
   },
   methods: {
     register() {}
   }
-}
+};
 </script>
 
 <style lang="scss" scoped></style>

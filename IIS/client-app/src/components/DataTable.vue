@@ -26,65 +26,65 @@
 
 <script>
 export default {
-  name: 'DataTable',
+  name: "DataTable",
   data() {
     return {
       headers: [
         {
-          text: 'Name',
-          align: 'left',
+          text: "Name",
+          align: "left",
           sortable: false,
-          value: 'name'
+          value: "name"
         },
-        { text: 'Date', value: 'calories' },
-        { text: 'Location', value: 'fat' },
-        { text: 'Type', value: 'carbs' },
-        { text: 'Entry', value: 'protein' },
-        { text: 'Prize', value: 'iron' }
+        { text: "Date", value: "calories" },
+        { text: "Location", value: "fat" },
+        { text: "Type", value: "carbs" },
+        { text: "Entry", value: "protein" },
+        { text: "Prize", value: "iron" }
       ],
       desserts: [
         {
-          name: 'Name1',
+          name: "Name1",
           calories: 200,
           fat: 6.0,
           carbs: 24,
           protein: 4.0,
-          iron: '1%'
+          iron: "1%"
         },
         {
-          name: 'Name2',
+          name: "Name2",
           calories: 200,
           fat: 6.0,
           carbs: 24,
           protein: 4.0,
-          iron: '1%'
+          iron: "1%"
         },
         {
-          name: 'Name3',
+          name: "Name3",
           calories: 200,
           fat: 6.0,
           carbs: 24,
           protein: 4.0,
-          iron: '1%'
+          iron: "1%"
         },
         {
-          name: 'Name4',
+          name: "Name4",
           calories: 200,
           fat: 6.0,
           carbs: 24,
           protein: 4.0,
-          iron: '1%'
+          iron: "1%"
         },
         {
-          name: 'Name5',
+          name: "Name5",
           calories: 200,
           fat: 6.0,
           carbs: 24,
           protein: 4.0,
-          iron: '1%'
+          iron: "1%"
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
