@@ -16,7 +16,7 @@ namespace IIS.Models
         public int Prize { get; set; }
         public int Entry { get; set; }
         public int Capacity { get; set; }
-        public StringCollection Sponsors { get; set; }
+        public string[] Sponsors { get; set; }
         public TournamentType Type { get; set; }
         public ObservableCollection<MatchModel> Matches { get; set; }
         public MatchModel NewMatch { get; set; }

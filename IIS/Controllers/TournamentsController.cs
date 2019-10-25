@@ -40,13 +40,13 @@ namespace IIS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TournamentTableModel>> Get(int id)
+        public async Task<ActionResult<TournamentDetailModel>> Get(int id)
         {
             try
             {
                 var result = await _repository.GetTournamentById(id);
 
-                return _mapper.Map<TournamentTableModel>(result);
+                return _mapper.Map<TournamentDetailModel>(result);
             }
             catch (Exception)
             {

@@ -26,6 +26,8 @@ namespace IIS.Data
         }
         protected override void OnModelCreating(ModelBuilder bldr)
         {
+            bldr.Entity<Tournament>().Property(p => p.Sponsors).HasConversion(v => string.Join(',', v), v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
             bldr.Entity<User>()
                 .HasData(new
                 {
@@ -70,28 +72,20 @@ namespace IIS.Data
                     Entry = 600,
                     Capacity = 800,
                     Type = TournamentType.Duo,
-                    UserId = 1,
-                    Sponsors = new List<string>()
-                    {
-                        "Abidas",
-                        "Umbro"
-                    }
+                    Sponsors = new string[] { "asd", "dsa" },
+                    OrganizerUserId = 1
                 },
                 new
                 {
                     TournamentId = 2,
-                    Name = "FIT - BIT2",                    
+                    Name = "FIT - BIT2",
                     Location = "Bozetechova2",
                     Date = new DateTime(2019, 10, 7),
                     Prize = 5002,
                     Entry = 6002,
                     Capacity = 802,
                     Type = TournamentType.Duo,
-                    Sponsors = new List<string>()
-                    {
-                        "Abidas",
-                        "Umbro"
-                    }
+                    Sponsors = new string[] { "asd", "dsa" }
                 },
                 new
                 {
@@ -103,11 +97,7 @@ namespace IIS.Data
                     Entry = 6003,
                     Capacity = 803,
                     Type = TournamentType.Solo,
-                    Sponsors = new List<string>()
-                    {
-                        "Abidas",
-                        "Umbro"
-                    }
+                    Sponsors = new string[] { "asd", "dsa" }
                 },
                 new
                 {
@@ -119,11 +109,7 @@ namespace IIS.Data
                     Entry = 604,
                     Capacity = 804,
                     Type = TournamentType.Duo,
-                    Sponsors = new List<string>()
-                    {
-                        "Abidas",
-                        "Umbro"
-                    }
+                    Sponsors = new string[] { "asd", "dsa" }
                 },
                 new
                 {
@@ -135,11 +121,7 @@ namespace IIS.Data
                     Entry = 605,
                     Capacity = 805,
                     Type = TournamentType.Solo,
-                    Sponsors = new List<string>()
-                    {
-                        "Abidas",
-                        "Umbro"
-                    }
+                    Sponsors = new string[] { "asd", "dsa" }
                 });
             bldr.Entity<Statistics>()
                 .HasData(new

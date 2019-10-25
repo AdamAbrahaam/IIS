@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IIS.Migrations
 {
     [DbContext(typeof(FifkaDBContext))]
-    [Migration("20191023173141_StatsUpdate2")]
-    partial class StatsUpdate2
+    [Migration("20191025091236_tournamentedit2")]
+    partial class tournamentedit2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -155,18 +155,21 @@ namespace IIS.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrganizerUserId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Prize")
                         .HasColumnType("int");
+
+                    b.Property<string>("Sponsors")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("TournamentId");
 
-                    b.HasIndex("OrganizerUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tournaments");
 
@@ -180,7 +183,9 @@ namespace IIS.Migrations
                             Location = "Bozetechova",
                             Name = "FIT - BIT",
                             Prize = 500,
-                            Type = 1
+                            Sponsors = "asd,dsa",
+                            Type = 1,
+                            UserId = 1
                         },
                         new
                         {
@@ -191,6 +196,7 @@ namespace IIS.Migrations
                             Location = "Bozetechova2",
                             Name = "FIT - BIT2",
                             Prize = 5002,
+                            Sponsors = "asd,dsa",
                             Type = 1
                         },
                         new
@@ -202,6 +208,7 @@ namespace IIS.Migrations
                             Location = "Bozetechova3",
                             Name = "FIT - BIT3",
                             Prize = 5003,
+                            Sponsors = "asd,dsa",
                             Type = 0
                         },
                         new
@@ -213,6 +220,7 @@ namespace IIS.Migrations
                             Location = "Bozetechova4",
                             Name = "FIT - BIT4",
                             Prize = 504,
+                            Sponsors = "asd,dsa",
                             Type = 1
                         },
                         new
@@ -224,6 +232,7 @@ namespace IIS.Migrations
                             Location = "Bozetechova5",
                             Name = "FIT - BIT5",
                             Prize = 505,
+                            Sponsors = "asd,dsa",
                             Type = 0
                         });
                 });
@@ -387,9 +396,9 @@ namespace IIS.Migrations
 
             modelBuilder.Entity("IIS.Data.Entities.Tournament", b =>
                 {
-                    b.HasOne("IIS.Data.Entities.User", "Organizer")
+                    b.HasOne("IIS.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("OrganizerUserId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("IIS.Data.Entities.UsersInMatch", b =>

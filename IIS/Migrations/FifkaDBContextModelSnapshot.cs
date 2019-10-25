@@ -159,6 +159,9 @@ namespace IIS.Migrations
                     b.Property<int>("Prize")
                         .HasColumnType("int");
 
+                    b.Property<string>("Sponsors")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -177,7 +180,9 @@ namespace IIS.Migrations
                             Entry = 600,
                             Location = "Bozetechova",
                             Name = "FIT - BIT",
+                            OrganizerUserId = 1,
                             Prize = 500,
+                            Sponsors = "asd,dsa",
                             Type = 1
                         },
                         new
@@ -189,6 +194,7 @@ namespace IIS.Migrations
                             Location = "Bozetechova2",
                             Name = "FIT - BIT2",
                             Prize = 5002,
+                            Sponsors = "asd,dsa",
                             Type = 1
                         },
                         new
@@ -200,6 +206,7 @@ namespace IIS.Migrations
                             Location = "Bozetechova3",
                             Name = "FIT - BIT3",
                             Prize = 5003,
+                            Sponsors = "asd,dsa",
                             Type = 0
                         },
                         new
@@ -211,6 +218,7 @@ namespace IIS.Migrations
                             Location = "Bozetechova4",
                             Name = "FIT - BIT4",
                             Prize = 504,
+                            Sponsors = "asd,dsa",
                             Type = 1
                         },
                         new
@@ -222,6 +230,7 @@ namespace IIS.Migrations
                             Location = "Bozetechova5",
                             Name = "FIT - BIT5",
                             Prize = 505,
+                            Sponsors = "asd,dsa",
                             Type = 0
                         });
                 });

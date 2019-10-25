@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IIS.Data.Entities
@@ -14,8 +17,7 @@ namespace IIS.Data.Entities
         public int Entry { get; set; }
         public int Capacity { get; set; }
         public User Organizer { get; set; }
-        [NotMapped]
-        public ICollection<string> Sponsors { get; set; } = new List<string>();
+        public string[] Sponsors { get; set; }
         public TournamentType Type { get; set; }
         public ICollection<Match> Matches { get; set; } = new List<Match>();
         public ICollection<TeamsInTournament> TeamsInTournaments { get; set; } = new List<TeamsInTournament>();
