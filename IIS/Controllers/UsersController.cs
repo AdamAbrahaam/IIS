@@ -63,6 +63,8 @@ namespace IIS.Controllers
         {
             try
             {
+                var user = await _repository.GetUserByIdAsync(id);
+                if (user == null) return NotFound("User Not Found!");
                 var result = await _repository.GetStatistics(id);
                 return _mapper.Map<StatisticsModel[]>(result);
             }
@@ -80,7 +82,7 @@ namespace IIS.Controllers
                 var location = _linkGenerator.GetPathByAction(
                     "Get",
                     "Users",
-                    new { id = model.Id });
+                    new { email = model.Email });
                 var user = _mapper.Map<User>(model);
                 _repository.Add(user);
                 if (await _repository.SaveChangesAsync())

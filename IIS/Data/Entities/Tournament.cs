@@ -19,9 +19,9 @@ namespace IIS.Data.Entities
         public User Organizer { get; set; }
         public string[] Sponsors { get; set; }
         public TournamentType Type { get; set; }
+        public ICollection<Statistics> Statistics { get; set; }
         public ICollection<Match> Matches { get; set; } = new List<Match>();
         public ICollection<TeamsInTournament> TeamsInTournaments { get; set; } = new List<TeamsInTournament>();
-        
-
+        public ICollection<UsersInTournament> UsersInTournaments { get; set; } = new List<UsersInTournament>();
     }
 }

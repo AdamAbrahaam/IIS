@@ -8,6 +8,7 @@ namespace IIS.Data.Entities
     public class TeamsInMatch
     {
         public int TeamsInMatchId { get; set; }
+        public bool Home { get; set; }
         public Team Team { get; set; }
         public Match Match { get; set; }
     }

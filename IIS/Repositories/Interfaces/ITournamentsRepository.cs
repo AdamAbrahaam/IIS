@@ -1,4 +1,5 @@
-﻿using IIS.Data.Entities;
+﻿using IIS.Data;
+using IIS.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace IIS.Repositories.Interfaces
         Task<bool> SaveChangesAsync();
         Task<Tournament[]> GetAllTournamentsAsync();
         Task<Tournament> GetTournamentById(int id);
+        Task<Statistics[]> GetStatisticsSoloAsync(int id);
+        Task<Statistics[]> GetStatisticsTeamsAsync(int id);
     }
 }

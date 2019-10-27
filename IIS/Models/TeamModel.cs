@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace IIS.Models
 {
-    public class TeamModel : BaseModel
+    public class TeamModel
     {
-        public int TeamId { get; set; }
         public string Name { get; set; }
         public byte[] Logo { get; set; }
+        public ICollection<UserModel> Users { get; set; }
     }
 }

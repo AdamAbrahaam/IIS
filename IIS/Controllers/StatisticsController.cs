@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using IIS.Data;
+using IIS.Data.Entities;
 using IIS.Models;
 using IIS.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -27,13 +28,26 @@ namespace IIS.Controllers
             _linkGenerator = linkGenerator;
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<StatisticsModel>> Get(int id)
+        {
+            try
+            {
+                var result = await _repository.GetStatisticsById(id);
+                return _mapper.Map<StatisticsModel>(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
 
         [HttpGet("users_ranking")]
         public async Task<ActionResult<StatisticsModel[]>> GetUsersRanking()
         {
             try
             {
-                var result = await _repository.GetStatisticsUserRanking();
+                var result = await _repository.GetStatisticsUsersRanking();
                 return _mapper.Map<StatisticsModel[]>(result);
             }
             catch (Exception)
@@ -47,7 +61,7 @@ namespace IIS.Controllers
         {
             try
             {
-                var result = await _repository.GetStatisticsTeamRanking();
+                var result = await _repository.GetStatisticsTeamsRanking();
                 return _mapper.Map<StatisticsModel[]>(result);
             }
             catch (Exception)
@@ -65,12 +79,16 @@ namespace IIS.Controllers
                 if (user == null) return NotFound("User not found!");
                 var statistics = _mapper.Map<Statistics>(model);
                 statistics.User = user;
+                if(model.Tournament != null)
+                {
+                    statistics.Tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
+                }
                 _repository.Add(statistics);
                 if (await _repository.SaveChangesAsync())
                 {
                     var location = _linkGenerator.GetPathByAction(HttpContext,
                         "Get",
-                        values: new { id, sId = statistics.StatisticsId });
+                        values:new { id = statistics.StatisticsId });
                     return Created(location, _mapper.Map<StatisticsModel>(statistics));
                 }
             }
@@ -90,12 +108,16 @@ namespace IIS.Controllers
                 if (team == null) return NotFound("Team not found!");
                 var statistics = _mapper.Map<Statistics>(model);
                 statistics.Team = team;
+                if (model.Tournament != null)
+                {
+                    statistics.Tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
+                }
                 _repository.Add(statistics);
                 if (await _repository.SaveChangesAsync())
                 {
                     var location = _linkGenerator.GetPathByAction(HttpContext,
                         "Get",
-                        values: new { id, sId = statistics.StatisticsId });
+                        values: new { id = statistics.StatisticsId });
                     return Created(location, _mapper.Map<StatisticsModel>(statistics));
                 }
             }

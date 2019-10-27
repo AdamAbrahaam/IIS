@@ -16,6 +16,7 @@ using IIS.Repositories.Interfaces;
 using IIS.Repositories;
 using AutoMapper;
 using IIS.Models;
+using Newtonsoft.Json;
 
 namespace IIS
 {
@@ -46,6 +47,9 @@ namespace IIS
 
             // connect vue app - middleware  
             services.AddSpaStaticFiles(options => options.RootPath = "client-app/dist");
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                    .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace IIS.Data.Entities
 {
-    public class UsersInMatch
+    public class UsersInTournament
     {
-        public int UsersInMatchId { get; set; }
-        public bool Home { get; set; }
+        public int UsersInTournamentId { get; set; }
+        public Tournament Tournament { get; set; }
         public User User { get; set; }
-        public Match Match { get; set; }
     }
 }

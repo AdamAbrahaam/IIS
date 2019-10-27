@@ -14,7 +14,9 @@ namespace IIS.Data
         public int Wins { get; set; }
         public int Draws { get; set; }
         public int Loses { get; set; }
+        public int Points => Wins * 3 + Draws;
         public User User { get; set; }
         public Team Team { get; set; }
+        public Tournament Tournament { get; set; }
     }
 }

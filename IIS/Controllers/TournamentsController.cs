@@ -39,7 +39,7 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<TournamentDetailModel>> Get(int id)
         {
             try
@@ -47,6 +47,34 @@ namespace IIS.Controllers
                 var result = await _repository.GetTournamentById(id);
 
                 return _mapper.Map<TournamentDetailModel>(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
+
+        [HttpGet("stats-for-users{id:int}")]
+        public async Task<ActionResult<StatisticsModel[]>> GetUsersStats(int id)
+        {
+            try
+            {
+                var result = await _repository.GetStatisticsSoloAsync(id);
+                return _mapper.Map<StatisticsModel[]>(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
+
+        [HttpGet("stats-for-teams{id:int}")]
+        public async Task<ActionResult<StatisticsModel[]>> GetTeamsStats(int id)
+        {
+            try
+            {
+                var result = await _repository.GetStatisticsTeamsAsync(id);
+                return _mapper.Map<StatisticsModel[]>(result);
             }
             catch (Exception)
             {

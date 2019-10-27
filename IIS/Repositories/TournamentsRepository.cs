@@ -35,9 +35,24 @@ namespace IIS.Repositories
             return await query.ToArrayAsync();
         }
 
+        public async Task<Statistics[]> GetStatisticsSoloAsync(int id)
+        {
+            var query = _context.Statistics.Where(t => t.Tournament.TournamentId == id && t.User != null)
+                .Include(t => t.User);
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Statistics[]> GetStatisticsTeamsAsync(int id)
+        {
+            var query = _context.Statistics.Where(t => t.Tournament.TournamentId == id && t.Team != null)
+                .Include(t => t.Team);
+            return await query.ToArrayAsync();
+        }
+
         public async Task<Tournament> GetTournamentById(int id)
         {
-            var query = _context.Tournaments.Where(t => t.TournamentId == id).Include(t => t.Organizer);
+            var query = _context.Tournaments.Where(t => t.TournamentId == id)
+                .Include(t => t.Organizer);
             return await query.FirstOrDefaultAsync();
         }
 

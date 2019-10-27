@@ -30,20 +30,12 @@ namespace IIS.Repositories
             _context.Remove(entity);
         }
 
-        public Task<Statistics[]> GetStatistics(int id)
+        public async Task<Statistics[]> GetStatistics(int id)
         {
-            throw new NotImplementedException();
+            IQueryable<Statistics> query = _context.Statistics
+                .Where(t => t.User.UserId == id);
+            return await query.ToArrayAsync(); 
         }
-
-        /*public Task<Statistics[]> GetStatistics(int id)
-        {
-            IQueryable<Statistics> query = _context.Statistics;
-            if (incl)
-            {
-                query = query
-                  .Include(t => t.Speaker);
-            }
-        }*/
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
