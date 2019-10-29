@@ -2,6 +2,7 @@
 using IIS.Data.Entities;
 using IIS.Models;
 using IIS.Repositories.Interfaces;
+using IIS.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -26,19 +27,24 @@ namespace IIS.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet("user-by-email")]
-        public async Task<ActionResult<UserModel>> Get(string email)
+        [HttpPost("login")]
+        public async Task<ActionResult<UserModel>> PostLogin(UserModel user)
         {
             try
             {
-                var user = await _repository.GetUserByEmailAsync(email);
-                if (user == null) return NotFound("User Not Found!");
+                var userEntity = await _repository.GetUserByEmailAsync(user.Email);
+                if (userEntity == null) return NotFound("User Not Found!");
 
-                return _mapper.Map<UserModel>(user);
+                var hasher = new PasswordHasher(user.Password);
+                if (hasher.Compare(userEntity.Password)) 
+                    return _mapper.Map<UserModel>(userEntity);
+                else 
+                    return Unauthorized("Incorrect password!");
+
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get User!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to login User!");
             }
         }
 
@@ -74,8 +80,8 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<UserModel>> Post(UserModel model)
+        [HttpPost("register")]
+        public async Task<ActionResult<UserModel>> PostRegister(UserModel model)
         {
             try
             {

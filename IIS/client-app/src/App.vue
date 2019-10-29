@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar flat max-height="90px" color="#252423">
+    <v-app-bar flat max-height="65px" color="#252423">
       <v-app-bar-nav-icon
         class="hidden-md-and-up"
         @click.stop="drawer = !drawer"
@@ -56,7 +56,7 @@
               color="teal"
               size="44"
               v-on="on"
-              class="mr-5"
+              class="mx-5"
               style="cursor: pointer"
             >
               <span class="white--text headline">{{
@@ -88,16 +88,24 @@
           class="white--text hidden-sm-and-down mx-5 "
           outlined
           color="#e7e6e3"
-          @click.stop="dialog = true"
+          @click.stop="loginDialog = true"
         >
           <span>Login</span>
         </v-btn>
       </div>
-
-      <v-dialog v-model="dialog" overlay-opacity="0.8" max-width="600px">
-        <LoginPanel v-bind:closeModal="closeModal" />
-      </v-dialog>
     </v-app-bar>
+
+    <v-dialog v-model="loginDialog" overlay-opacity="0.8" max-width="600px">
+      <LoginPanel v-bind:closeModal="closeModal" />
+    </v-dialog>
+
+    <v-dialog
+      v-model="tournamentDialog"
+      overlay-opacity="0.8"
+      max-width="600px"
+    >
+      <TournamentPanel v-bind:closeModal="closeModal" />
+    </v-dialog>
 
     <v-navigation-drawer
       id="drawer"
@@ -113,8 +121,8 @@
 
     <v-footer padless color="#252423">
       <v-col class="text-center white--text" cols="12">
-        <strong> {{ new Date().getFullYear() }} IIS </strong> - Adam Abrahám,
-        Tomáš Žigo, Adrián Boros
+        <strong> {{ new Date().getFullYear() }} VUT FIT IIS </strong> - Adam
+        Abrahám, Tomáš Žigo, Adrián Boros
       </v-col>
     </v-footer>
   </v-app>
@@ -123,16 +131,19 @@
 <script>
 import { mapState } from "vuex";
 import LoginPanel from "@/components/LoginPanel.vue";
+import TournamentPanel from "@/components/TournamentPanel.vue";
 
 export default {
   name: "App",
   components: {
-    LoginPanel
+    LoginPanel,
+    TournamentPanel
   },
   data() {
     return {
       drawer: null,
-      dialog: false,
+      loginDialog: false,
+      tournamentDialog: false,
       profileOptions: [
         {
           text: "My Profile",
@@ -150,7 +161,7 @@ export default {
         {
           text: "Tournament",
           icon: "mdi-trophy-variant",
-          callback: () => console.log(this.currentUser.email)
+          callback: () => (this.tournamentDialog = true)
         },
         {
           text: "Team",
@@ -173,7 +184,8 @@ export default {
 
   methods: {
     closeModal() {
-      this.dialog = false;
+      this.loginDialog = false;
+      this.tournamentDialog = false;
     },
     logout() {
       this.$store.dispatch("user/logout");

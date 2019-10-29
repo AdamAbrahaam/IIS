@@ -1,23 +1,23 @@
 <template>
   <div>
+    <v-dialog v-model="dialog" overlay-opacity="0.8" max-width="600px">
+      <RegisterPanel v-bind:closeModal="closeModal" />
+    </v-dialog>
+
     <div id="hero">
       <transition appear name="fade">
         <div class="content">
           <p>Join a tournament and win amazing prizes!</p>
-          <v-dialog v-model="dialog" overlay-opacity="0.8" max-width="600px">
-            <template v-slot:activator="{ on }">
-              <v-btn
-                x-large
-                color="#252423"
-                depressed
-                dark
-                class="mt-8"
-                v-on="on"
-                >Register now!</v-btn
-              >
-            </template>
-            <RegisterPanel />
-          </v-dialog>
+          <v-btn
+            v-if="!currentUser.email"
+            x-large
+            color="#252423"
+            depressed
+            dark
+            class="mt-8"
+            @click.stop="dialog = true"
+            >Register now!</v-btn
+          >
         </div>
       </transition>
     </div>
@@ -87,8 +87,14 @@ export default {
   },
   computed: {
     ...mapState({
-      tournaments: state => state.tournaments.tournaments
+      tournaments: state => state.tournaments.tournaments,
+      currentUser: state => state.user.currentUser
     })
+  },
+  methods: {
+    closeModal() {
+      this.dialog = false;
+    }
   }
 };
 </script>

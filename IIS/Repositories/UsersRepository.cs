@@ -20,9 +20,12 @@ namespace IIS.Repositories
             _context = context;
         }
 
-        public void Add<T>(T entity) where T : class
+        public void Add(User user)
         {
-            _context.Add(entity);
+            var passwordHasher = new PasswordHasher(user.Password);
+            user.Password = passwordHasher.GetHashedPassword();
+
+            _context.Add(user);
         }
 
         public void Delete<T>(T entity) where T : class
@@ -37,12 +40,6 @@ namespace IIS.Repositories
             return await query.ToArrayAsync(); 
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
-        {
-            var query = _context.Users.Where(t => t.Email == email);
-            return await query.FirstOrDefaultAsync();
-        }
-
         public async Task<User> GetUserByIdAsync(int id)
         {
             var query = _context.Users.Where(t => t.UserId == id);
@@ -54,5 +51,10 @@ namespace IIS.Repositories
             return (await _context.SaveChangesAsync()) > 0;
         }
 
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            var query = _context.Users.Where(t => t.Email == email);
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

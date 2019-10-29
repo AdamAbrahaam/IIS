@@ -32,6 +32,23 @@ export default {
       let tournament = response.data;
 
       commit("SET_TOURNAMENT", tournament);
+    },
+    async createTournament({ commit }, tournamentInfo) {
+      try {
+        let response = await Api().post(
+          "/tournaments/add-tournament",
+          tournamentInfo
+        );
+        let tournament = response.data;
+        console.log(response);
+
+        commit("SET_CURRENT_USER", tournament);
+        return tournament;
+      } catch {
+        return {
+          error: "Registration failed! Please try again."
+        };
+      }
     }
   }
 };

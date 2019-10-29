@@ -17,16 +17,27 @@ export default {
     }
   },
   actions: {
-    async login({ commit }, loginInfo) {
+    async register({ commit }, regInfo) {
       try {
-        let response = await Api().get(
-          `/users/user-by-email?email=${loginInfo.email}`
-        );
+        let response = await Api().post("/users/register", regInfo);
         let user = response.data;
 
         commit("SET_CURRENT_USER", user);
         return user;
       } catch {
+        return {
+          error: "Registration failed! Please try again."
+        };
+      }
+    },
+    async login({ commit }, loginInfo) {
+      try {
+        let response = await Api().post("/users/login", loginInfo);
+        let user = response.data;
+
+        commit("SET_CURRENT_USER", user);
+        return user;
+      } catch (err) {
         return {
           error: "Email/password combination was incorrect.  Please try again."
         };

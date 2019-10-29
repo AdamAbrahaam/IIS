@@ -10,7 +10,7 @@ namespace IIS.Repositories.Interfaces
 {
     public interface IUsersRepository
     {
-        void Add<T>(T entity) where T : class;
+        void Add(User user);
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
         Task<User> GetUserByIdAsync(int id);
