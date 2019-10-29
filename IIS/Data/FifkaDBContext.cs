@@ -19,6 +19,8 @@ namespace IIS.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Statistics> Statistics { get; set; }
+        public DbSet<UsersInMatch>  UsersInMatches { get; set; }
+        public DbSet<TeamsInMatch> TeamsInMatches { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_config.GetConnectionString("Fifka"));
@@ -131,7 +133,15 @@ namespace IIS.Data
                     Loses = 2,
                     TeamId = 1,
                     UserId = 1
-                }); ;
+                }); 
+            bldr.Entity<UsersInMatch>()
+                .HasData(new
+                {
+                    UsersInMatchId = 1,
+                    UserId = 1,
+                    MatchId = 1,
+                    Home = true
+                });
         }
     }
 }

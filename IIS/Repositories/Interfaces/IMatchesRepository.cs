@@ -10,6 +10,8 @@ namespace IIS.Repositories.Interfaces
     {
         void Add<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;
+        void AddUser(UsersInMatch entity, int id);
+        void AddTeam(TeamsInMatch entity, int id);
         Task<bool> SaveChangesAsync();
         Task<Match> GetMatchById(int id);
         Task<Match> GetSoloMatchById(int id);
@@ -18,5 +20,6 @@ namespace IIS.Repositories.Interfaces
         Task<Match[]> GetAllDuoMatchesInTournament(int id);
         Task<Tournament> GetTournamentById(int id);
         Task<User> GetUserById(int id);
+        Task<Team> GetTeamById(int id);
     }
 }

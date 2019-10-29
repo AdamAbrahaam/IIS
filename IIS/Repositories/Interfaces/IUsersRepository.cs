@@ -15,6 +15,7 @@ namespace IIS.Repositories.Interfaces
         Task<bool> SaveChangesAsync();
         Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByEmailAsync(string email);
+        Task<User[]> GetAllUsers();
         Task<Statistics[]> GetStatistics(int id);
     }
 }

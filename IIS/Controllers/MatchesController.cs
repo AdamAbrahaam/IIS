@@ -42,6 +42,36 @@ namespace IIS.Controllers
             }
         }
 
+        [HttpGet("solo_match{id:int}")]
+        public async Task<ActionResult<MatchModel>> GetSoloMatch(int id)
+        {
+            try
+            {
+                var match = await _repository.GetSoloMatchById(id);
+                if (match == null) return NotFound("Match not found!");
+                return _mapper.Map<MatchModel>(match);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
+
+        [HttpGet("duo_match{id:int}")]
+        public async Task<ActionResult<MatchModel>> GetDuoMatch(int id)
+        {
+            try
+            {
+                var match = await _repository.GetDuoMatchById(id);
+                if (match == null) return NotFound("Match not found!");
+                return _mapper.Map<MatchModel>(match);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
+
         [HttpGet("tournament{id:int}")]
         public async Task<ActionResult<MatchModel[]>> Get(int id)
         {
@@ -62,8 +92,8 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<MatchModel>> Post(MatchModel model)
+        [HttpPost("solo_match")]
+        public async Task<ActionResult<MatchModel>> PostSolo(int userid1, int userid2, MatchModel model)
         {
             try
             {
@@ -72,11 +102,69 @@ namespace IIS.Controllers
                 if (tournament == null) return NotFound("Tournament not found!");
                 match.Tournament = tournament;
                 _repository.Add(match);
+                var homeUser = await _repository.GetUserById(userid1);
+                var awayUser = await _repository.GetUserById(userid2);
                 if (await _repository.SaveChangesAsync())
                 {
+                    var uimEntity = new UsersInMatch()
+                    {
+                        Home = true,
+                        User = homeUser,
+                        Match = match
+                    };
+                    var uimEntity2 = new UsersInMatch()
+                    {
+                        Home = false,
+                        User = awayUser,
+                        Match = match
+                    };
+                    _repository.AddUser(uimEntity, match.MatchId);
+                    _repository.AddUser(uimEntity2, match.MatchId);
                     var location = _linkGenerator.GetPathByAction(HttpContext,
-                       "Get",
+                       "GetSoloMatch",
                         values: new { id =  match.MatchId});
+                    return Created(location, _mapper.Map<MatchModel>(match));
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("duo_match")]
+        public async Task<ActionResult<MatchModel>> PostDuo(int teamid1, int teamid2, MatchModel model)
+        {
+            try
+            {
+                var match = _mapper.Map<Match>(model);
+                var tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
+                if (tournament == null) return NotFound("Tournament not found!");
+                match.Tournament = tournament;
+                _repository.Add(match);
+                var homeTeam = await _repository.GetTeamById(teamid1);
+                var awayTeam = await _repository.GetTeamById(teamid2);
+                if (homeTeam == null || awayTeam == null) return NotFound("Team not found!");
+                if (await _repository.SaveChangesAsync())
+                {
+                    var uimEntity = new TeamsInMatch()
+                    {
+                        Home = true,
+                        Team = homeTeam,
+                        Match = match
+                    };
+                    var uimEntity2 = new TeamsInMatch()
+                    {
+                        Home = false,
+                        Team = awayTeam,
+                        Match = match
+                    };
+                    _repository.AddTeam(uimEntity, match.MatchId);
+                    _repository.AddTeam(uimEntity2, match.MatchId);
+                    var location = _linkGenerator.GetPathByAction(HttpContext,
+                       "GetDuoMatch",
+                        values: new {id = match.MatchId });
                     return Created(location, _mapper.Map<MatchModel>(match));
                 }
             }
