@@ -13,5 +13,6 @@ namespace IIS.Models
         public int HomeScore { get; set; }
         public int AwayScore { get; set; }
         public Tournament Tournament { get; set; }
+
     }
 }

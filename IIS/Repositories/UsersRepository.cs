@@ -56,5 +56,11 @@ namespace IIS.Repositories
             var query = _context.Users.Where(t => t.Email == email);
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<User[]> GetAllUsers()
+        {
+            var query = _context.Users;
+            return await query.ToArrayAsync();
+        }
     }
 }

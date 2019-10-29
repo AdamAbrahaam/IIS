@@ -48,6 +48,20 @@ namespace IIS.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<ActionResult<UserModel[]>> Get()
+        {
+            try
+            {
+                var result = await _repository.GetAllUsers();
+                return _mapper.Map<UserModel[]>(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to get Users!");
+            }
+        }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<UserModel>> Get(int id)
         {
