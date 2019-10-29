@@ -70,7 +70,7 @@
             >
               <template v-slot:activator="{ on }">
                 <v-text-field
-                  v-model="date"
+                  v-model="tournamentInfo.date"
                   label="Date"
                   prepend-icon="mdi-calendar"
                   v-on="on"
@@ -78,7 +78,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                v-model="date"
+                v-model="tournamentInfo.date"
                 :min="new Date().toISOString().substr(0, 10)"
                 no-title
                 @input="dateMenu = false"
@@ -96,7 +96,7 @@
             >
               <template v-slot:activator="{ on }">
                 <v-text-field
-                  v-model="time"
+                  v-model="tournamentInfo.time"
                   label="Time"
                   prepend-icon="mdi-clock"
                   readonly
@@ -105,9 +105,9 @@
               </template>
               <v-time-picker
                 v-if="timeMenu"
-                v-model="time"
+                v-model="tournamentInfo.time"
                 format="24hr"
-                @click:minute="$refs.timeMenu.save(time)"
+                @click:minute="$refs.timeMenu.save(tournamentInfo.time)"
               ></v-time-picker>
             </v-menu>
           </v-col>
@@ -120,6 +120,13 @@
               required
               prepend-icon="mdi-account-star"
             ></v-text-field>
+          </v-col>
+          <v-col
+            cols="12"
+            v-show="this.tournament.error"
+            class="my-n7 red--text text-center"
+          >
+            {{ this.tournament.error }}
           </v-col>
         </v-row>
       </v-container>
@@ -134,32 +141,48 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "TournamentPanel",
   props: ["closeModal"],
   data() {
     return {
-      date: null,
       dateMenu: false,
-      time: null,
       timeMenu: false,
+      tournament: {},
       tournamentInfo: {
         name: null,
         location: null,
         date: null,
+        time: null,
         prize: null,
         entry: null,
         capacity: null,
         type: null,
         sponsors: null,
-        organizer: this.currentUser
+        organizer: null
       },
       types: ["Solo", "Duo"],
       allowedCapacity: [2, 4, 8, 16]
     };
   },
+  computed: {
+    ...mapState({
+      currentUser: state => state.user.currentUser
+    })
+  },
   methods: {
-    createTournament() {}
+    async createTournament() {
+      this.tournamentInfo.organizer = this.currentUser;
+      this.tournament = await this.$store.dispatch(
+        "tournaments/createTournament",
+        this.tournamentInfo
+      );
+
+      if (!this.tournament.error) {
+        this.closeModal();
+      }
+    }
   }
 };
 </script>

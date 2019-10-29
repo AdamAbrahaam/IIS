@@ -11,6 +11,9 @@ export default {
       state.currentUser = user;
       window.localStorage.currentUser = JSON.stringify(user);
     },
+    SET_USERS(state, users) {
+      state.users = users;
+    },
     LOGOUT_USER(state) {
       state.currentUser = {};
       window.localStorage.currentUser = JSON.stringify({});

@@ -92,7 +92,7 @@ namespace IIS.Controllers
                     "Get",
                     "Tournaments",
                     new { name = model.Name });
-                var tournament = _mapper.Map<TournamentDetailModel>(model);
+                var tournament = _mapper.Map<Tournament>(model);
                 _repository.Add(tournament);
                 if (await _repository.SaveChangesAsync())
                 {

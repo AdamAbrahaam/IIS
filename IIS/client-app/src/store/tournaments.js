@@ -40,10 +40,12 @@ export default {
           tournamentInfo
         );
         let tournament = response.data;
-        console.log(response);
 
-        commit("SET_CURRENT_USER", tournament);
-        return tournament;
+        commit("SET_TOURNAMENT", tournament);
+        this.$router.push({
+          name: "tournament",
+          params: { tournamentId: tournament.tournamentId }
+        });
       } catch {
         return {
           error: "Registration failed! Please try again."
