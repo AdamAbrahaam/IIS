@@ -31,7 +31,6 @@ namespace IIS.Repositories
         public async Task<Match[]> GetAllDuoMatchesInTournament(int id)
         {
             var query = _context.Matches.Where(t => t.Tournament.TournamentId == id)
-                .Include(t => t.Referee)
                 .Include(t => t.TeamsInMatches);
             return await query.ToArrayAsync();
         }
@@ -39,7 +38,6 @@ namespace IIS.Repositories
         public async Task<Match[]> GetAllSoloMatchesInTournament(int id)
         {
             var query = _context.Matches.Where(t => t.Tournament.TournamentId == id)
-                .Include(t => t.Referee)
                 .Include(t => t.UsersInMatches);
             return await query.ToArrayAsync();
         }
@@ -47,16 +45,14 @@ namespace IIS.Repositories
         public async Task<Match> GetDuoMatchById(int id)
         {
             var query = _context.Matches.Where(t => t.MatchId == id)
-                .Include(t => t.UsersInMatches)
-                .Include(t => t.Referee);
+                .Include(t => t.UsersInMatches);
             return await query.FirstOrDefaultAsync();
         }
 
         public async Task<Match> GetMatchById(int id)
         {
             var query = _context.Matches.Where(t => t.MatchId == id)
-                .Include(t => t.Tournament)
-                .Include(t => t.Referee);
+                .Include(t => t.Tournament);
             return await query.FirstOrDefaultAsync();
         }
 

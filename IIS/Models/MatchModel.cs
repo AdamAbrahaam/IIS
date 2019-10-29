@@ -8,10 +8,10 @@ namespace IIS.Models
 {
     public class MatchModel
     {
-        public DateTime Date { get; set; } = DateTime.MinValue;
+        public string Date { get; set; }
+        public string Time { get; set; }
         public int HomeScore { get; set; }
         public int AwayScore { get; set; }
-        public User Referee { get; set; }
         public Tournament Tournament { get; set; }
     }
 }

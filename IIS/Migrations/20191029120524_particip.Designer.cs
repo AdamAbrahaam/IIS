@@ -4,14 +4,16 @@ using IIS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IIS.Migrations
 {
     [DbContext(typeof(FifkaDBContext))]
-    partial class FifkaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20191029120524_particip")]
+    partial class particip
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,19 +31,21 @@ namespace IIS.Migrations
                     b.Property<int>("AwayScore")
                         .HasColumnType("int");
 
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("HomeScore")
                         .HasColumnType("int");
 
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("RefereeUserId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("TournamentId")
                         .HasColumnType("int");
 
                     b.HasKey("MatchId");
+
+                    b.HasIndex("RefereeUserId");
 
                     b.HasIndex("TournamentId");
 
@@ -52,6 +56,7 @@ namespace IIS.Migrations
                         {
                             MatchId = 1,
                             AwayScore = 0,
+                            Date = new DateTime(2019, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             HomeScore = 1
                         });
                 });
@@ -106,6 +111,28 @@ namespace IIS.Migrations
                     b.ToTable("TeamsInMatch");
                 });
 
+            modelBuilder.Entity("IIS.Data.Entities.TeamsInTournament", b =>
+                {
+                    b.Property<int>("TeamsInTournamentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TournamentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeamsInTournamentId");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("TournamentId");
+
+                    b.ToTable("TeamsInTournaments");
+                });
+
             modelBuilder.Entity("IIS.Data.Entities.Tournament", b =>
                 {
                     b.Property<int>("TournamentId")
@@ -116,14 +143,11 @@ namespace IIS.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Entry")
                         .HasColumnType("int");
-
-                    b.Property<string>("Info")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
@@ -146,11 +170,8 @@ namespace IIS.Migrations
                     b.Property<string>("Sponsors")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("TournamentId");
 
@@ -165,52 +186,57 @@ namespace IIS.Migrations
                         {
                             TournamentId = 1,
                             Capacity = 800,
+                            Date = new DateTime(2019, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Entry = 600,
                             Location = "Bozetechova",
                             Name = "FIT - BIT",
                             OrganizerUserId = 1,
                             Prize = 500,
-                            Type = "duo"
+                            Type = 1
                         },
                         new
                         {
                             TournamentId = 2,
                             Capacity = 802,
+                            Date = new DateTime(2019, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Entry = 6002,
                             Location = "Bozetechova2",
                             Name = "FIT - BIT2",
                             Prize = 5002,
-                            Type = "duo"
+                            Type = 1
                         },
                         new
                         {
                             TournamentId = 3,
                             Capacity = 803,
+                            Date = new DateTime(2019, 10, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Entry = 6003,
                             Location = "Bozetechova3",
                             Name = "FIT - BIT3",
                             Prize = 5003,
-                            Type = "solo"
+                            Type = 0
                         },
                         new
                         {
                             TournamentId = 4,
                             Capacity = 804,
+                            Date = new DateTime(2019, 10, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Entry = 604,
                             Location = "Bozetechova4",
                             Name = "FIT - BIT4",
                             Prize = 504,
-                            Type = "duo"
+                            Type = 1
                         },
                         new
                         {
                             TournamentId = 5,
                             Capacity = 805,
+                            Date = new DateTime(2019, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Entry = 605,
                             Location = "Bozetechova5",
                             Name = "FIT - BIT5",
                             Prize = 505,
-                            Type = "solo"
+                            Type = 0
                         });
                 });
 
@@ -286,6 +312,28 @@ namespace IIS.Migrations
                     b.ToTable("UsersInMatch");
                 });
 
+            modelBuilder.Entity("IIS.Data.Entities.UsersInTournament", b =>
+                {
+                    b.Property<int>("UsersInTournamentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("TournamentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UsersInTournamentId");
+
+                    b.HasIndex("TournamentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UsersInTournaments");
+                });
+
             modelBuilder.Entity("IIS.Data.Statistics", b =>
                 {
                     b.Property<int>("StatisticsId")
@@ -352,6 +400,10 @@ namespace IIS.Migrations
 
             modelBuilder.Entity("IIS.Data.Entities.Match", b =>
                 {
+                    b.HasOne("IIS.Data.Entities.User", "Referee")
+                        .WithMany()
+                        .HasForeignKey("RefereeUserId");
+
                     b.HasOne("IIS.Data.Entities.Tournament", "Tournament")
                         .WithMany("Matches")
                         .HasForeignKey("TournamentId");
@@ -366,6 +418,17 @@ namespace IIS.Migrations
                     b.HasOne("IIS.Data.Entities.Team", "Team")
                         .WithMany("TeamsInMatches")
                         .HasForeignKey("TeamId");
+                });
+
+            modelBuilder.Entity("IIS.Data.Entities.TeamsInTournament", b =>
+                {
+                    b.HasOne("IIS.Data.Entities.Team", "Team")
+                        .WithMany("TeamsInTournaments")
+                        .HasForeignKey("TeamId");
+
+                    b.HasOne("IIS.Data.Entities.Tournament", "Tournament")
+                        .WithMany()
+                        .HasForeignKey("TournamentId");
                 });
 
             modelBuilder.Entity("IIS.Data.Entities.Tournament", b =>
@@ -394,6 +457,17 @@ namespace IIS.Migrations
 
                     b.HasOne("IIS.Data.Entities.User", "User")
                         .WithMany("UsersInMatches")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("IIS.Data.Entities.UsersInTournament", b =>
+                {
+                    b.HasOne("IIS.Data.Entities.Tournament", "Tournament")
+                        .WithMany()
+                        .HasForeignKey("TournamentId");
+
+                    b.HasOne("IIS.Data.Entities.User", "User")
+                        .WithMany("UsersInTournaments")
                         .HasForeignKey("UserId");
                 });
 

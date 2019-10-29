@@ -13,6 +13,5 @@ namespace IIS.Data.Entities
         public Team Team { get; set; }
         public ICollection<Statistics> Statistics { get; set; } = new List<Statistics>();
         public ICollection<UsersInMatch> UsersInMatches { get; set; } = new List<UsersInMatch>();
-        public ICollection<UsersInTournament> UsersInTournaments { get; set; } = new List<UsersInTournament>();
     }
 }

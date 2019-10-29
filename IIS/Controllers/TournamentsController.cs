@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IIS.Data.Entities;
 using IIS.Models;
 using IIS.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -93,7 +94,7 @@ namespace IIS.Controllers
                     new { name = model.Name });
                 var tournament = _mapper.Map<TournamentDetailModel>(model);
                 _repository.Add(tournament);
-                if(await _repository.SaveChangesAsync())
+                if (await _repository.SaveChangesAsync())
                 {
                     return Created(location, _mapper.Map<TournamentDetailModel>(tournament));
                 }
@@ -112,12 +113,35 @@ namespace IIS.Controllers
             {
                 var tournament = await _repository.GetTournamentById(id);
                 _repository.Delete(tournament);
-                if(await _repository.SaveChangesAsync())
+                if (await _repository.SaveChangesAsync())
                 {
                     return Ok();
                 }
             }
-            catch(Exception)
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
+            }
+            return BadRequest("Failed to delete tournament");
+        }
+
+        [HttpPost("add-user")]
+        public async Task<IActionResult> AddUser(int userid, int tournamentid)
+        {
+            try
+            {
+                var tournament = await _repository.GetTournamentById(tournamentid);
+                var user = await _repository.GetUserById(userid);
+                if (await _repository.SaveChangesAsync())
+                {
+                    var location = _linkGenerator.GetPathByAction(
+                        "Get",
+                        "Tournaments",
+                        new { id = tournament.TournamentId });
+                    return Created(location, _mapper.Map<TournamentDetailModel>(tournament));
+                }
+            }
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
             }

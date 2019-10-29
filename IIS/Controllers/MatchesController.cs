@@ -50,7 +50,7 @@ namespace IIS.Controllers
                 Match[] matches;
                 var tournament = await _repository.GetTournamentById(id);
                 if (tournament == null) return NotFound("Tournament not found!");
-                if (tournament.Type == Data.TournamentType.Duo)
+                if (tournament.Type == "duo")
                     matches = await _repository.GetAllDuoMatchesInTournament(id);
                 else
                     matches = await _repository.GetAllSoloMatchesInTournament(id);
@@ -68,11 +68,8 @@ namespace IIS.Controllers
             try
             {
                 var match = _mapper.Map<Match>(model);
-                var user = await _repository.GetUserById(model.Referee.UserId);
-                if (user == null) return NotFound("User not found!");
                 var tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
                 if (tournament == null) return NotFound("Tournament not found!");
-                match.Referee = user;
                 match.Tournament = tournament;
                 _repository.Add(match);
                 if (await _repository.SaveChangesAsync())

@@ -12,15 +12,18 @@ namespace IIS.Models
     {
         public string Name { get; set; }
         public string Location { get; set; }
-        public DateTime Date { get; set; } = DateTime.MinValue;
+        public string Date { get; set; }
+        public string Time { get; set; }
+        public string Info { get; set; }
         public int Prize { get; set; }
         public int Entry { get; set; }
         public int Capacity { get; set; }
-        public string[] Sponsors { get; set; }
-        public TournamentType Type { get; set; }
+        public string Sponsors { get; set; }
+        public string[] Participants { get; set; }
+        public string Type { get; set; }
         public ICollection<MatchModel> Matches { get; set; }
         public ICollection<StatisticsModel> Statistics { get; set; }
-        public MatchModel NewMatch { get; set; }
         public UserModel Organizer { get; set; }
+        public UserModel Referee { get; set; }
     }
 }

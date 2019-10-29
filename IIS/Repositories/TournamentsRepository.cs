@@ -56,6 +56,12 @@ namespace IIS.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
+        public async Task<User> GetUserById(int id)
+        {
+            var query = _context.Users.Where(t => t.UserId == id);
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync()) > 0;

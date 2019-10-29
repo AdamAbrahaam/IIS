@@ -19,14 +19,13 @@ namespace IIS.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Statistics> Statistics { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_config.GetConnectionString("Fifka"));
         }
         protected override void OnModelCreating(ModelBuilder bldr)
         {
-            bldr.Entity<Tournament>().Property(p => p.Sponsors).HasConversion(v => string.Join(',', v), v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+            bldr.Entity<Tournament>().Property(p => p.Participants).HasConversion(v => string.Join(',', v), v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
 
             bldr.Entity<User>()
                 .HasData(new
@@ -57,7 +56,6 @@ namespace IIS.Data
                     MatchId = 1,
                     HomeTeam = "Hurbanovo",
                     AwayTeam = "Imel",
-                    Date = new DateTime(2019,10,6),
                     HomeScore = 1,
                     AwayScore = 0
                 });
@@ -67,12 +65,10 @@ namespace IIS.Data
                     TournamentId = 1,
                     Name = "FIT - BIT",
                     Location = "Bozetechova",
-                    Date = new DateTime(2019, 10, 6),
                     Prize = 500,
                     Entry = 600,
                     Capacity = 800,
-                    Type = TournamentType.Duo,
-                    Sponsors = new string[] { "asd", "dsa" },
+                    Type = "duo",
                     OrganizerUserId = 1
                 },
                 new
@@ -80,48 +76,40 @@ namespace IIS.Data
                     TournamentId = 2,
                     Name = "FIT - BIT2",
                     Location = "Bozetechova2",
-                    Date = new DateTime(2019, 10, 7),
                     Prize = 5002,
                     Entry = 6002,
                     Capacity = 802,
-                    Type = TournamentType.Duo,
-                    Sponsors = new string[] { "asd", "dsa" }
+                    Type = "duo",
                 },
                 new
                 {
                     TournamentId = 3,
                     Name = "FIT - BIT3",
                     Location = "Bozetechova3",
-                    Date = new DateTime(2019, 10, 8),
                     Prize = 5003,
                     Entry = 6003,
                     Capacity = 803,
-                    Type = TournamentType.Solo,
-                    Sponsors = new string[] { "asd", "dsa" }
+                    Type = "solo",
                 },
                 new
                 {
                     TournamentId = 4,
                     Name = "FIT - BIT4",
                     Location = "Bozetechova4",
-                    Date = new DateTime(2019, 10, 9),
                     Prize = 504,
                     Entry = 604,
                     Capacity = 804,
-                    Type = TournamentType.Duo,
-                    Sponsors = new string[] { "asd", "dsa" }
+                    Type = "duo",
                 },
                 new
                 {
                     TournamentId = 5,
                     Name = "FIT - BIT5",
                     Location = "Bozetechova5",
-                    Date = new DateTime(2019, 10, 10),
                     Prize = 505,
                     Entry = 605,
                     Capacity = 805,
-                    Type = TournamentType.Solo,
-                    Sponsors = new string[] { "asd", "dsa" }
+                    Type = "solo",
                 });
             bldr.Entity<Statistics>()
                 .HasData(new
