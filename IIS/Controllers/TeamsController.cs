@@ -40,6 +40,21 @@ namespace IIS.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<ActionResult<TeamModel>> Get(string name)
+        {
+            try
+            {
+                var result = await _repository.GetTeamByNameAsync(name);
+                if (result == null) return NotFound("Team not found");
+                return _mapper.Map<TeamModel>(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<TeamModel>> Get(int id)
         {
@@ -70,12 +85,13 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpGet("stats-for-team{id:int}")]
-        public async Task<ActionResult<StatisticsModel[]>> GetStats(int id)
+        [HttpGet("stats-for-team")]
+        public async Task<ActionResult<StatisticsModel[]>> GetStats(string name)
         {
             try
             {
-                var result = await _repository.GetStatisticsForTeamAsync(id);
+                var result = await _repository.GetStatisticsForTeamAsync(name);
+                if (result == null) return NotFound("Statistics not found!");
                 return _mapper.Map<StatisticsModel[]>(result);
             }
             catch (Exception)

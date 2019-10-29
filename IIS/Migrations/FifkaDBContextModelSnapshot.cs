@@ -29,10 +29,22 @@ namespace IIS.Migrations
                     b.Property<int>("AwayScore")
                         .HasColumnType("int");
 
+                    b.Property<string>("AwayTeam")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("AwayUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Date")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("HomeScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HomeTeam")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("HomeUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Time")
@@ -43,6 +55,10 @@ namespace IIS.Migrations
 
                     b.HasKey("MatchId");
 
+                    b.HasIndex("AwayUserId");
+
+                    b.HasIndex("HomeUserId");
+
                     b.HasIndex("TournamentId");
 
                     b.ToTable("Matches");
@@ -52,7 +68,9 @@ namespace IIS.Migrations
                         {
                             MatchId = 1,
                             AwayScore = 0,
-                            HomeScore = 1
+                            AwayTeam = "Imel",
+                            HomeScore = 1,
+                            HomeTeam = "Hurbanovo"
                         });
                 });
 
@@ -314,6 +332,9 @@ namespace IIS.Migrations
                     b.Property<int>("Loses")
                         .HasColumnType("int");
 
+                    b.Property<string>("Team")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("TeamId")
                         .HasColumnType("int");
 
@@ -361,6 +382,14 @@ namespace IIS.Migrations
 
             modelBuilder.Entity("IIS.Data.Entities.Match", b =>
                 {
+                    b.HasOne("IIS.Data.Entities.User", "Away")
+                        .WithMany()
+                        .HasForeignKey("AwayUserId");
+
+                    b.HasOne("IIS.Data.Entities.User", "Home")
+                        .WithMany()
+                        .HasForeignKey("HomeUserId");
+
                     b.HasOne("IIS.Data.Entities.Tournament", "Tournament")
                         .WithMany("Matches")
                         .HasForeignKey("TournamentId");
@@ -408,7 +437,7 @@ namespace IIS.Migrations
 
             modelBuilder.Entity("IIS.Data.Statistics", b =>
                 {
-                    b.HasOne("IIS.Data.Entities.Team", "Team")
+                    b.HasOne("IIS.Data.Entities.Team", null)
                         .WithMany("Statistics")
                         .HasForeignKey("TeamId");
 

@@ -100,10 +100,16 @@ namespace IIS.Controllers
                 var match = _mapper.Map<Match>(model);
                 var tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
                 if (tournament == null) return NotFound("Tournament not found!");
-                match.Tournament = tournament;
-                _repository.Add(match);
+
                 var homeUser = await _repository.GetUserById(userid1);
                 var awayUser = await _repository.GetUserById(userid2);
+                if (homeUser == null || awayUser == null) return NotFound("User not foun!");
+
+                match.Tournament = _mapper.Map<Tournament>(tournament);
+                match.Home = _mapper.Map<User>(homeUser);
+                match.Away = _mapper.Map<User>(awayUser);
+                _repository.Add(match);
+
                 if (await _repository.SaveChangesAsync())
                 {
                     var uimEntity = new UsersInMatch()
@@ -141,11 +147,15 @@ namespace IIS.Controllers
                 var match = _mapper.Map<Match>(model);
                 var tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
                 if (tournament == null) return NotFound("Tournament not found!");
-                match.Tournament = tournament;
-                _repository.Add(match);
+                match.Tournament = _mapper.Map<Tournament>(tournament);
+
                 var homeTeam = await _repository.GetTeamById(teamid1);
                 var awayTeam = await _repository.GetTeamById(teamid2);
                 if (homeTeam == null || awayTeam == null) return NotFound("Team not found!");
+
+                match.HomeTeam = homeTeam.Name;
+                match.AwayTeam = awayTeam.Name;
+                _repository.Add(match);
                 if (await _repository.SaveChangesAsync())
                 {
                     var uimEntity = new TeamsInMatch()

@@ -13,9 +13,9 @@ namespace IIS.Models
         public int Wins { get; set; }
         public int Draws { get; set; }
         public int Loses { get; set; }
-        public int Points => Wins * 3 + Draws;
-        public Tournament Tournament { get; set; }
-        public TeamModel Team { get; set; }
-        public UserModel User { get; set; }
+        public int Points { get; set; }
+        public TournamentNameModel Tournament { get; set; }
+        public string Team { get; set; }
+        public UserNameModel User { get; set; }
     }
 }

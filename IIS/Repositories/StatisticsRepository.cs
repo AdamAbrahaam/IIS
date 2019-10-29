@@ -29,21 +29,22 @@ namespace IIS.Repositories
 
         public async Task<Statistics> GetStatisticsById(int id)
         {
-            var query = _context.Statistics.Where(t => t.StatisticsId == id);
+            var query = _context.Statistics.Where(t => t.StatisticsId == id)
+                .Include(t => t.User)
+                .Include(t => t.Tournament);
             return await query.FirstOrDefaultAsync();
         }
 
         public async Task<Statistics[]> GetStatisticsTeamsRanking()
         {
-            var query = _context.Statistics.Where(t => t.Team != null && t.Tournament == null)
-                .Include(t => t.Team);
+            var query = _context.Statistics.Where(t => t.Team != null && t.Tournament == null);
             return await query.ToArrayAsync();
         }
 
         public async Task<Statistics[]> GetStatisticsUsersRanking()
         {
-           var query = _context.Statistics.Where(t => t.User != null && t.Tournament == null)
-                .Include(t => t.User); 
+           var query = _context.Statistics.Include(t => t.User)
+                .Where(t => t.User != null && t.Tournament == null); 
             return await query.ToArrayAsync();
         }
 
