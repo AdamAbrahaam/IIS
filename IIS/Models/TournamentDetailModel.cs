@@ -10,6 +10,7 @@ namespace IIS.Models
 {
     public class TournamentDetailModel
     {
+        public int TournamentId { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
         public string Date { get; set; }
@@ -23,7 +24,7 @@ namespace IIS.Models
         public string Type { get; set; }
         public ICollection<MatchModel> Matches { get; set; }
         public ICollection<StatisticsModel> Statistics { get; set; }
-        public UserModel Organizer { get; set; }
-        public UserModel Referee { get; set; }
+        public string Organizer { get; set; }
+        public string Referee { get; set; }
     }
 }

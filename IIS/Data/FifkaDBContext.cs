@@ -68,50 +68,13 @@ namespace IIS.Data
                     Name = "FIT - BIT",
                     Location = "Bozetechova",
                     Prize = 500,
-                    Entry = 600,
-                    Capacity = 800,
-                    Type = "duo",
-                    OrganizerUserId = 1
-                },
-                new
-                {
-                    TournamentId = 2,
-                    Name = "FIT - BIT2",
-                    Location = "Bozetechova2",
-                    Prize = 5002,
-                    Entry = 6002,
-                    Capacity = 802,
-                    Type = "duo",
-                },
-                new
-                {
-                    TournamentId = 3,
-                    Name = "FIT - BIT3",
-                    Location = "Bozetechova3",
-                    Prize = 5003,
-                    Entry = 6003,
-                    Capacity = 803,
-                    Type = "solo",
-                },
-                new
-                {
-                    TournamentId = 4,
-                    Name = "FIT - BIT4",
-                    Location = "Bozetechova4",
-                    Prize = 504,
-                    Entry = 604,
-                    Capacity = 804,
-                    Type = "duo",
-                },
-                new
-                {
-                    TournamentId = 5,
-                    Name = "FIT - BIT5",
-                    Location = "Bozetechova5",
-                    Prize = 505,
-                    Entry = 605,
-                    Capacity = 805,
-                    Type = "solo",
+                    Entry = 5,
+                    Capacity = 16,
+                    Type = "Duo",
+                    Organizer = "Daniel Weis",
+                    Date = "22-10-2020",
+                    Time = "14:00",
+                    Sponsors = "Coca Cola"
                 });
             bldr.Entity<Statistics>()
                 .HasData(new

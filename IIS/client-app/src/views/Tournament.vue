@@ -3,11 +3,20 @@
     <div id="header">
       {{ tournament.name }}
       <v-btn
-        v-if="currentUser.fullName == tournament.organizer.fullName"
+        v-if="currentUser.fullName == tournament.organizer && !editingState"
         class="black--text"
         color="#fbff09"
+        @click="edit()"
       >
         <span>Edit details!</span>
+      </v-btn>
+      <v-btn
+        v-else-if="currentUser.fullName == tournament.organizer && editingState"
+        class="black--text"
+        color="success"
+        @click="$refs.tournamentDetails.update()"
+      >
+        <span>SAVE!</span>
       </v-btn>
       <v-btn
         v-else-if="currentUser.fullName"
@@ -37,7 +46,7 @@
             <component :is="item.component" />
           </v-tab-item> -->
           <v-tab-item>
-            <TournamentDetails />
+            <TournamentDetails ref="tournamentDetails" />
           </v-tab-item>
           <v-tab-item>
             <Brackets />
@@ -87,13 +96,21 @@ export default {
   },
   created() {
     this.$store.dispatch("tournaments/getTournament", this.tournamentId);
+    this.$store.dispatch("tournaments/setEditing", false);
     this.loaded = true;
   },
   computed: {
     ...mapState({
       tournament: state => state.tournaments.tournament,
-      currentUser: state => state.user.currentUser
+      currentUser: state => state.user.currentUser,
+      editingState: state => state.tournaments.editing
     })
+  },
+  methods: {
+    edit() {
+      this.$store.dispatch("tournaments/setEditing", true);
+      this.$refs.tournamentDetails.deleteEur();
+    }
   }
 };
 </script>

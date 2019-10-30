@@ -48,7 +48,7 @@
         >
           <template v-slot:item.type="{ item }">
             <v-icon>{{
-              item.type ? "mdi-account-multiple" : "mdi-account"
+              item.type == "Duo" ? "mdi-account-multiple" : "mdi-account"
             }}</v-icon>
           </template>
           <template v-slot:item.entry="{ item }">
@@ -78,6 +78,7 @@ export default {
       headers: [
         { text: "Name", value: "name" },
         { text: "Date", value: "date" },
+        { text: "Time", value: "time" },
         { text: "Location", value: "location" },
         { text: "Type", value: "type" },
         { text: "Entry", value: "entry" },

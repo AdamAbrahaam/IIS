@@ -4,14 +4,16 @@ using IIS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IIS.Migrations
 {
     [DbContext(typeof(FifkaDBContext))]
-    partial class FifkaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20191029153532_tournamentDetailEdit")]
+    partial class tournamentDetailEdit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,16 +162,53 @@ namespace IIS.Migrations
                         new
                         {
                             TournamentId = 1,
-                            Capacity = 16,
-                            Date = "22-10-2020",
-                            Entry = 5,
+                            Capacity = 800,
+                            Entry = 600,
                             Location = "Bozetechova",
                             Name = "FIT - BIT",
                             Organizer = "Daniel Weis",
                             Prize = 500,
-                            Sponsors = "Coca Cola",
-                            Time = "14:00",
-                            Type = "Duo"
+                            Type = "duo"
+                        },
+                        new
+                        {
+                            TournamentId = 2,
+                            Capacity = 802,
+                            Entry = 6002,
+                            Location = "Bozetechova2",
+                            Name = "FIT - BIT2",
+                            Prize = 5002,
+                            Type = "duo"
+                        },
+                        new
+                        {
+                            TournamentId = 3,
+                            Capacity = 803,
+                            Entry = 6003,
+                            Location = "Bozetechova3",
+                            Name = "FIT - BIT3",
+                            Prize = 5003,
+                            Type = "solo"
+                        },
+                        new
+                        {
+                            TournamentId = 4,
+                            Capacity = 804,
+                            Entry = 604,
+                            Location = "Bozetechova4",
+                            Name = "FIT - BIT4",
+                            Prize = 504,
+                            Type = "duo"
+                        },
+                        new
+                        {
+                            TournamentId = 5,
+                            Capacity = 805,
+                            Entry = 605,
+                            Location = "Bozetechova5",
+                            Name = "FIT - BIT5",
+                            Prize = 505,
+                            Type = "solo"
                         });
                 });
 

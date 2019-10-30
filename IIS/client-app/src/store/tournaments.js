@@ -4,6 +4,7 @@ export default {
   namespaced: true,
   state: {
     tournaments: [],
+    editing: false,
     tournament: {}
   },
   mutations: {
@@ -12,6 +13,9 @@ export default {
     },
     SET_TOURNAMENT(state, tournament) {
       state.tournament = tournament;
+    },
+    SET_EDIT(state, edit) {
+      state.editing = edit;
     }
   },
   actions: {
@@ -42,15 +46,31 @@ export default {
         let tournament = response.data;
 
         commit("SET_TOURNAMENT", tournament);
-        this.$router.push({
-          name: "tournament",
-          params: { tournamentId: tournament.tournamentId }
-        });
-      } catch {
+        return tournament;
+      } catch (exp) {
         return {
           error: "Registration failed! Please try again."
         };
       }
+    },
+    /*async updateTournament({ commit }, updatedInfo) {
+      try {
+        let response = await Api().post(
+          "/tournaments/",
+          tournamentInfo
+        );
+        let tournament = response.data;
+
+        commit("SET_TOURNAMENT", tournament);
+        return tournament;
+      } catch (exp) {
+        return {
+          error: "Registration failed! Please try again."
+        };
+      }
+    },*/
+    async setEditing({ commit }, edit) {
+      commit("SET_EDIT", edit);
     }
   }
 };

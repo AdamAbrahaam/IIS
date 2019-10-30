@@ -100,11 +100,15 @@
     </v-dialog>
 
     <v-dialog
-      v-model="tournamentDialog"
+      v-model="panelShowing"
+      persistent
       overlay-opacity="0.8"
       max-width="600px"
     >
-      <TournamentPanel v-bind:closeModal="closeModal" />
+      <TournamentPanel
+        v-bind:editInfo="tournament"
+        v-bind:isEditing="isEditing"
+      />
     </v-dialog>
 
     <v-navigation-drawer
@@ -143,7 +147,6 @@ export default {
     return {
       drawer: null,
       loginDialog: false,
-      tournamentDialog: false,
       profileOptions: [
         {
           text: "My Profile",
@@ -161,7 +164,7 @@ export default {
         {
           text: "Tournament",
           icon: "mdi-trophy-variant",
-          callback: () => (this.tournamentDialog = true)
+          callback: () => this.$store.dispatch("tournamentPanel/setPanel", true)
         },
         {
           text: "Team",
@@ -178,14 +181,16 @@ export default {
 
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
+      currentUser: state => state.user.currentUser,
+      tournament: state => state.tournaments.tournament,
+      isEditing: state => state.tournaments.editing,
+      panelShowing: state => state.tournamentPanel.showing
     })
   },
 
   methods: {
     closeModal() {
       this.loginDialog = false;
-      this.tournamentDialog = false;
     },
     logout() {
       this.$store.dispatch("user/logout");

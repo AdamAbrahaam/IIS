@@ -7,8 +7,9 @@
             <v-text-field
               ref="userInfo.email"
               v-model="userInfo.email"
+              :rules="[rules.email, rules.required]"
               label="E-mail"
-              type="e-mail"
+              type="email"
               required
             ></v-text-field>
           </v-col>
@@ -16,6 +17,7 @@
             <v-text-field
               ref="userInfo.password"
               v-model="userInfo.password"
+              :rules="[rules.required]"
               label="Password"
               type="password"
               required
@@ -48,7 +50,11 @@ export default {
         email: "",
         password: ""
       },
-      user: ""
+      user: "",
+      rules: {
+        email: v => (v || "").match(/@/) || "Please enter a valid email",
+        required: v => !!v || "This field is required"
+      }
     };
   },
   methods: {

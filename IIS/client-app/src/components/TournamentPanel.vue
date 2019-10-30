@@ -84,7 +84,6 @@
                 @input="dateMenu = false"
               ></v-date-picker>
             </v-menu>
-
             <v-menu
               ref="timeMenu"
               v-model="timeMenu"
@@ -121,6 +120,17 @@
               prepend-icon="mdi-account-star"
             ></v-text-field>
           </v-col>
+          <v-col cols="12">
+            <v-textarea
+              ref="tournamentInfo.info"
+              v-model="tournamentInfo.info"
+              solo
+              no-resize
+              prepend-inner-icon="mdi-square-edit-outline"
+              name="tournamentInfo.info"
+              label="Write additional information here..."
+            ></v-textarea>
+          </v-col>
           <v-col
             cols="12"
             v-show="this.tournament.error"
@@ -133,7 +143,11 @@
     </v-card-text>
     <v-card-actions>
       <div class="flex-grow-1"></div>
-      <v-btn color="blue darken-1" text @click="createTournament()"
+      <v-btn color="blue darken-1" text @click="close()">Close</v-btn>
+      <v-btn v-if="isEditing" color="blue darken-1" text @click="update()"
+        >Save</v-btn
+      >
+      <v-btn v-else color="blue darken-1" text @click="createTournament()"
         >Create tournament</v-btn
       >
     </v-card-actions>
@@ -144,12 +158,14 @@
 import { mapState } from "vuex";
 export default {
   name: "TournamentPanel",
-  props: ["closeModal"],
+  props: ["closeModal", "editInfo", "isEditing"],
   data() {
     return {
       dateMenu: false,
       timeMenu: false,
       tournament: {},
+      types: ["Solo", "Duo"],
+      allowedCapacity: [2, 4, 8, 16],
       tournamentInfo: {
         name: null,
         location: null,
@@ -160,10 +176,9 @@ export default {
         capacity: null,
         type: null,
         sponsors: null,
-        organizer: null
-      },
-      types: ["Solo", "Duo"],
-      allowedCapacity: [2, 4, 8, 16]
+        organizer: null,
+        info: null
+      }
     };
   },
   computed: {
@@ -173,15 +188,24 @@ export default {
   },
   methods: {
     async createTournament() {
-      this.tournamentInfo.organizer = this.currentUser;
+      this.tournamentInfo.organizer = this.currentUser.fullName;
       this.tournament = await this.$store.dispatch(
         "tournaments/createTournament",
         this.tournamentInfo
       );
 
       if (!this.tournament.error) {
-        this.closeModal();
+        this.tournamentInfo = {};
+        this.$store.dispatch("tournamentPanel/setPanel", false);
+        this.$router.push({
+          name: "tournament",
+          params: { tournamentId: this.tournament.tournamentId }
+        });
       }
+    },
+    close() {
+      this.$store.dispatch("tournamentPanel/setPanel", false);
+      this.$store.dispatch("tournaments/setEditing", false);
     }
   }
 };

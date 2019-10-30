@@ -11,9 +11,10 @@ namespace IIS.Models
         public int TournamentId { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public DateTime Date { get; set; } = DateTime.MinValue;
+        public string Date { get; set; }
+        public string Time { get; set; }
         public int Prize { get; set; }
         public int Entry { get; set; }
-        public TournamentType Type { get; set; }
+        public string Type { get; set; }
     }
 }

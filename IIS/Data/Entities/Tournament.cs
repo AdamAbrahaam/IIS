@@ -18,8 +18,8 @@ namespace IIS.Data.Entities
         public int Prize { get; set; }
         public int Entry { get; set; }
         public int Capacity { get; set; }
-        public User Organizer { get; set; }
-        public User Referee { get; set; }
+        public string Organizer { get; set; }
+        public string Referee { get; set; }
         public string Sponsors { get; set; }
         public string Type { get; set; }
         public ICollection<Statistics> Statistics { get; set; }
