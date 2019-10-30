@@ -32,18 +32,23 @@ namespace IIS.Repositories
             return await query.ToArrayAsync();
         }
 
-        public async Task<Statistics[]> GetStatisticsForTeamAsync(int id)
+        public async Task<Statistics[]> GetStatisticsForTeamAsync(string name)
         {
 
             var query = _context.Statistics
-                .Where(t => t.Team.TeamId == id)
-                .OrderBy(t => t.Points);
+                .Where(t => t.Team == name);
             return await query.ToArrayAsync();
         }
 
         public async Task<Team> GetTeamByIdAsync(int id)
         {
             var query = _context.Teams.Where(t => t.TeamId == id);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Team> GetTeamByNameAsync(string name)
+        {
+            var query = _context.Teams.Where(t => t.Name == name);
             return await query.FirstOrDefaultAsync();
         }
 

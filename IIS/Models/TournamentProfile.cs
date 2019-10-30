@@ -23,7 +23,11 @@ namespace IIS.Models
             this.CreateMap<Team, TeamModel>()
                 .ReverseMap();
             this.CreateMap<Match, MatchModel>()
-                .ReverseMap();                
+                .ReverseMap();
+            this.CreateMap<User, UserNameModel>()
+                .ReverseMap();
+            this.CreateMap<Tournament, TournamentNameModel>()
+                .ReverseMap();
         }
 
     }

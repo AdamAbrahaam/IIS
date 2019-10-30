@@ -78,10 +78,12 @@ namespace IIS.Controllers
                 var user = await _repository.GetUserById(id);
                 if (user == null) return NotFound("User not found!");
                 var statistics = _mapper.Map<Statistics>(model);
-                statistics.User = user;
+                statistics.User = _mapper.Map<User>(user);
                 if(model.Tournament != null)
                 {
-                    statistics.Tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
+                    var tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
+                    if (tournament == null) return NotFound("Tournament not found!");
+                    statistics.Tournament = _mapper.Map<Tournament>(tournament);
                 }
                 _repository.Add(statistics);
                 if (await _repository.SaveChangesAsync())
@@ -107,10 +109,12 @@ namespace IIS.Controllers
                 var team = await _repository.GetTeamById(id);
                 if (team == null) return NotFound("Team not found!");
                 var statistics = _mapper.Map<Statistics>(model);
-                statistics.Team = team;
+                statistics.Team = team.Name;
                 if (model.Tournament != null)
                 {
-                    statistics.Tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
+                    var tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
+                    if (tournament == null) return NotFound("Tournament not found!");
+                    statistics.Tournament = _mapper.Map<Tournament>(tournament);
                 }
                 _repository.Add(statistics);
                 if (await _repository.SaveChangesAsync())
@@ -134,6 +138,7 @@ namespace IIS.Controllers
             try
             {
                 var statistics = await _repository.GetStatisticsById(id);
+                if (statistics == null) return NotFound("Statisitcs not found!");
                 _repository.Delete(statistics);
                 if (await _repository.SaveChangesAsync())
                 {
