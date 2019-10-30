@@ -125,13 +125,24 @@ namespace IIS.Controllers
             return BadRequest("Failed to delete tournament");
         }
 
-        [HttpPost("add-user")]
+        [HttpPut("add-user")]
         public async Task<IActionResult> AddUser(int userid, int tournamentid)
         {
             try
             {
                 var tournament = await _repository.GetTournamentById(tournamentid);
+                if (tournament == null) return NotFound("Tournament not found!");
                 var user = await _repository.GetUserById(userid);
+                if (user == null) return NotFound("User not foun!");
+                if (tournament.Participants == null)
+                    tournament.Participants = new string[] { user.FullName };
+                else
+                {
+                    var participants = tournament.Participants.ToList();
+                    if (participants.Contains(user.FullName)) return StatusCode(StatusCodes.Status409Conflict, "User already in tournament!");
+                    participants.Add(user.FullName);
+                    tournament.Participants = participants.ToArray();
+                }
                 if (await _repository.SaveChangesAsync())
                 {
                     var location = _linkGenerator.GetPathByAction(
@@ -146,6 +157,60 @@ namespace IIS.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
             }
             return BadRequest("Failed to delete tournament");
+        }
+
+        [HttpPut("add-team")]
+        public async Task<IActionResult> AddTeam(int teamid, int tournamentid)
+        {
+            try
+            {
+                var tournament = await _repository.GetTournamentById(tournamentid);
+                if (tournament == null) return NotFound("Tournament not found!");
+                var team = await _repository.GetTeamById(teamid);
+                if (team == null) return NotFound("Team not foun!");
+                if (tournament.Participants == null)
+                    tournament.Participants = new string[] { team.Name };
+                else
+                {
+                    var participants = tournament.Participants.ToList();
+                    if (participants.Contains(team.Name)) return StatusCode(StatusCodes.Status409Conflict, "Team already in tournament!");
+                    participants.Add(team.Name);
+                    tournament.Participants = participants.ToArray();
+                }
+                if (await _repository.SaveChangesAsync())
+                {
+                    var location = _linkGenerator.GetPathByAction(
+                        "Get",
+                        "Tournaments",
+                        new { id = tournament.TournamentId });
+                    return Created(location, _mapper.Map<TournamentDetailModel>(tournament));
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
+            }
+            return BadRequest("Failed to delete tournament");
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<TournamentDetailModel>> Put(int id, TournamentDetailModel model)
+        {
+            try
+            {
+                var oldTournament = await _repository.GetTournamentById(id);
+                if (oldTournament == null) return NotFound("Tournament does not exists!");
+                _mapper.Map(model, oldTournament);
+                if (await _repository.SaveChangesAsync())
+                {
+                    return _mapper.Map<TournamentDetailModel>(oldTournament);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
+            }
+            return BadRequest();
         }
     }
 }

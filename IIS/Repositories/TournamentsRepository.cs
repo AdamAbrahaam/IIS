@@ -49,6 +49,12 @@ namespace IIS.Repositories
             return await query.ToArrayAsync();
         }
 
+        public async Task<Team> GetTeamById(int id)
+        {
+            var query = _context.Teams.Where(t => t.TeamId == id);
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<Tournament> GetTournamentById(int id)
         {
             var query = _context.Tournaments.Where(t => t.TournamentId == id);
