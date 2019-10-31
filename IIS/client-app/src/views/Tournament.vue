@@ -10,14 +10,26 @@
       >
         <span>Edit details!</span>
       </v-btn>
-      <v-btn
+      <div
         v-else-if="currentUser.fullName == tournament.organizer && editingState"
-        class="black--text"
-        color="success"
-        @click="$refs.tournamentDetails.update()"
+        class="d-flex flex-column"
       >
-        <span>SAVE!</span>
-      </v-btn>
+        <v-btn
+          class="black--text mb-3"
+          color="error"
+          @click="deleteModal = true"
+        >
+          <span>Delete tournament!</span>
+        </v-btn>
+        <v-btn
+          class="black--text"
+          color="success"
+          @click="$refs.tournamentDetails.update()"
+        >
+          <span>SAVE!</span>
+        </v-btn>
+      </div>
+
       <v-btn
         v-else-if="currentUser.fullName"
         class="black--text"
@@ -42,9 +54,6 @@
     <v-row justify="center">
       <v-col lg="9" class="pa-0">
         <v-tabs-items v-model="tab">
-          <!--<v-tab-item v-for="item in items" :key="item.name">
-            <component :is="item.component" />
-          </v-tab-item> -->
           <v-tab-item>
             <TournamentDetails ref="tournamentDetails" />
           </v-tab-item>
@@ -57,6 +66,28 @@
         </v-tabs-items>
       </v-col>
     </v-row>
+
+    <v-dialog
+      v-model="deleteModal"
+      persistent
+      overlay-opacity="0.8"
+      max-width="300px"
+    >
+      <v-card>
+        <v-card-text class="pt-5">
+          <v-container class="headline">Are you sure?</v-container>
+        </v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="blue darken-1" text @click.prevent="deleteModal = false"
+            >CANCEL</v-btn
+          >
+          <v-btn color="error black--text" @click.prevent="deleteTournament()"
+            >DELETE</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -78,6 +109,7 @@ export default {
     return {
       tab: null,
       loaded: false,
+      deleteModal: false,
       items: [
         {
           name: "Details",
@@ -110,6 +142,16 @@ export default {
     edit() {
       this.$store.dispatch("tournaments/setEditing", true);
       this.$refs.tournamentDetails.deleteEur();
+    },
+    deleteTournament() {
+      this.$store.dispatch("tournaments/setEditing", false);
+      this.$store.dispatch(
+        "tournaments/deleteTournament",
+        this.tournament.tournamentId
+      );
+      this.$router.push({
+        name: "tournaments"
+      });
     }
   }
 };

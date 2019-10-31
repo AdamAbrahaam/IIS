@@ -106,7 +106,7 @@ namespace IIS.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("delete-tournament")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

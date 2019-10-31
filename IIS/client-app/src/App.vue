@@ -15,7 +15,7 @@
         <span>Tournaments</span>
       </v-btn>
 
-      <v-btn class=" hidden-sm-and-down" text color="#e7e6e3" to="/tournaments">
+      <v-btn class=" hidden-sm-and-down" text color="#e7e6e3" to="/rankings">
         <span>Rankings</span>
       </v-btn>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mx-3 my-7 pr-7 mx-sm-12">
+    <v-card class="mx-3 my-7 pr-7 mx-sm-12 elevation-5">
       <v-row>
         <v-icon large class="mx-7 mt-7 d-flex align-self-start"
           >mdi-square-edit-outline</v-icon
@@ -10,10 +10,11 @@
             <v-textarea
               ref="tournament.info"
               v-model="tournament.info"
-              solo
+              :outlined="!isEditing"
+              :flat="isEditing"
+              :solo="isEditing"
               name="tournament.info"
               :value="tournament.info"
-              :flat="isEditing"
               :readonly="isEditing"
               auto-grow
               class="ml-n4 mb-n7"
@@ -26,7 +27,7 @@
         v-for="item in details"
         :key="item.name"
         width="300px"
-        class="ma-3"
+        class="ma-3 elevation-5"
       >
         <v-row>
           <v-icon large class="ml-7 mr-2">{{ item.icon }}</v-icon>
@@ -40,8 +41,10 @@
                 v-model="item.value"
                 class="pr-7 mb-n9"
                 :value="item.value"
-                solo
+                :outlined="!isEditing"
                 :flat="isEditing"
+                :solo="isEditing"
+                :readonly="isEditing"
               ></v-text-field></v-row
           ></v-col>
         </v-row>
@@ -123,17 +126,23 @@ export default {
         this.details[1].value.length - 1
       );
     },
-    update() {
+    async update() {
       this.$store.dispatch("tournaments/setEditing", false);
       let updatedInfo = {};
-      updatedInfo.info = this.tournament.info;
+      updatedInfo.Info = this.tournament.info;
+      updatedInfo.Name = this.tournament.name;
+      updatedInfo.tournamentId = this.tournament.tournamentId;
       this.details.forEach(element => {
         updatedInfo[element.name] = element.value;
       });
 
       this.details[0].value += "€";
       this.details[1].value += "€";
-      console.log(updatedInfo);
+
+      await this.$store.dispatch("tournaments/updateTournament", {
+        tournamentId: this.tournament.tournamentId,
+        updatedInfo: updatedInfo
+      });
     }
   }
 };

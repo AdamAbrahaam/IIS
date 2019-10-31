@@ -27,6 +27,7 @@ export default {
       let tournaments = response.data;
 
       commit("SET_TOURNAMENTS", tournaments);
+      return tournaments;
     },
     async getTournament({ commit }, id) {
       let response = await Api()
@@ -53,11 +54,11 @@ export default {
         };
       }
     },
-    /*async updateTournament({ commit }, updatedInfo) {
+    async updateTournament({ commit }, { tournamentId, updatedInfo }) {
       try {
-        let response = await Api().post(
-          "/tournaments/",
-          tournamentInfo
+        let response = await Api().put(
+          `/tournaments/${tournamentId}`,
+          updatedInfo
         );
         let tournament = response.data;
 
@@ -68,7 +69,21 @@ export default {
           error: "Registration failed! Please try again."
         };
       }
-    },*/
+    },
+    async deleteTournament({ commit, dispatch }, tournamentId) {
+      try {
+        let response = await Api().delete(`/tournaments/${tournamentId}`);
+
+        commit("SET_TOURNAMENT", {});
+        dispatch("getAll");
+        return response;
+      } catch (exp) {
+        console.log(exp);
+        return {
+          error: "Registration failed! Please try again."
+        };
+      }
+    },
     async setEditing({ commit }, edit) {
       commit("SET_EDIT", edit);
     }
