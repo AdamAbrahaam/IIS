@@ -28,6 +28,8 @@ namespace IIS.Models
                 .ReverseMap();
             this.CreateMap<Tournament, TournamentNameModel>()
                 .ReverseMap();
+            this.CreateMap<Participant, ParticipantModel>()
+                .ReverseMap();
         }
 
     }

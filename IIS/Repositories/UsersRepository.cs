@@ -62,5 +62,16 @@ namespace IIS.Repositories
             var query = _context.Users;
             return await query.ToArrayAsync();
         }
+
+        public async Task<Statistics> GetMainStatisticsAsync(int id)
+        {
+            var query = _context.Statistics.Where(t => t.User.UserId == id && t.Tournament == null);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public void Add<T>(T entity) where T : class
+        {
+            _context.Add(entity);
+        }
     }
 }

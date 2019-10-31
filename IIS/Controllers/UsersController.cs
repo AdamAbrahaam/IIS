@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IIS.Data;
 using IIS.Data.Entities;
 using IIS.Models;
 using IIS.Repositories.Interfaces;
@@ -107,6 +108,17 @@ namespace IIS.Controllers
                 _repository.Add(user);
                 if (await _repository.SaveChangesAsync())
                 {
+                    var stats = new Statistics
+                    {
+                        Goals = 0,
+                        Games = 0,
+                        Wins = 0,
+                        Draws = 0,
+                        Loses = 0,
+                        User = user
+                    };
+                    _repository.Add(stats);
+                    await _repository.SaveChangesAsync();
                     return Created(location, _mapper.Map<UserModel>(user));
                 }
             }
@@ -122,6 +134,8 @@ namespace IIS.Controllers
         {
             try
             {
+                var entity = await _repository.GetMainStatisticsAsync(id);
+                _repository.Delete(entity);
                 var user = await _repository.GetUserByIdAsync(id);
                 if (user == null) return NotFound("User not found!"); 
                 _repository.Delete(user);

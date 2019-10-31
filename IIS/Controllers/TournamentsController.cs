@@ -133,16 +133,15 @@ namespace IIS.Controllers
                 var tournament = await _repository.GetTournamentById(tournamentid);
                 if (tournament == null) return NotFound("Tournament not found!");
                 var user = await _repository.GetUserById(userid);
-                if (user == null) return NotFound("User not foun!");
-                if (tournament.Participants == null)
-                    tournament.Participants = new string[] { user.FullName };
-                else
+                if (user == null) return NotFound("User not found!");
+                var participant = new Participant
                 {
-                    var participants = tournament.Participants.ToList();
-                    if (participants.Contains(user.FullName)) return StatusCode(StatusCodes.Status409Conflict, "User already in tournament!");
-                    participants.Add(user.FullName);
-                    tournament.Participants = participants.ToArray();
-                }
+                    Name = user.FullName,
+                    UserOrTeam = user.UserId,
+                    IsUser = true
+                };
+                _repository.Add(participant);
+                tournament.Participants.Add(participant);
                 if (await _repository.SaveChangesAsync())
                 {
                     var location = _linkGenerator.GetPathByAction(
@@ -156,7 +155,7 @@ namespace IIS.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
             }
-            return BadRequest("Failed to delete tournament");
+            return BadRequest("Failed to add user to tournament!");
         }
 
         [HttpPut("add-team")]
@@ -167,16 +166,15 @@ namespace IIS.Controllers
                 var tournament = await _repository.GetTournamentById(tournamentid);
                 if (tournament == null) return NotFound("Tournament not found!");
                 var team = await _repository.GetTeamById(teamid);
-                if (team == null) return NotFound("Team not foun!");
-                if (tournament.Participants == null)
-                    tournament.Participants = new string[] { team.Name };
-                else
+                if (team == null) return NotFound("Team not found!");
+                var participant = new Participant
                 {
-                    var participants = tournament.Participants.ToList();
-                    if (participants.Contains(team.Name)) return StatusCode(StatusCodes.Status409Conflict, "Team already in tournament!");
-                    participants.Add(team.Name);
-                    tournament.Participants = participants.ToArray();
-                }
+                    Name = team.Name,
+                    UserOrTeam = team.TeamId,
+                    IsUser = false
+                };
+                _repository.Add(participant);
+                tournament.Participants.Add(participant);
                 if (await _repository.SaveChangesAsync())
                 {
                     var location = _linkGenerator.GetPathByAction(
@@ -190,7 +188,7 @@ namespace IIS.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
             }
-            return BadRequest("Failed to delete tournament");
+            return BadRequest("Failed to add team to tournament!");
         }
 
         [HttpPut("{id:int}")]

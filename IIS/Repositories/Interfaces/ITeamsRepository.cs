@@ -17,5 +17,6 @@ namespace IIS.Repositories.Interfaces
         Task<Team[]> GetAllTeamsAsync();
         Task<User[]> GetUsersInTeamAsync(int id);
         Task<Statistics[]> GetStatisticsForTeamAsync(string name);
+        Task<Statistics> GetMainStatisticsAsync(string name);
     }
 }

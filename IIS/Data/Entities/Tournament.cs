@@ -24,6 +24,6 @@ namespace IIS.Data.Entities
         public string Type { get; set; }
         public ICollection<Statistics> Statistics { get; set; }
         public ICollection<Match> Matches { get; set; } = new List<Match>();
-        public string[] Participants { get; set; }
+        public ICollection<Participant> Participants { get; set; } = new List<Participant>();
     }
 }

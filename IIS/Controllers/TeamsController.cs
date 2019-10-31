@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using IIS.Data;
 using IIS.Data.Entities;
 using IIS.Models;
 using IIS.Repositories.Interfaces;
@@ -107,6 +108,15 @@ namespace IIS.Controllers
             {
                 var team = _mapper.Map<Team>(model);
                 _repository.Add(team);
+                var stats = new Statistics { 
+                    Goals = 0,
+                    Games = 0,
+                    Wins = 0,
+                    Draws = 0,
+                    Loses = 0,
+                    Team = team.Name
+                };
+                _repository.Add(stats);
                 if (await _repository.SaveChangesAsync())
                 {
                     var location = _linkGenerator.GetPathByAction(HttpContext,
@@ -128,7 +138,9 @@ namespace IIS.Controllers
             try
             {
                 var team = await _repository.GetTeamByIdAsync(id);
-                if (team == null) return NotFound("User not found!");
+                if (team == null) return NotFound("Team not found!");
+                var entity = await _repository.GetMainStatisticsAsync(team.Name);
+                _repository.Delete(entity);
                 _repository.Delete(team);
                 if (await _repository.SaveChangesAsync())
                 {
