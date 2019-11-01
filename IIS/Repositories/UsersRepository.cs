@@ -33,13 +33,6 @@ namespace IIS.Repositories
             _context.Remove(entity);
         }
 
-        public async Task<Statistics[]> GetStatistics(int id)
-        {
-            IQueryable<Statistics> query = _context.Statistics
-                .Where(t => t.User.UserId == id);
-            return await query.ToArrayAsync(); 
-        }
-
         public async Task<User> GetUserByIdAsync(int id)
         {
             var query = _context.Users.Where(t => t.UserId == id);
@@ -72,6 +65,12 @@ namespace IIS.Repositories
         public void Add<T>(T entity) where T : class
         {
             _context.Add(entity);
+        }
+
+        public async Task<Statistics[]> GetStatisticsInTournament(int userid, int tournamentid)
+        {
+            var query = _context.Statistics.Where(t => t.Tournament.TournamentId == tournamentid && t.User.UserId == userid);
+            return await query.ToArrayAsync();
         }
     }
 }

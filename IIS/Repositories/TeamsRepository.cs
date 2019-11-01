@@ -54,7 +54,13 @@ namespace IIS.Repositories
 
         public async Task<Team> GetTeamByNameAsync(string name)
         {
-            var query = _context.Teams.Where(t => t.Name == name);
+            var query = _context.Teams.Where(t => t.Name == name).Include(t => t.Users);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            var query = _context.Users.Where(t => t.UserId == id);
             return await query.FirstOrDefaultAsync();
         }
 

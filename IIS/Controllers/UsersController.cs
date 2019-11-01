@@ -55,6 +55,7 @@ namespace IIS.Controllers
             try
             {
                 var result = await _repository.GetAllUsers();
+                if (result == null) return NotFound("No user found!");
                 return _mapper.Map<UserModel[]>(result);
             }
             catch (Exception)
@@ -79,15 +80,31 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpGet("stats-for-user{id:int}")]
-        public async Task<ActionResult<StatisticsModel[]>> GetStats(int id)
+        [HttpGet("stats-for-user/{id:int}")]
+        public async Task<ActionResult<StatisticsModel>> GetStats(int id)
         {
             try
             {
                 var user = await _repository.GetUserByIdAsync(id);
                 if (user == null) return NotFound("User Not Found!");
-                var result = await _repository.GetStatistics(id);
-                return _mapper.Map<StatisticsModel[]>(result);
+                var result = await _repository.GetMainStatisticsAsync(id);
+                return _mapper.Map<StatisticsModel>(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
+
+        [HttpGet("user-stats-in-tournament")]
+        public async Task<ActionResult<StatisticsModel>> GetStats(int userid, int tournamentid)
+        {
+            try
+            {
+                var user = await _repository.GetUserByIdAsync(userid);
+                if (user == null) return NotFound("User Not Found!");
+                var result = await _repository.GetStatisticsInTournament(userid, tournamentid);
+                return _mapper.Map<StatisticsModel>(result);
             }
             catch (Exception)
             {
@@ -105,6 +122,8 @@ namespace IIS.Controllers
                     "Users",
                     new { email = model.Email });
                 var user = _mapper.Map<User>(model);
+                if (_repository.GetUserByEmailAsync(model.Email) != null) 
+                    return StatusCode(StatusCodes.Status409Conflict, "User with same e-mail address already exists!");
                 _repository.Add(user);
                 if (await _repository.SaveChangesAsync())
                 {
@@ -134,10 +153,10 @@ namespace IIS.Controllers
         {
             try
             {
+                var user = await _repository.GetUserByIdAsync(id);
+                if (user == null) return NotFound("User not found!");
                 var entity = await _repository.GetMainStatisticsAsync(id);
                 _repository.Delete(entity);
-                var user = await _repository.GetUserByIdAsync(id);
-                if (user == null) return NotFound("User not found!"); 
                 _repository.Delete(user);
                 if (await _repository.SaveChangesAsync())
                 {
@@ -170,6 +189,5 @@ namespace IIS.Controllers
             }
             return BadRequest();
         }
-
     }
 }

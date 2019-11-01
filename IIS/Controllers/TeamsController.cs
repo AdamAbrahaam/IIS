@@ -62,7 +62,7 @@ namespace IIS.Controllers
             try
             {
                 var result = await _repository.GetTeamByIdAsync(id);
-
+                if (result == null) return NotFound("Team not found!");
                 return _mapper.Map<TeamModel>(result);
             }
             catch (Exception)
@@ -72,13 +72,13 @@ namespace IIS.Controllers
         }
 
         [HttpGet("users-in-team{id}")]
-        public async Task<ActionResult<UserModel>> GetUsers(int id)
+        public async Task<ActionResult<UserModel[]>> GetUsers(int id)
         {
             try
             {
                 var result = await _repository.GetUsersInTeamAsync(id);
-
-                return _mapper.Map<UserModel>(result);
+                if (result == null) return NotFound("Users not found!");
+                return _mapper.Map<UserModel[]>(result);
             }
             catch (Exception)
             {
@@ -107,6 +107,8 @@ namespace IIS.Controllers
             try
             {
                 var team = _mapper.Map<Team>(model);
+                if(await _repository.GetTeamByNameAsync(team.Name) != null)
+                    return StatusCode(StatusCodes.Status409Conflict, "Team with same name already exists!");
                 _repository.Add(team);
                 var stats = new Statistics { 
                     Goals = 0,
@@ -165,6 +167,29 @@ namespace IIS.Controllers
                 if (await _repository.SaveChangesAsync())
                 {
                     return _mapper.Map<TeamModel>(oldTeam);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("add-user")]
+        public async Task<ActionResult<TeamModel>> Put(int userid, string team)
+        {
+            try
+            {
+                var user = await _repository.GetUserByIdAsync(userid);
+                var teamEntity = await _repository.GetTeamByNameAsync(team);
+                if (user == null || teamEntity == null) return NotFound("Team or User not found!");
+                if (teamEntity.Users.Count() == 2 || teamEntity.Users.Any(t => t.UserId == userid)) 
+                    return StatusCode(StatusCodes.Status409Conflict, "Cannot add user to team!");
+                teamEntity.Users.Add(user);
+                if (await _repository.SaveChangesAsync())
+                {
+                    return _mapper.Map<TeamModel>(teamEntity);
                 }
             }
             catch (Exception)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IIS.Data;
 using IIS.Data.Entities;
 using IIS.Models;
 using IIS.Repositories.Interfaces;
@@ -31,7 +32,7 @@ namespace IIS.Controllers
             try
             {
                 var result = await _repository.GetAllTournamentsAsync();
-
+                if (result == null) return NotFound("No tournament found!");
                 return _mapper.Map<TournamentTableModel[]>(result);
             }
             catch (Exception)
@@ -46,7 +47,7 @@ namespace IIS.Controllers
             try
             {
                 var result = await _repository.GetTournamentById(id);
-
+                if (result == null) return NotFound("Tournament not found!");
                 return _mapper.Map<TournamentDetailModel>(result);
             }
             catch (Exception)
@@ -61,6 +62,7 @@ namespace IIS.Controllers
             try
             {
                 var result = await _repository.GetStatisticsSoloAsync(id);
+                if (result == null) return NotFound("No statistics found!");
                 return _mapper.Map<StatisticsModel[]>(result);
             }
             catch (Exception)
@@ -75,6 +77,7 @@ namespace IIS.Controllers
             try
             {
                 var result = await _repository.GetStatisticsTeamsAsync(id);
+                if (result == null) return NotFound("No statistics found!");
                 return _mapper.Map<StatisticsModel[]>(result);
             }
             catch (Exception)
@@ -112,6 +115,7 @@ namespace IIS.Controllers
             try
             {
                 var tournament = await _repository.GetTournamentById(id);
+                if (tournament == null) return NotFound("No tournament found!");
                 _repository.Delete(tournament);
                 if (await _repository.SaveChangesAsync())
                 {
@@ -140,10 +144,24 @@ namespace IIS.Controllers
                     UserOrTeam = user.UserId,
                     IsUser = true
                 };
+                if (tournament.Participants.Any(t => t.Name == participant.Name))
+                    return StatusCode(StatusCodes.Status409Conflict, "User already in tournament");
                 _repository.Add(participant);
                 tournament.Participants.Add(participant);
                 if (await _repository.SaveChangesAsync())
                 {
+                    var stats = new Statistics
+                    {
+                        Goals = 0,
+                        Games = 0,
+                        Wins = 0,
+                        Draws = 0,
+                        Loses = 0,
+                        User = user,
+                        Tournament = tournament
+                    };
+                    _repository.Add(stats);
+                    await _repository.SaveChangesAsync();
                     var location = _linkGenerator.GetPathByAction(
                         "Get",
                         "Tournaments",
@@ -173,10 +191,24 @@ namespace IIS.Controllers
                     UserOrTeam = team.TeamId,
                     IsUser = false
                 };
+                if (tournament.Participants.Any(t => t.Name == participant.Name))
+                    return StatusCode(StatusCodes.Status409Conflict, "Team already in tournament");
                 _repository.Add(participant);
                 tournament.Participants.Add(participant);
                 if (await _repository.SaveChangesAsync())
                 {
+                    var stats = new Statistics
+                    {
+                        Goals = 0,
+                        Games = 0,
+                        Wins = 0,
+                        Draws = 0,
+                        Loses = 0,
+                        Team = team.Name,
+                        Tournament = tournament
+                    };
+                    _repository.Add(stats);
+                    await _repository.SaveChangesAsync();
                     var location = _linkGenerator.GetPathByAction(
                         "Get",
                         "Tournaments",
