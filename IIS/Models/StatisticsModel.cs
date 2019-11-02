@@ -16,6 +16,7 @@ namespace IIS.Models
         public int Points { get; set; }
         public TournamentNameModel Tournament { get; set; }
         public string Team { get; set; }
-        public UserNameModel User { get; set; }
+        public int UserUserId { get; set; }
+        public string UserFullName { get; set; }
     }
 }

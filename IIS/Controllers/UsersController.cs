@@ -122,7 +122,7 @@ namespace IIS.Controllers
                     "Users",
                     new { email = model.Email });
                 var user = _mapper.Map<User>(model);
-                if (_repository.GetUserByEmailAsync(model.Email) != null) 
+                if (await _repository.GetUserByEmailAsync(model.Email) != null) 
                     return StatusCode(StatusCodes.Status409Conflict, "User with same e-mail address already exists!");
                 _repository.Add(user);
                 if (await _repository.SaveChangesAsync())
@@ -177,6 +177,7 @@ namespace IIS.Controllers
             {
                 var oldStat = await _repository.GetUserByIdAsync(id);
                 if (oldStat == null) return NotFound("Does not exists!");
+                model.Password = oldStat.Password; 
                 _mapper.Map(model, oldStat);
                 if (await _repository.SaveChangesAsync())
                 {
