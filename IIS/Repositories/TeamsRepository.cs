@@ -32,6 +32,12 @@ namespace IIS.Repositories
             return await query.ToArrayAsync();
         }
 
+        public async Task<Statistics> GetMainStatisticsAsync(string name)
+        {
+            var query = _context.Statistics.Where(t => t.Team == name && t.Tournament == null);
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<Statistics[]> GetStatisticsForTeamAsync(string name)
         {
 
@@ -48,7 +54,13 @@ namespace IIS.Repositories
 
         public async Task<Team> GetTeamByNameAsync(string name)
         {
-            var query = _context.Teams.Where(t => t.Name == name);
+            var query = _context.Teams.Where(t => t.Name == name).Include(t => t.Users);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            var query = _context.Users.Where(t => t.UserId == id);
             return await query.FirstOrDefaultAsync();
         }
 

@@ -20,10 +20,10 @@ namespace IIS.Models
         public int Entry { get; set; }
         public int Capacity { get; set; }
         public string Sponsors { get; set; }
-        public string[] Participants { get; set; }
         public string Type { get; set; }
         public ICollection<MatchModel> Matches { get; set; }
         public ICollection<StatisticsModel> Statistics { get; set; }
+        public ICollection<ParticipantModel> Participants { get; set; }
         public string Organizer { get; set; }
         public string Referee { get; set; }
     }

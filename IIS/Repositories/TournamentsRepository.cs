@@ -57,7 +57,8 @@ namespace IIS.Repositories
 
         public async Task<Tournament> GetTournamentById(int id)
         {
-            var query = _context.Tournaments.Where(t => t.TournamentId == id);
+            var query = _context.Tournaments.Where(t => t.TournamentId == id)
+                .Include(t => t.Participants);
             return await query.FirstOrDefaultAsync();
         }
 

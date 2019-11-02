@@ -34,6 +34,7 @@ namespace IIS.Controllers
             try
             {
                 var result = await _repository.GetStatisticsById(id);
+                if (result == null) return NotFound("Statistics not found!");
                 return _mapper.Map<StatisticsModel>(result);
             }
             catch (Exception)
@@ -130,26 +131,6 @@ namespace IIS.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
             }
             return BadRequest();
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            try
-            {
-                var statistics = await _repository.GetStatisticsById(id);
-                if (statistics == null) return NotFound("Statisitcs not found!");
-                _repository.Delete(statistics);
-                if (await _repository.SaveChangesAsync())
-                {
-                    return Ok();
-                }
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
-            }
-            return BadRequest("Failed to delete statistics");
         }
 
         [HttpPut("{id:int}")]
