@@ -78,7 +78,7 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpGet("stats-for-user{id:int}")]
+        [HttpGet("stats-for-user/{id:int}")]
         public async Task<ActionResult<StatisticsModel[]>> GetStats(int id)
         {
             try

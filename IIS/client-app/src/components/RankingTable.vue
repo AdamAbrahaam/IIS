@@ -1,5 +1,22 @@
 <template>
   <div>
+    <v-card
+      height="100px"
+      color="#54fffb"
+      class="d-flex align-center justify-center"
+      ><v-card max-width="1440px" width="100%">
+        <v-text-field
+          class="elevation-3"
+          v-model="search"
+          append-icon="mdi-magnify"
+          full-width
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card>
+    </v-card>
+
     <v-card flat class="d-flex align-center justify-center my-7">
       <v-data-table
         id="table"

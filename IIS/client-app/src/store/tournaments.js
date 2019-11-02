@@ -50,7 +50,7 @@ export default {
         return tournament;
       } catch (exp) {
         return {
-          error: "Registration failed! Please try again."
+          error: "Creation failed! Please try again."
         };
       }
     },
@@ -66,7 +66,7 @@ export default {
         return tournament;
       } catch (exp) {
         return {
-          error: "Registration failed! Please try again."
+          error: "Update failed! Please try again."
         };
       }
     },
@@ -80,7 +80,7 @@ export default {
       } catch (exp) {
         console.log(exp);
         return {
-          error: "Registration failed! Please try again."
+          error: "Delete failed! Please try again."
         };
       }
     },

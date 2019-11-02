@@ -53,13 +53,13 @@
         <v-menu close-on-content-click offset-y>
           <template v-slot:activator="{ on }">
             <v-avatar
-              color="teal"
+              color="#3bf8f7"
               size="44"
               v-on="on"
               class="mx-5"
               style="cursor: pointer"
             >
-              <span class="white--text headline">{{
+              <span class="#1a2430--text headline">{{
                 currentUser.firstName[0]
               }}</span>
             </v-avatar>
@@ -100,7 +100,7 @@
     </v-dialog>
 
     <v-dialog
-      v-model="panelShowing"
+      v-model="tournamentPanelShowing"
       persistent
       overlay-opacity="0.8"
       max-width="600px"
@@ -109,6 +109,14 @@
         v-bind:editInfo="tournament"
         v-bind:isEditing="isEditing"
       />
+    </v-dialog>
+    <v-dialog
+      v-model="profilePanelShowing"
+      persistent
+      overlay-opacity="0.8"
+      max-width="600px"
+    >
+      <ProfilePanel />
     </v-dialog>
 
     <v-navigation-drawer
@@ -136,12 +144,14 @@
 import { mapState } from "vuex";
 import LoginPanel from "@/components/LoginPanel.vue";
 import TournamentPanel from "@/components/TournamentPanel.vue";
+import ProfilePanel from "@/components/ProfilePanel.vue";
 
 export default {
   name: "App",
   components: {
     LoginPanel,
-    TournamentPanel
+    TournamentPanel,
+    ProfilePanel
   },
   data() {
     return {
@@ -151,7 +161,11 @@ export default {
         {
           text: "My Profile",
           icon: "mdi-account",
-          callback: () => console.log(this.currentUser.email)
+          callback: () =>
+            this.$store.dispatch("profilePanel/setPanel", {
+              show: true,
+              profileId: this.currentUser.userId
+            })
         },
         {
           text: "My Team",
@@ -184,7 +198,8 @@ export default {
       currentUser: state => state.user.currentUser,
       tournament: state => state.tournaments.tournament,
       isEditing: state => state.tournaments.editing,
-      panelShowing: state => state.tournamentPanel.showing
+      tournamentPanelShowing: state => state.tournamentPanel.showing,
+      profilePanelShowing: state => state.profilePanel.showing
     })
   },
 

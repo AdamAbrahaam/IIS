@@ -14,20 +14,27 @@
         v-else-if="currentUser.fullName == tournament.organizer && editingState"
         class="d-flex flex-column"
       >
-        <v-btn
-          class="black--text mb-3"
-          color="error"
-          @click="deleteModal = true"
-        >
+        <v-btn class="black--text" color="error" @click="deleteModal = true">
           <span>Delete tournament!</span>
         </v-btn>
-        <v-btn
-          class="black--text"
-          color="success"
-          @click="$refs.tournamentDetails.update()"
-        >
-          <span>SAVE!</span>
-        </v-btn>
+        <div class="mt-n5">
+          <v-btn
+            width="100px"
+            class="black--text"
+            color="success"
+            @click="$refs.tournamentDetails.update()"
+          >
+            <span>SAVE!</span>
+          </v-btn>
+          <v-btn
+            width="100px"
+            class="black--text ml-3"
+            color="#3bf8f7"
+            @click="cancel()"
+          >
+            <span>CANCEL!</span>
+          </v-btn>
+        </div>
       </div>
 
       <v-btn
@@ -142,6 +149,9 @@ export default {
     edit() {
       this.$store.dispatch("tournaments/setEditing", true);
       this.$refs.tournamentDetails.deleteEur();
+    },
+    cancel() {
+      this.$store.dispatch("tournaments/setEditing", false);
     },
     deleteTournament() {
       this.$store.dispatch("tournaments/setEditing", false);

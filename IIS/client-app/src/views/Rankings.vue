@@ -14,23 +14,6 @@
         </v-tab>
       </v-tabs>
 
-      <v-card
-        height="100px"
-        color="#54fffb"
-        class="d-flex align-center justify-center"
-        ><v-card max-width="1440px" width="100%">
-          <v-text-field
-            class="elevation-3"
-            v-model="$refs.rankingTable.search"
-            append-icon="mdi-magnify"
-            full-width
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card>
-      </v-card>
-
       <v-row justify="center">
         <v-col class="pa-0">
           <v-tabs-items v-model="tab">
@@ -42,11 +25,7 @@
               />
             </v-tab-item>
             <v-tab-item>
-              <RankingTable
-                :headers="teamHeaders"
-                :stats="teamStats"
-                ref="rankingTable"
-              />
+              <RankingTable :headers="teamHeaders" :stats="teamStats" />
             </v-tab-item>
           </v-tabs-items>
         </v-col>
