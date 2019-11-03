@@ -18,11 +18,7 @@
         <v-col class="pa-0">
           <v-tabs-items v-model="tab">
             <v-tab-item>
-              <RankingTable
-                :headers="playerHeaders"
-                :stats="playerStats"
-                ref="rankingTable"
-              />
+              <RankingTable :headers="playerHeaders" :stats="playerStats" />
             </v-tab-item>
             <v-tab-item>
               <RankingTable :headers="teamHeaders" :stats="teamStats" />
@@ -58,7 +54,6 @@ export default {
           component: "TeamRankings"
         }
       ],
-      search: "",
       playerHeaders: [
         { text: "#", value: "no" },
         { text: "Player", value: "player" },

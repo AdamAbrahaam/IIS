@@ -22,7 +22,7 @@
         id="table"
         :search="search"
         :headers="headers"
-        :items="stats"
+        :items="statsWithRank"
         :sort-desc="[false, true]"
         multi-sort
         :mobile-breakpoint="800"
@@ -30,17 +30,13 @@
         class="elevation-12"
       >
         <template v-slot:item.no="{ item }">
-          <strong>{{
-            stats
-              .map(function(x) {
-                return x.id;
-              })
-              .indexOf(item.id) + 1
-          }}</strong>
+          <strong>{{ item.no }}</strong>
         </template>
         <template v-slot:item.player="{ item }">
-          <div v-if="item.user">{{ item.user.fullName }}</div>
-          <div v-else-if="item.team">{{ item.team.name }}</div>
+          <div v-if="item.user">
+            {{ item.user.fullName }}
+          </div>
+          <div v-else-if="item.team">{{ item.team }}</div>
         </template>
       </v-data-table></v-card
     >
@@ -55,6 +51,15 @@ export default {
     return {
       search: ""
     };
+  },
+  computed: {
+    statsWithRank() {
+      let rank = 1;
+      this.stats.forEach(element => {
+        element.no = rank++;
+      });
+      return this.stats;
+    }
   }
 };
 </script>

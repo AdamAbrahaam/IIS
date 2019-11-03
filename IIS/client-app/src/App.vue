@@ -98,7 +98,6 @@
     <v-dialog v-model="loginDialog" overlay-opacity="0.8" max-width="600px">
       <LoginPanel v-bind:closeModal="closeModal" />
     </v-dialog>
-
     <v-dialog
       v-model="tournamentPanelShowing"
       persistent
@@ -117,6 +116,14 @@
       max-width="600px"
     >
       <ProfilePanel />
+    </v-dialog>
+    <v-dialog
+      v-model="teamPanelShowing"
+      persistent
+      overlay-opacity="0.8"
+      max-width="600px"
+    >
+      <TeamPanel v-bind:editInfo="tournament" v-bind:isEditing="isEditing" />
     </v-dialog>
 
     <v-navigation-drawer
@@ -145,13 +152,15 @@ import { mapState } from "vuex";
 import LoginPanel from "@/components/LoginPanel.vue";
 import TournamentPanel from "@/components/TournamentPanel.vue";
 import ProfilePanel from "@/components/ProfilePanel.vue";
+import TeamPanel from "@/components/TeamPanel.vue";
 
 export default {
   name: "App",
   components: {
     LoginPanel,
     TournamentPanel,
-    ProfilePanel
+    ProfilePanel,
+    TeamPanel
   },
   data() {
     return {
@@ -162,8 +171,9 @@ export default {
           text: "My Profile",
           icon: "mdi-account",
           callback: () =>
-            this.$store.dispatch("profilePanel/setPanel", {
+            this.$store.dispatch("panels/setPanel", {
               show: true,
+              panel: "profilePanel",
               profileId: this.currentUser.userId
             })
         },
@@ -178,12 +188,22 @@ export default {
         {
           text: "Tournament",
           icon: "mdi-trophy-variant",
-          callback: () => this.$store.dispatch("tournamentPanel/setPanel", true)
+          callback: () =>
+            this.$store.dispatch("panels/setPanel", {
+              show: true,
+              panel: "tournamentPanel",
+              profileId: null
+            })
         },
         {
           text: "Team",
           icon: "mdi-account-multiple",
-          callback: () => console.log(this.currentUser.email)
+          callback: () =>
+            this.$store.dispatch("panels/setPanel", {
+              show: true,
+              panel: "teamPanel",
+              profileId: null
+            })
         }
       ]
     };
@@ -198,8 +218,9 @@ export default {
       currentUser: state => state.user.currentUser,
       tournament: state => state.tournaments.tournament,
       isEditing: state => state.tournaments.editing,
-      tournamentPanelShowing: state => state.tournamentPanel.showing,
-      profilePanelShowing: state => state.profilePanel.showing
+      tournamentPanelShowing: state => state.panels.tournamentPanel,
+      profilePanelShowing: state => state.panels.profilePanel,
+      teamPanelShowing: state => state.panels.teamPanel
     })
   },
 

@@ -196,7 +196,11 @@ export default {
 
       if (!this.tournament.error) {
         this.tournamentInfo = {};
-        this.$store.dispatch("tournamentPanel/setPanel", false);
+        this.$store.dispatch("panels/setPanel", {
+          show: false,
+          panel: "tournamentPanel",
+          profileId: null
+        });
         this.$router.push({
           name: "tournament",
           params: { tournamentId: this.tournament.tournamentId }
@@ -204,7 +208,11 @@ export default {
       }
     },
     close() {
-      this.$store.dispatch("tournamentPanel/setPanel", false);
+      this.$store.dispatch("panels/setPanel", {
+        show: false,
+        panel: "tournamentPanel",
+        profileId: null
+      });
       this.$store.dispatch("tournaments/setEditing", false);
     }
   }

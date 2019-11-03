@@ -40,7 +40,8 @@ export default {
 
         commit("SET_CURRENT_USER", user);
         return user;
-      } catch {
+      } catch (exp) {
+        console.log(exp);
         return {
           error: "Registration failed! Please try again."
         };
@@ -88,6 +89,19 @@ export default {
         console.log(exp);
         return {
           error: "Registration failed! Please try again."
+        };
+      }
+    },
+    async updateProfile({ commit }, { profileId, updatedInfo }) {
+      try {
+        let response = await Api().put(`/users/${profileId}`, updatedInfo);
+        let profile = response.data;
+
+        commit("SET_PROFILE", profile);
+        return profile;
+      } catch (exp) {
+        return {
+          error: "Update failed! Please try again."
         };
       }
     },
