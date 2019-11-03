@@ -1,6 +1,7 @@
 ﻿using IIS.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using IIS.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -28,6 +29,10 @@ namespace IIS.Data
         }
         protected override void OnModelCreating(ModelBuilder bldr)
         {
+            var password1 = new PasswordHasher("purkyne");
+            var password2 = new PasswordHasher("netflix");
+            var password3 = new PasswordHasher("heslicko");
+            var password4 = new PasswordHasher("castro123");
             bldr.Entity<User>()
                 .HasData(new
                 {
@@ -35,7 +40,7 @@ namespace IIS.Data
                     FirstName = "Daniel",
                     LastName = "Weis",
                     Email = "weisko123@azet.sk",
-                    Password = "purkyne",
+                    Password = password1.GetHashedPassword(),
                     TeamId =1
                 },
                 new
@@ -44,7 +49,7 @@ namespace IIS.Data
                     FirstName = "Walter",
                     LastName = "White",
                     Email = "breaking@bad.bb",
-                    Password = "netflix",
+                    Password = password2.GetHashedPassword(),
                     TeamId = 1
                 },
                 new
@@ -53,7 +58,7 @@ namespace IIS.Data
                     FirstName = "Adam",
                     LastName = "Pered",
                     Email = "vsetkodobre@gmail.com",
-                    Password = "heslicko",
+                    Password = password3.GetHashedPassword(),
                     TeamId = 2
                 },
                 new
@@ -62,7 +67,7 @@ namespace IIS.Data
                     FirstName = "Alfonz",
                     LastName = "Hrozny",
                     Email = "fidelio@gmail.com",
-                    Password = "castro123",
+                    Password = password4.GetHashedPassword(),
                     TeamId = 2
                 });
 

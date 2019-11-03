@@ -177,6 +177,7 @@ namespace IIS.Controllers
             {
                 var oldStat = await _repository.GetUserByIdAsync(id);
                 if (oldStat == null) return NotFound("Does not exists!");
+                model.Password = oldStat.Password; 
                 _mapper.Map(model, oldStat);
                 if (await _repository.SaveChangesAsync())
                 {
