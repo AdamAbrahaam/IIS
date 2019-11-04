@@ -72,5 +72,11 @@ namespace IIS.Repositories
             var query = _context.Statistics.Where(t => t.Tournament.TournamentId == tournamentid && t.User.UserId == userid);
             return await query.ToArrayAsync();
         }
+
+        public async Task<Team> GetTeamByIdAsync(string name)
+        {
+            var query = _context.Teams.Where(t => t.Name == name).Include(t => t.Users);
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

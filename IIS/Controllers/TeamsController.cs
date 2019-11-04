@@ -156,6 +156,37 @@ namespace IIS.Controllers
             return BadRequest("Failed to delete team!");
         }
 
+        [HttpDelete("delete-user")]
+        public async Task<IActionResult> DeleteUser(int userid, string name)
+        {
+            try
+            {
+                var team = await _repository.GetTeamByNameAsync(name);
+                if (team == null) return NotFound("Team not found!");
+                var user = await _repository.GetUserByIdAsync(userid);
+                if (user == null) return NotFound("User not found!");
+                if (!team.Users.Any(t => t.UserId == user.UserId))
+                    return NotFound("User not in team!");
+                team.Users.Remove(user);
+                if (team.Users.Count() == 0)
+                {
+                    team.TeamsInMatches.Clear();
+                    var entity = await _repository.GetMainStatisticsAsync(team.Name);
+                    _repository.Delete(entity);
+                    _repository.Delete(team);
+                }
+                if (await _repository.SaveChangesAsync())
+                {
+                    return Ok();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
+            }
+            return BadRequest("Failed to delete team!");
+        }
+
         [HttpPut("{id:int}")]
         public async Task<ActionResult<TeamModel>> Put(int id, TeamModel model)
         {
