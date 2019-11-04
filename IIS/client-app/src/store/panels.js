@@ -3,6 +3,7 @@ export default {
   state: {
     profilePanel: false,
     tournamentPanel: false,
+    teamProfilePanel: false,
     teamPanel: false
   },
   mutations: {
@@ -14,12 +15,17 @@ export default {
     },
     SET_TEAM_PANEL(state, show) {
       state.teamPanel = show;
+    },
+    SET_TEAMPROFILE_PANEL(state, show) {
+      state.teamProfilePanel = show;
     }
   },
   actions: {
-    async setPanel({ commit, dispatch }, { show, panel, profileId }) {
+    async setPanel({ commit, dispatch }, { show, panel, profileId, teamName }) {
       if (profileId) {
         dispatch("user/getProfile", profileId, { root: true });
+      } else if (teamName) {
+        dispatch("teams/getTeam", teamName, { root: true });
       }
 
       switch (panel) {
@@ -33,6 +39,10 @@ export default {
 
         case "teamPanel":
           commit("SET_TEAM_PANEL", show);
+          break;
+
+        case "teamProfilePanel":
+          commit("SET_TEAMPROFILE_PANEL", show);
           break;
       }
     }

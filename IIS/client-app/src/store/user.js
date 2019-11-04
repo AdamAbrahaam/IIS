@@ -77,6 +77,16 @@ export default {
         };
       }
     },
+    async getAll({ commit }) {
+      let response = await Api()
+        .get("/users")
+        .catch(error => console.log(error));
+
+      let users = response.data;
+
+      commit("SET_USERS", users);
+      return users;
+    },
     async getStatsForUser({ commit }, userId) {
       try {
         let response = await Api().get(`/users/stats-for-user/${userId}`);

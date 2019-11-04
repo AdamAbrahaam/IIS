@@ -33,8 +33,8 @@
           <strong>{{ item.no }}</strong>
         </template>
         <template v-slot:item.player="{ item }">
-          <div v-if="item.user">
-            {{ item.user.fullName }}
+          <div v-if="item.userFullName">
+            {{ item.userFullName }}
           </div>
           <div v-else-if="item.team">{{ item.team }}</div>
         </template>
@@ -47,7 +47,7 @@
 export default {
   name: "RankingTable",
   props: ["headers", "stats"],
-  data() {
+  data: () => {
     return {
       search: ""
     };

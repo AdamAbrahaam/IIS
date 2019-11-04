@@ -89,10 +89,10 @@
           <v-col cols="10">
             <v-text-field
               v-if="profile.team"
-              ref="profile.team"
-              v-model="profile.team"
+              ref="profile.team.name"
+              v-model="profile.team.name"
               class="mb-n7"
-              :value="profile.team"
+              :value="profile.team.name"
               :outlined="isEditing"
               :flat="!isEditing"
               :solo="!isEditing"

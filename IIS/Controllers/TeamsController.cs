@@ -41,7 +41,7 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("{name}")]
         public async Task<ActionResult<TeamModel>> Get(string name)
         {
             try
@@ -71,14 +71,14 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpGet("users-in-team{id}")]
-        public async Task<ActionResult<UserModel[]>> GetUsers(int id)
+        [HttpGet("users-in-team/{name}")]
+        public async Task<ActionResult<UserNameModel[]>> GetUsers(string name)
         {
             try
             {
-                var result = await _repository.GetUsersInTeamAsync(id);
+                var result = await _repository.GetUsersInTeamAsync(name);
                 if (result == null) return NotFound("Users not found!");
-                return _mapper.Map<UserModel[]>(result);
+                return _mapper.Map<UserNameModel[]>(result);
             }
             catch (Exception)
             {
@@ -86,14 +86,14 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpGet("stats-for-team")]
-        public async Task<ActionResult<StatisticsModel[]>> GetStats(string name)
+        [HttpGet("stats-for-team/{name}")]
+        public async Task<ActionResult<StatisticsModel>> GetStats(string name)
         {
             try
             {
-                var result = await _repository.GetStatisticsForTeamAsync(name);
+                var result = await _repository.GetMainStatisticsAsync(name);
                 if (result == null) return NotFound("Statistics not found!");
-                return _mapper.Map<StatisticsModel[]>(result);
+                return _mapper.Map<StatisticsModel>(result);
             }
             catch (Exception)
             {

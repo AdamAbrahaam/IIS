@@ -64,10 +64,10 @@ namespace IIS.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<User[]> GetUsersInTeamAsync(int id)
+        public async Task<User[]> GetUsersInTeamAsync(string name)
         {
             var query = _context.Users
-                .Where(t => t.Team.TeamId == id)
+                .Where(t => t.Team.Name == name)
                 .OrderBy(t => t.FirstName);
             return await query.ToArrayAsync();
         }

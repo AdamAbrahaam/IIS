@@ -4,6 +4,7 @@ import tournamentsModule from "./tournaments";
 import userModule from "./user";
 import statisticsModule from "./statistics";
 import panelsModule from "./panels";
+import teamModule from "./teams";
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     tournaments: tournamentsModule,
     user: userModule,
     statistics: statisticsModule,
-    panels: panelsModule
+    panels: panelsModule,
+    teams: teamModule
   }
 });

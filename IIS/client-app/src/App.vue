@@ -125,6 +125,14 @@
     >
       <TeamPanel v-bind:editInfo="tournament" v-bind:isEditing="isEditing" />
     </v-dialog>
+    <v-dialog
+      v-model="teamProfilePanelShowing"
+      persistent
+      overlay-opacity="0.8"
+      max-width="600px"
+    >
+      <TeamProfile />
+    </v-dialog>
 
     <v-navigation-drawer
       id="drawer"
@@ -153,6 +161,7 @@ import LoginPanel from "@/components/LoginPanel.vue";
 import TournamentPanel from "@/components/TournamentPanel.vue";
 import ProfilePanel from "@/components/ProfilePanel.vue";
 import TeamPanel from "@/components/TeamPanel.vue";
+import TeamProfile from "@/components/TeamProfile.vue";
 
 export default {
   name: "App",
@@ -160,7 +169,8 @@ export default {
     LoginPanel,
     TournamentPanel,
     ProfilePanel,
-    TeamPanel
+    TeamPanel,
+    TeamProfile
   },
   data() {
     return {
@@ -180,7 +190,12 @@ export default {
         {
           text: "My Team",
           icon: "mdi-account-multiple",
-          callback: () => console.log(this.currentUser.email)
+          callback: () =>
+            this.$store.dispatch("panels/setPanel", {
+              show: true,
+              panel: "teamProfilePanel",
+              teamName: this.currentUser.team.name
+            })
         },
         { text: "Logout", icon: "mdi-logout", callback: () => this.logout() }
       ],
@@ -220,7 +235,8 @@ export default {
       isEditing: state => state.tournaments.editing,
       tournamentPanelShowing: state => state.panels.tournamentPanel,
       profilePanelShowing: state => state.panels.profilePanel,
-      teamPanelShowing: state => state.panels.teamPanel
+      teamPanelShowing: state => state.panels.teamPanel,
+      teamProfilePanelShowing: state => state.panels.teamProfilePanel
     })
   },
 

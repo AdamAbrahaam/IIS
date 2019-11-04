@@ -35,7 +35,7 @@ namespace IIS.Repositories
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var query = _context.Users.Where(t => t.UserId == id);
+            var query = _context.Users.Where(t => t.UserId == id).Include( t => t.Team);
             return await query.FirstOrDefaultAsync();
         }
 
@@ -46,7 +46,7 @@ namespace IIS.Repositories
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
-            var query = _context.Users.Where(t => t.Email == email);
+            var query = _context.Users.Where(t => t.Email == email).Include( t => t.Team);
             return await query.FirstOrDefaultAsync();
         }
 
