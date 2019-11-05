@@ -104,6 +104,11 @@ export default {
           panel: "teamPanel",
           profileId: null
         });
+        this.$store.dispatch("panels/setPanel", {
+          show: true,
+          panel: "teamProfilePanel",
+          teamName: this.currentUser.team.name
+        });
       }
     },
     close() {

@@ -3,7 +3,7 @@
     <v-card-text>
       <v-container>
         <div class="title d-flex mt-5">
-          <v-icon class="mr-2">mdi-information-outline</v-icon>
+          <v-icon class="mr-2">mdi-account-multiple</v-icon>
           {{ team.name }}
           <v-spacer></v-spacer>
         </div>
@@ -22,7 +22,7 @@
               close-icon="mdi-delete"
               label
               outlined
-              @click:close="deleteMember(member.userId)"
+              @click:close="userDel = member"
             >
               {{ member.fullName }}
             </v-chip>
@@ -54,6 +54,22 @@
                 >
               </template>
             </v-autocomplete>
+          </v-col>
+        </v-row>
+        <v-row class="d-flex align-center ml-5" v-if="userDel.fullName">
+          <v-col cols="5" class="red--text"
+            >Delete <strong>{{ userDel.fullName }}</strong
+            >?</v-col
+          >
+          <v-col cols="7" class="d-flex">
+            <v-btn
+              small
+              color="error"
+              class="mr-2"
+              @click="deleteMember(userDel.userId)"
+              >DELETE</v-btn
+            >
+            <v-btn small outlined @click="userDel = {}">CANCEL</v-btn>
           </v-col>
         </v-row>
 
@@ -143,7 +159,8 @@ export default {
   data() {
     return {
       newUser: null,
-      errorMsg: ""
+      errorMsg: "",
+      userDel: {}
     };
   },
   created() {
@@ -154,25 +171,56 @@ export default {
       team: state => state.teams.team,
       teamProfileStats: state => state.teams.teamStats,
       teamMembers: state => state.teams.members,
-      users: state => state.user.users
+      users: state => state.user.users,
+      currentUser: state => state.user.currentUser
     })
   },
   methods: {
     isInTeam() {
-      if (this.teamMembers.find(t => t.userId === this.newUser)) {
+      if (this.teamMembers.length === 2) {
+        this.errorMsg = "Max. two members allowed!";
+      } else if (this.teamMembers.find(t => t.userId === this.newUser)) {
         this.errorMsg = "User is already a member!";
       } else {
         this.errorMsg = "";
       }
     },
-    addMember() {},
-    deleteMember() {},
+    async addMember() {
+      let team = await this.$store.dispatch("teams/addUser", {
+        userId: this.newUser,
+        teamName: this.team.name
+      });
+
+      if (!team.error) {
+        this.newUser = null;
+      } else {
+        this.errorMsg = team.error;
+      }
+    },
+    async deleteMember(id) {
+      let team = await this.$store.dispatch("teams/removeUser", {
+        userId: id,
+        teamName: this.team.name
+      });
+
+      if (team.error) {
+        this.errorMsg = team.error;
+      } else {
+        if (this.teamMembers.length === 1) {
+          this.$store.commit("user/SET_AFTER_TEAM_DELETE", this.currentUser);
+          this.$store.dispatch("panels/setPanel", {
+            show: false,
+            panel: "teamProfilePanel"
+          });
+        }
+        this.userDel = {};
+      }
+    },
     close() {
       this.$store.dispatch("panels/setPanel", {
         show: false,
         panel: "teamProfilePanel"
       });
-      this.editing = false;
     }
   }
 };

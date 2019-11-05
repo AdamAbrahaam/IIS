@@ -79,13 +79,14 @@ export default {
         };
       }
     },
-    async addUser({ commit }, { userId, teamName }) {
+    async addUser({ commit, dispatch }, { userId, teamName }) {
       try {
         let response = await Api().put(
           `/teams/add-user?userid=${userId}&&team=${teamName}`
         );
         let team = response.data;
         commit("SET_TEAM", team);
+        dispatch("getUsersInTeam", team.name);
         return team;
       } catch (exp) {
         return {
@@ -93,12 +94,12 @@ export default {
         };
       }
     },
-    async removeUser({ commit, dispatch }, tournamentId) {
+    async removeUser({ dispatch }, { userId, teamName }) {
       try {
-        let response = await Api().delete(`/tournaments/${tournamentId}`);
-
-        commit("SET_TOURNAMENT", {});
-        dispatch("getAll");
+        let response = await Api().delete(
+          `/teams/delete-user?userid=${userId}&&name=${teamName}`
+        );
+        dispatch("getUsersInTeam", teamName);
         return response;
       } catch (exp) {
         console.log(exp);

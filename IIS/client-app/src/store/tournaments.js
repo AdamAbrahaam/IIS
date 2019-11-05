@@ -54,6 +54,36 @@ export default {
         };
       }
     },
+    async addPlayer({ commit }, { userId, tournamentId }) {
+      try {
+        let response = await Api().put(
+          `/tournaments/add-user?userid=${userId}&&tournamentid=${tournamentId}`
+        );
+        let tournament = response.data;
+
+        commit("SET_TOURNAMENT", tournament);
+        return tournament;
+      } catch (exp) {
+        return {
+          error: "Adding user to tournament failed! Please try again."
+        };
+      }
+    },
+    async addTeam({ commit }, { teamId, tournamentId }) {
+      try {
+        let response = await Api().put(
+          `/tournaments/add-team?teamid=${teamId}&&tournamentid=${tournamentId}`
+        );
+        let tournament = response.data;
+
+        commit("SET_TOURNAMENT", tournament);
+        return tournament;
+      } catch (exp) {
+        return {
+          error: "Adding user to tournament failed! Please try again."
+        };
+      }
+    },
     async updateTournament({ commit }, { tournamentId, updatedInfo }) {
       try {
         let response = await Api().put(

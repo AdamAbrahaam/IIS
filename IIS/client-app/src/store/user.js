@@ -14,6 +14,10 @@ export default {
       state.currentUser = user;
       window.localStorage.currentUser = JSON.stringify(user);
     },
+    SET_AFTER_TEAM_DELETE(state, user) {
+      user.team = null;
+      state.currentUser = user;
+    },
     SET_USERS(state, users) {
       state.users = users;
     },
@@ -111,7 +115,7 @@ export default {
         return profile;
       } catch (exp) {
         return {
-          error: "Update failed! Please try again."
+          error: "ERROR! Unchanged credentials!"
         };
       }
     },

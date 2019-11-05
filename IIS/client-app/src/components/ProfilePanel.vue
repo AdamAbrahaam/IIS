@@ -12,15 +12,27 @@
             @click="isEditing = true"
             >mdi-square-edit-outline</v-icon
           >
-          <v-btn
+          <div
             v-else-if="profile.userId === currentUser.userId && isEditing"
-            height="30px"
-            class="black--text"
-            color="success"
-            @click="update()"
+            class="mb-2"
           >
-            <span>SAVE!</span>
-          </v-btn>
+            <v-btn
+              height="30px"
+              outlined
+              class="black--text mr-2"
+              @click="isEditing = false"
+            >
+              <span>CANCEL!</span>
+            </v-btn>
+            <v-btn
+              height="30px"
+              class="black--text"
+              color="success"
+              @click="update()"
+            >
+              <span>SAVE!</span>
+            </v-btn>
+          </div>
         </div>
 
         <v-divider></v-divider>
@@ -93,10 +105,10 @@
               v-model="profile.team.name"
               class="mb-n7"
               :value="profile.team.name"
-              :outlined="isEditing"
-              :flat="!isEditing"
-              :solo="!isEditing"
-              :readonly="!isEditing"
+              solo
+              flat
+              :readonly="true"
+              :error-messages="errorMsg"
             ></v-text-field>
             <v-text-field
               v-else
@@ -105,6 +117,7 @@
               solo
               flat
               :readonly="true"
+              :error-messages="errorMsg"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -195,7 +208,8 @@ export default {
   name: "ProfilePanel",
   data() {
     return {
-      isEditing: false
+      isEditing: false,
+      errorMsg: ""
     };
   },
   computed: {
@@ -215,6 +229,11 @@ export default {
 
       if (!response.error) {
         this.isEditing = false;
+      } else {
+        this.errorMsg = response.error;
+        setTimeout(() => {
+          this.errorMsg = "";
+        }, 3000);
       }
     },
     close() {

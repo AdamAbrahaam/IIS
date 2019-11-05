@@ -7,9 +7,10 @@
             <v-text-field
               ref="tournamentInfo.name"
               v-model="tournamentInfo.name"
-              label="Name"
+              label="Name*"
               type="text"
               required
+              :rules="[rules.required]"
               prepend-icon="mdi-format-letter-case"
             ></v-text-field>
           </v-col>
@@ -17,9 +18,10 @@
             <v-text-field
               ref="tournamentInfo.location"
               v-model="tournamentInfo.location"
-              label="Location"
+              label="Location*"
               type="text"
               required
+              :rules="[rules.required]"
               prepend-icon="mdi-map-marker"
             ></v-text-field>
           </v-col>
@@ -27,9 +29,10 @@
             <v-text-field
               ref="tournamentInfo.prize"
               v-model="tournamentInfo.prize"
-              label="Prize"
+              label="Prize*"
               type="text"
               required
+              :rules="[rules.required, rules.number]"
               suffix="€"
               prepend-icon="mdi-trophy"
               class="mr-sm-3"
@@ -37,8 +40,9 @@
             <v-text-field
               ref="tournamentInfo.entry"
               v-model="tournamentInfo.entry"
-              label="Entry"
+              label="Entry*"
               type="text"
+              :rules="[rules.required, rules.number]"
               required
               suffix="€"
               prepend-icon="mdi-cash"
@@ -48,14 +52,16 @@
             <v-combobox
               v-model="tournamentInfo.capacity"
               :items="allowedCapacity"
-              label="Capacity"
+              label="Capacity*"
+              :rules="[rules.required, rules.capacity]"
               prepend-icon="mdi-account-group"
               class="mr-sm-3"
             ></v-combobox>
             <v-combobox
               v-model="tournamentInfo.type"
               :items="types"
-              label="Type"
+              label="Type*"
+              :rules="[rules.required, rules.type]"
               prepend-icon="mdi-account-question"
             ></v-combobox>
           </v-col>
@@ -71,9 +77,11 @@
               <template v-slot:activator="{ on }">
                 <v-text-field
                   v-model="tournamentInfo.date"
-                  label="Date"
+                  label="Date*"
                   prepend-icon="mdi-calendar"
                   v-on="on"
+                  readonly
+                  :rules="[rules.required]"
                   class="mr-sm-3"
                 ></v-text-field>
               </template>
@@ -96,7 +104,8 @@
               <template v-slot:activator="{ on }">
                 <v-text-field
                   v-model="tournamentInfo.time"
-                  label="Time"
+                  label="Time*"
+                  :rules="[rules.required]"
                   prepend-icon="mdi-clock"
                   readonly
                   v-on="on"
@@ -169,8 +178,8 @@ export default {
       tournamentInfo: {
         name: null,
         location: null,
-        date: null,
-        time: null,
+        date: new Date().toJSON().slice(0, 10),
+        time: new Date().toTimeString().slice(0, 5),
         prize: null,
         entry: null,
         capacity: null,
@@ -178,6 +187,14 @@ export default {
         sponsors: null,
         organizer: null,
         info: null
+      },
+      rules: {
+        required: v => !!v || "This field is required!",
+        number: v => !isNaN(v) || "Invalid number!",
+        type: v => !(v !== "Solo" && v !== "Duo") || "Incorrect type!",
+        capacity: v =>
+          !(v !== 2 && v !== 4 && v !== 8 && v !== 16) ||
+          "Incorrect capacity number!"
       }
     };
   },
@@ -188,6 +205,13 @@ export default {
   },
   methods: {
     async createTournament() {
+      let isInError = document.getElementsByClassName("v-messages__message");
+      if (isInError.length != 0) {
+        console.log(isInError.length);
+        this.tournament.error = "Invalid field(s)!";
+        return;
+      }
+
       this.tournamentInfo.organizer = this.currentUser.fullName;
       this.tournament = await this.$store.dispatch(
         "tournaments/createTournament",

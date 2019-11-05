@@ -191,11 +191,17 @@ export default {
           text: "My Team",
           icon: "mdi-account-multiple",
           callback: () =>
-            this.$store.dispatch("panels/setPanel", {
-              show: true,
-              panel: "teamProfilePanel",
-              teamName: this.currentUser.team.name
-            })
+            this.currentUser.team
+              ? this.$store.dispatch("panels/setPanel", {
+                  show: true,
+                  panel: "teamProfilePanel",
+                  teamName: this.currentUser.team.name
+                })
+              : this.$store.dispatch("panels/setPanel", {
+                  show: true,
+                  panel: "teamPanel",
+                  profileId: null
+                })
         },
         { text: "Logout", icon: "mdi-logout", callback: () => this.logout() }
       ],

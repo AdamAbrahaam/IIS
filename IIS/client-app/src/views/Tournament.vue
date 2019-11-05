@@ -41,9 +41,11 @@
         v-else-if="currentUser.fullName"
         class="black--text"
         color="#fa5a66"
+        @click.prevent="joinTournament()"
       >
         <span>Join tournament!</span>
       </v-btn>
+      <span class="title"> {{ errorMsg }}</span>
     </div>
 
     <v-tabs
@@ -117,6 +119,7 @@ export default {
       tab: null,
       loaded: false,
       deleteModal: false,
+      errorMsg: "",
       items: [
         {
           name: "Details",
@@ -146,6 +149,52 @@ export default {
     })
   },
   methods: {
+    joinTournament() {
+      let type = this.$refs.tournamentDetails.tournament.type;
+      let response;
+      if (type === "Solo") {
+        if (
+          this.tournament.participants.find(
+            t => t.userOrTeam === this.currentUser.userId
+          )
+        ) {
+          this.errorMsg = "You already joined!";
+          setTimeout(() => {
+            this.errorMsg = "";
+          }, 3000);
+        } else {
+          response = this.$store.dispatch("tournaments/addPlayer", {
+            userId: this.currentUser.userId,
+            tournamentId: this.tournament.tournamentId
+          });
+        }
+      } else if (type === "Duo") {
+        if (this.currentUser.team) {
+          if (
+            this.tournament.participants.find(
+              t => t.userOrTeam === this.currentUser.team.teamId
+            )
+          ) {
+            this.errorMsg = "You already joined!";
+            setTimeout(() => {
+              this.errorMsg = "";
+            }, 3000);
+          } else {
+            response = this.$store.dispatch("tournaments/addTeam", {
+              teamId: this.currentUser.team.teamid,
+              tournamentId: this.tournament.tournamentId
+            });
+          }
+        } else {
+          this.$store.dispatch("panels/setPanel", {
+            show: true,
+            panel: "teamPanel",
+            profileId: null
+          });
+        }
+      }
+      console.log(response);
+    },
     edit() {
       this.$store.dispatch("tournaments/setEditing", true);
       this.$refs.tournamentDetails.deleteEur();

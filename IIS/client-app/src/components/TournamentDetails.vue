@@ -22,7 +22,7 @@
         ></v-col>
       </v-row>
     </v-card>
-    <div class="d-flex flex-wrap justify-center">
+    <div class="d-flex flex-wrap justify-center mb-12">
       <v-card
         v-for="item in details"
         :key="item.name"
@@ -106,6 +106,11 @@ export default {
           name: "Organizer",
           icon: "mdi-account-star",
           value: this.tournament.organizer
+        },
+        {
+          name: "Referee",
+          icon: "mdi-account-alert",
+          value: this.tournament.referee ? this.tournament.referee : "TBA"
         },
         {
           name: "Sponsors",

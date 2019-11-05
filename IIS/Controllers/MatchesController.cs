@@ -72,7 +72,7 @@ namespace IIS.Controllers
             }
         }
 
-        [HttpGet("tournament{id:int}")]
+        [HttpGet("tournament/{id:int}")]
         public async Task<ActionResult<MatchModel[]>> Get(int id)
         {
             try

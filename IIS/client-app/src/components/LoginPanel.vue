@@ -8,7 +8,7 @@
               ref="userInfo.email"
               v-model="userInfo.email"
               :rules="[rules.email, rules.required]"
-              label="E-mail"
+              label="E-mail*"
               type="email"
               required
             ></v-text-field>
@@ -18,7 +18,7 @@
               ref="userInfo.password"
               v-model="userInfo.password"
               :rules="[rules.required]"
-              label="Password"
+              label="Password*"
               type="password"
               required
             ></v-text-field>
@@ -26,7 +26,7 @@
           <v-col
             cols="12"
             v-show="this.user.error"
-            class="my-n7 red--text text-center"
+            class="my-n7 red--text text-center pt-5"
           >
             {{ this.user.error }}
           </v-col>
