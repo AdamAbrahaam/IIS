@@ -93,21 +93,22 @@ namespace IIS.Controllers
         }
 
         [HttpPost("solo_match")]
-        public async Task<ActionResult<MatchModel>> PostSolo(int userid1, int userid2, MatchModel model)
+        public async Task<ActionResult<MatchModel>> PostSolo(int userid1, int userid2, int tournamentid)
         {
             try
             {
-                var match = _mapper.Map<Match>(model);
-                var tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
+                var tournament = await _repository.GetTournamentById(tournamentid);
                 if (tournament == null) return NotFound("Tournament not found!");
 
                 var homeUser = await _repository.GetUserById(userid1);
                 var awayUser = await _repository.GetUserById(userid2);
                 if (homeUser == null || awayUser == null) return NotFound("User not foun!");
-
-                match.Tournament = _mapper.Map<Tournament>(tournament);
-                match.Home = _mapper.Map<User>(homeUser);
-                match.Away = _mapper.Map<User>(awayUser);
+                var match = new Match()
+                {
+                    Tournament = _mapper.Map<Tournament>(tournament),
+                    Home = _mapper.Map<User>(homeUser),
+                    Away = _mapper.Map<User>(awayUser)
+                };
                 _repository.Add(match);
 
                 if (await _repository.SaveChangesAsync())
@@ -140,21 +141,21 @@ namespace IIS.Controllers
         }
 
         [HttpPost("duo_match")]
-        public async Task<ActionResult<MatchModel>> PostDuo(int teamid1, int teamid2, MatchModel model)
+        public async Task<ActionResult<MatchModel>> PostDuo(int teamid1, int teamid2, int tournamentid)
         {
             try
             {
-                var match = _mapper.Map<Match>(model);
-                var tournament = await _repository.GetTournamentById(model.Tournament.TournamentId);
+                var tournament = await _repository.GetTournamentById(tournamentid);
                 if (tournament == null) return NotFound("Tournament not found!");
-                match.Tournament = _mapper.Map<Tournament>(tournament);
-
                 var homeTeam = await _repository.GetTeamById(teamid1);
                 var awayTeam = await _repository.GetTeamById(teamid2);
                 if (homeTeam == null || awayTeam == null) return NotFound("Team not found!");
-
-                match.HomeTeam = homeTeam.Name;
-                match.AwayTeam = awayTeam.Name;
+                var match = new Match()
+                {
+                    Tournament = _mapper.Map<Tournament>(tournament),
+                    HomeTeam = homeTeam.Name,
+                    AwayTeam = homeTeam.Name
+                };
                 _repository.Add(match);
                 if (await _repository.SaveChangesAsync())
                 {
