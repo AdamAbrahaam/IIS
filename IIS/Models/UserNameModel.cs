@@ -9,5 +9,6 @@ namespace IIS.Models
     {
         public string FullName { get; set; }
         public int UserId { get; set; }
+        public bool isAdmin { get; set; }
     }
 }

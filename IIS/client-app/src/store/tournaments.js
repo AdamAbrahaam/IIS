@@ -38,7 +38,7 @@ export default {
 
       commit("SET_TOURNAMENT", tournament);
     },
-    async createTournament({ commit }, tournamentInfo) {
+    async createTournament({ commit, dispatch }, tournamentInfo) {
       try {
         let response = await Api().post(
           "/tournaments/add-tournament",
@@ -47,6 +47,7 @@ export default {
         let tournament = response.data;
 
         commit("SET_TOURNAMENT", tournament);
+        dispatch("getAll");
         return tournament;
       } catch (exp) {
         return {
@@ -116,6 +117,13 @@ export default {
     },
     async setEditing({ commit }, edit) {
       commit("SET_EDIT", edit);
+    }
+  },
+  getters: {
+    upcomingTournaments: state => {
+      return state.tournaments.filter(
+        t => t.date >= new Date().toJSON().slice(0, 10)
+      );
     }
   }
 };

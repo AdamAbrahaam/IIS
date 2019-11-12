@@ -156,7 +156,13 @@
       <v-btn v-if="isEditing" color="blue darken-1" text @click="update()"
         >Save</v-btn
       >
-      <v-btn v-else color="blue darken-1" text @click="createTournament()"
+      <v-btn
+        :loading="loading"
+        :disabled="loading"
+        v-else
+        color="blue darken-1"
+        text
+        @click="createTournament()"
         >Create tournament</v-btn
       >
     </v-card-actions>
@@ -170,6 +176,7 @@ export default {
   props: ["closeModal", "editInfo", "isEditing"],
   data() {
     return {
+      loading: false,
       dateMenu: false,
       timeMenu: false,
       tournament: {},
@@ -205,6 +212,7 @@ export default {
   },
   methods: {
     async createTournament() {
+      this.loading = true;
       let isInError = document.getElementsByClassName("v-messages__message");
       if (isInError.length != 0) {
         console.log(isInError.length);
@@ -230,6 +238,8 @@ export default {
           params: { tournamentId: this.tournament.tournamentId }
         });
       }
+
+      this.loading = false;
     },
     close() {
       this.$store.dispatch("panels/setPanel", {

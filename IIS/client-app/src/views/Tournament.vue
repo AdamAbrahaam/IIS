@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background-color: #e7e6e3;">
     <div id="header">
       {{ tournament.name }}
       <v-btn
@@ -63,13 +63,20 @@
     <v-row justify="center">
       <v-col lg="9" class="pa-0">
         <v-tabs-items v-model="tab">
-          <v-tab-item>
-            <TournamentDetails ref="tournamentDetails" />
-          </v-tab-item>
-          <v-tab-item>
-            <Brackets />
-          </v-tab-item>
-          <v-tab-item>
+          <v-tab-item
+            transition="slide-y-transition"
+            reverse-transition="slide-y-transition"
+          >
+            <TournamentDetails ref="tournamentDetails" /> </v-tab-item
+          ><v-tab-item
+            transition="slide-y-transition"
+            reverse-transition="slide-y-transition"
+          >
+            <Brackets :matches="matches" /> </v-tab-item
+          ><v-tab-item
+            transition="slide-y-transition"
+            reverse-transition="slide-y-transition"
+          >
             <Matches />
           </v-tab-item>
         </v-tabs-items>
@@ -145,7 +152,8 @@ export default {
     ...mapState({
       tournament: state => state.tournaments.tournament,
       currentUser: state => state.user.currentUser,
-      editingState: state => state.tournaments.editing
+      editingState: state => state.tournaments.editing,
+      matches: state => state.matches.matches
     })
   },
   methods: {

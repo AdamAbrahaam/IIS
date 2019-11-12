@@ -3,7 +3,8 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Tournaments from "../views/Tournaments.vue";
 import Tournament from "../views/Tournament.vue";
-import Rankings from "../views/Rankings.vue";
+import PlayerRankings from "../views/PlayerRankings.vue";
+import TeamRankings from "../views/TeamRankings.vue";
 
 Vue.use(VueRouter);
 
@@ -19,9 +20,14 @@ const routes = [
     component: Tournaments
   },
   {
-    path: "/rankings",
-    name: "rankings",
-    component: Rankings
+    path: "/players",
+    name: "players",
+    component: PlayerRankings
+  },
+  {
+    path: "/teams",
+    name: "teams",
+    component: TeamRankings
   },
   {
     path: "/tournament/:tournamentId",

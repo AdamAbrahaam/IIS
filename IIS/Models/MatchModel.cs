@@ -9,10 +9,12 @@ namespace IIS.Models
 {
     public class MatchModel
     {
+        public int MatchId { get; set; }
         public string Date { get; set; }
         public string Time { get; set; }
         public int HomeScore { get; set; }
         public int AwayScore { get; set; }
+        public int Round { get; set; }
         public UserNameModel Home { get; set; }
         public UserNameModel Away { get; set; }
         public string HomeTeam { get; set; }

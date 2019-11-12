@@ -13,22 +13,47 @@
         <v-row class="d-flex align-center ml-5">
           <v-col cols="3">Members:</v-col>
           <v-col cols="9">
-            <v-chip
-              class="mr-2"
-              v-for="member in teamMembers"
-              :key="member.userId"
-              close
-              color="black"
-              close-icon="mdi-delete"
-              label
-              outlined
-              @click:close="userDel = member"
+            <div
+              v-if="
+                currentUser &&
+                  teamMembers.find(t => t.userId === currentUser.userId)
+              "
             >
-              {{ member.fullName }}
-            </v-chip>
+              <v-chip
+                class="mr-2"
+                v-for="member in teamMembers"
+                :key="member.userId"
+                close
+                color="black"
+                close-icon="mdi-delete"
+                label
+                outlined
+                @click:close="userDel = member"
+              >
+                {{ member.fullName }}
+              </v-chip>
+            </div>
+            <div v-else>
+              <v-chip
+                class="mr-2"
+                v-for="member in teamMembers"
+                :key="member.userId"
+                color="black"
+                label
+                outlined
+              >
+                {{ member.fullName }}
+              </v-chip>
+            </div>
           </v-col>
         </v-row>
-        <v-row class="d-flex align-center ml-5">
+        <v-row
+          class="d-flex align-center ml-5"
+          v-if="
+            currentUser &&
+              teamMembers.find(t => t.userId === currentUser.userId)
+          "
+        >
           <v-col cols="3">Add user:</v-col>
           <v-col cols="8">
             <v-autocomplete
@@ -39,7 +64,7 @@
               item-value="userId"
               color="white"
               flat
-              placeholder="Stano Lobotka"
+              placeholder="ex. Stano Lobotka"
               :error-messages="errorMsg"
               @change="isInTeam()"
             >

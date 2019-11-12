@@ -41,7 +41,8 @@ namespace IIS.Data
                     LastName = "Weis",
                     Email = "weisko123@azet.sk",
                     Password = password1.GetHashedPassword(),
-                    TeamId =1
+                    TeamId = 1,
+                    isAdmin = false
                 },
                 new
                 {
@@ -50,7 +51,8 @@ namespace IIS.Data
                     LastName = "White",
                     Email = "breaking@bad.bb",
                     Password = password2.GetHashedPassword(),
-                    TeamId = 1
+                    TeamId = 1,
+                    isAdmin = false
                 },
                 new
                 {
@@ -59,7 +61,8 @@ namespace IIS.Data
                     LastName = "Pered",
                     Email = "vsetkodobre@gmail.com",
                     Password = password3.GetHashedPassword(),
-                    TeamId = 2
+                    TeamId = 2,
+                    isAdmin = true
                 },
                 new
                 {
@@ -68,19 +71,22 @@ namespace IIS.Data
                     LastName = "Hrozny",
                     Email = "fidelio@gmail.com",
                     Password = password4.GetHashedPassword(),
-                    TeamId = 2
-                });
+                    TeamId = 2,
+                    isAdmin = false
+                }); ;
 
             bldr.Entity<Team>()
                 .HasData(new
                 {
                     TeamId = 1,
                     Name = "Sicaci",
+                    Logo = 1
                 },
                 new
                 {
                     TeamId = 2,
                     Name = "CastroTeam",
+                    Logo = 2
                 });
 
             bldr.Entity<Tournament>()
@@ -265,7 +271,8 @@ namespace IIS.Data
                     Time = "14:00",
                     HomeUserId = 1,
                     AwayUserId = 2,
-                    TournamentId = 2
+                    TournamentId = 2,
+                    Round = 1
                 },
                 new
                 {
@@ -276,7 +283,8 @@ namespace IIS.Data
                     Time = "14:00",
                     HomeTeam = "Sicaci",
                     AwayTeam = "CastroTeam",
-                    TournamentId = 1
+                    TournamentId = 1,
+                    Round = 1
                 });
 
             bldr.Entity<UsersInMatch>()

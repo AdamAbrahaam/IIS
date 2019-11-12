@@ -35,7 +35,14 @@
     </v-card-text>
     <v-card-actions>
       <div class="flex-grow-1"></div>
-      <v-btn color="blue darken-1" text @click.prevent="login()">Login</v-btn>
+      <v-btn
+        :loading="loading"
+        :disabled="loading"
+        color="blue darken-1"
+        text
+        @click.prevent="login()"
+        >Login</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -46,6 +53,7 @@ export default {
   props: ["closeModal"],
   data() {
     return {
+      loading: false,
       userInfo: {
         email: "",
         password: ""
@@ -59,6 +67,7 @@ export default {
   },
   methods: {
     async login() {
+      this.loading = true;
       this.user = await this.$store.dispatch("user/login", this.userInfo);
 
       if (this.user.error) {
@@ -66,6 +75,8 @@ export default {
       } else {
         this.closeModal();
       }
+
+      this.loading = false;
     }
   }
 };

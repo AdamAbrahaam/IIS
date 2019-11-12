@@ -27,13 +27,14 @@ export default {
     },
     async addMatch({ dispatch }, matchInfo) {
       try {
-        console.log(matchInfo);
-        let response = await Api().post("/matches/solo_match", matchInfo);
+        let response = await Api().post(
+          `/matches/solo_match?userid1=${matchInfo.Home}&&userid2=${matchInfo.Away}&&tournamentid=${matchInfo.TournamentId}`
+        );
 
-        let stats = response.data;
+        let match = response.data;
 
         dispatch("getMatches", matchInfo.TournamentId);
-        return stats;
+        return match;
       } catch (exp) {
         return {
           error: "Registration failed! Please try again."

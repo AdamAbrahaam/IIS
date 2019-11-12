@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IIS.Migrations
 {
     [DbContext(typeof(FifkaDBContext))]
-    [Migration("20191030115536_Init")]
-    partial class Init
+    [Migration("20191112135202_logotoint")]
+    partial class logotoint
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,9 @@ namespace IIS.Migrations
                     b.Property<int?>("HomeUserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Round")
+                        .HasColumnType("int");
+
                     b.Property<string>("Time")
                         .HasColumnType("nvarchar(max)");
 
@@ -69,10 +72,86 @@ namespace IIS.Migrations
                         new
                         {
                             MatchId = 1,
-                            AwayScore = 0,
-                            AwayTeam = "Imel",
+                            AwayScore = 1,
+                            AwayUserId = 2,
+                            Date = "2019-10-30",
                             HomeScore = 1,
-                            HomeTeam = "Hurbanovo"
+                            HomeUserId = 1,
+                            Round = 1,
+                            Time = "14:00",
+                            TournamentId = 2
+                        },
+                        new
+                        {
+                            MatchId = 2,
+                            AwayScore = 0,
+                            AwayTeam = "CastroTeam",
+                            Date = "2019-10-31",
+                            HomeScore = 9,
+                            HomeTeam = "Sicaci",
+                            Round = 1,
+                            Time = "14:00",
+                            TournamentId = 1
+                        });
+                });
+
+            modelBuilder.Entity("IIS.Data.Entities.Participant", b =>
+                {
+                    b.Property<int>("ParticipantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsUser")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TournamentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserOrTeam")
+                        .HasColumnType("int");
+
+                    b.HasKey("ParticipantId");
+
+                    b.HasIndex("TournamentId");
+
+                    b.ToTable("Participants");
+
+                    b.HasData(
+                        new
+                        {
+                            ParticipantId = 1,
+                            IsUser = true,
+                            Name = "Daniel Weis",
+                            TournamentId = 2,
+                            UserOrTeam = 1
+                        },
+                        new
+                        {
+                            ParticipantId = 2,
+                            IsUser = true,
+                            Name = "Walter White",
+                            TournamentId = 2,
+                            UserOrTeam = 2
+                        },
+                        new
+                        {
+                            ParticipantId = 3,
+                            IsUser = false,
+                            Name = "Sicaci",
+                            TournamentId = 1,
+                            UserOrTeam = 1
+                        },
+                        new
+                        {
+                            ParticipantId = 4,
+                            IsUser = false,
+                            Name = "CastroTeam",
+                            TournamentId = 1,
+                            UserOrTeam = 2
                         });
                 });
 
@@ -83,8 +162,8 @@ namespace IIS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte[]>("Logo")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<int>("Logo")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -97,7 +176,14 @@ namespace IIS.Migrations
                         new
                         {
                             TeamId = 1,
+                            Logo = 1,
                             Name = "Sicaci"
+                        },
+                        new
+                        {
+                            TeamId = 2,
+                            Logo = 2,
+                            Name = "CastroTeam"
                         });
                 });
 
@@ -124,6 +210,22 @@ namespace IIS.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("TeamsInMatches");
+
+                    b.HasData(
+                        new
+                        {
+                            TeamsInMatchId = 1,
+                            Home = true,
+                            MatchId = 2,
+                            TeamId = 1
+                        },
+                        new
+                        {
+                            TeamsInMatchId = 2,
+                            Home = false,
+                            MatchId = 2,
+                            TeamId = 2
+                        });
                 });
 
             modelBuilder.Entity("IIS.Data.Entities.Tournament", b =>
@@ -154,9 +256,6 @@ namespace IIS.Migrations
                     b.Property<string>("Organizer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Participants")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Prize")
                         .HasColumnType("int");
 
@@ -181,15 +280,31 @@ namespace IIS.Migrations
                         {
                             TournamentId = 1,
                             Capacity = 16,
-                            Date = "22-10-2020",
+                            Date = "2019-10-31",
                             Entry = 5,
                             Location = "Bozetechova",
                             Name = "FIT - BIT",
                             Organizer = "Daniel Weis",
                             Prize = 500,
+                            Referee = "Adam Pered",
                             Sponsors = "Coca Cola",
                             Time = "14:00",
                             Type = "Duo"
+                        },
+                        new
+                        {
+                            TournamentId = 2,
+                            Capacity = 8,
+                            Date = "2019-10-30",
+                            Entry = 100,
+                            Location = "Bozetechova",
+                            Name = "FIT - MIT",
+                            Organizer = "Alfonz Hrozny",
+                            Prize = 1000,
+                            Referee = "Daniel Weis",
+                            Sponsors = "Pepsi, Hyundai",
+                            Time = "14:00",
+                            Type = "Solo"
                         });
                 });
 
@@ -215,6 +330,9 @@ namespace IIS.Migrations
                     b.Property<int?>("TeamId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("bit");
+
                     b.HasKey("UserId");
 
                     b.HasIndex("TeamId");
@@ -225,10 +343,12 @@ namespace IIS.Migrations
                         new
                         {
                             UserId = 1,
-                            Email = "weisthejew@azet.sk",
+                            Email = "weisko123@azet.sk",
                             FirstName = "Daniel",
                             LastName = "Weis",
-                            Password = "pepemobil123"
+                            Password = "d87a969ac02af63d199dbebe2c1ab84f4ab99dc60540cb3365c5b75d8b03e031",
+                            TeamId = 1,
+                            isAdmin = false
                         },
                         new
                         {
@@ -236,7 +356,29 @@ namespace IIS.Migrations
                             Email = "breaking@bad.bb",
                             FirstName = "Walter",
                             LastName = "White",
-                            Password = "asd"
+                            Password = "13ed070478ef62c3a7baa36c8d042a9d1cdc0fcbb2af93a795f2ad20ad6e9cb5",
+                            TeamId = 1,
+                            isAdmin = false
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            Email = "vsetkodobre@gmail.com",
+                            FirstName = "Adam",
+                            LastName = "Pered",
+                            Password = "5c85f802591ce72681063e53818edc5cb666d10e30e896f9a08f92e610509d53",
+                            TeamId = 2,
+                            isAdmin = true
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            Email = "fidelio@gmail.com",
+                            FirstName = "Alfonz",
+                            LastName = "Hrozny",
+                            Password = "34d32e3b8517a08f537c46602b523665652c34139b9f14fde389479a2e0c014c",
+                            TeamId = 2,
+                            isAdmin = false
                         });
                 });
 
@@ -271,6 +413,13 @@ namespace IIS.Migrations
                             Home = true,
                             MatchId = 1,
                             UserId = 1
+                        },
+                        new
+                        {
+                            UsersInMatchId = 2,
+                            Home = false,
+                            MatchId = 1,
+                            UserId = 2
                         });
                 });
 
@@ -326,6 +475,7 @@ namespace IIS.Migrations
                             Games = 2,
                             Goals = 5,
                             Loses = 0,
+                            UserId = 1,
                             Wins = 1
                         },
                         new
@@ -335,8 +485,91 @@ namespace IIS.Migrations
                             Games = 5,
                             Goals = 0,
                             Loses = 2,
-                            TeamId = 1,
+                            UserId = 2,
+                            Wins = 0
+                        },
+                        new
+                        {
+                            StatisticsId = 3,
+                            Draws = 3,
+                            Games = 5,
+                            Goals = 4,
+                            Loses = 2,
+                            UserId = 3,
+                            Wins = 0
+                        },
+                        new
+                        {
+                            StatisticsId = 4,
+                            Draws = 0,
+                            Games = 0,
+                            Goals = 0,
+                            Loses = 0,
+                            UserId = 4,
+                            Wins = 0
+                        },
+                        new
+                        {
+                            StatisticsId = 5,
+                            Draws = 0,
+                            Games = 1,
+                            Goals = 9,
+                            Loses = 0,
+                            Team = "Sicaci",
+                            Wins = 1
+                        },
+                        new
+                        {
+                            StatisticsId = 6,
+                            Draws = 0,
+                            Games = 2,
+                            Goals = 1,
+                            Loses = 1,
+                            Team = "CastroTeam",
+                            Wins = 1
+                        },
+                        new
+                        {
+                            StatisticsId = 7,
+                            Draws = 1,
+                            Games = 1,
+                            Goals = 1,
+                            Loses = 0,
+                            TournamentId = 2,
                             UserId = 1,
+                            Wins = 0
+                        },
+                        new
+                        {
+                            StatisticsId = 8,
+                            Draws = 1,
+                            Games = 1,
+                            Goals = 1,
+                            Loses = 0,
+                            TournamentId = 2,
+                            UserId = 2,
+                            Wins = 0
+                        },
+                        new
+                        {
+                            StatisticsId = 9,
+                            Draws = 0,
+                            Games = 1,
+                            Goals = 9,
+                            Loses = 0,
+                            Team = "Sicaci",
+                            TournamentId = 1,
+                            Wins = 1
+                        },
+                        new
+                        {
+                            StatisticsId = 10,
+                            Draws = 0,
+                            Games = 1,
+                            Goals = 0,
+                            Loses = 1,
+                            Team = "CastroTeam",
+                            TournamentId = 1,
                             Wins = 0
                         });
                 });
@@ -353,6 +586,13 @@ namespace IIS.Migrations
 
                     b.HasOne("IIS.Data.Entities.Tournament", "Tournament")
                         .WithMany("Matches")
+                        .HasForeignKey("TournamentId");
+                });
+
+            modelBuilder.Entity("IIS.Data.Entities.Participant", b =>
+                {
+                    b.HasOne("IIS.Data.Entities.Tournament", null)
+                        .WithMany("Participants")
                         .HasForeignKey("TournamentId");
                 });
 

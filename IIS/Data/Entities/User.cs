@@ -11,6 +11,7 @@ namespace IIS.Data.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public Team Team { get; set; }
+        public bool isAdmin { get; set; }
         public ICollection<Statistics> Statistics { get; set; } = new List<Statistics>();
         public ICollection<UsersInMatch> UsersInMatches { get; set; } = new List<UsersInMatch>();
     }

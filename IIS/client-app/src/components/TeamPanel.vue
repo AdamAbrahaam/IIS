@@ -27,26 +27,49 @@
             </v-col>
           </v-row>
           <v-row class="d-flex align-center ml-5">
-            <v-col cols="3">*Team logo:</v-col>
-            <v-col cols="9">
-              <input
-                type="file"
-                accept="image/jpeg, image/png"
-                @change="onFileChanged"
-                ref="file"
-                style="display: none"
-              />
-
-              <v-btn outlined color="#c2c2c2" @click="$refs.file.click()"
-                >Browse Images...</v-btn
+            <v-col cols="12">*Choose a logo from below:</v-col>
+          </v-row>
+          <v-row class="d-flex align-center ml-5">
+            <v-col cols="12" class="d-flex justify-space-between">
+              <v-avatar
+                id="logo1"
+                class="logo"
+                size="80"
+                @click="setLogo('logo1')"
               >
-              <input />
+                <img src="../static/teamlogos/1.png" />
+              </v-avatar>
+              <v-avatar
+                id="logo2"
+                class="logo"
+                size="80"
+                @click="setLogo('logo2')"
+              >
+                <img src="../static/teamlogos/2.png" />
+              </v-avatar>
+              <v-avatar
+                id="logo3"
+                class="logo"
+                size="80"
+                @click="setLogo('logo3')"
+              >
+                <img src="../static/teamlogos/3.png" />
+              </v-avatar>
+              <v-avatar
+                id="logo4"
+                class="logo"
+                size="80"
+                @click="setLogo('logo4')"
+              >
+                <img src="../static/teamlogos/4.png" />
+              </v-avatar>
             </v-col>
           </v-row>
-          <v-row class="d-flex align-center justify-center mt-5">
-            <v-avatar size="150" v-if="url"
-              ><v-img :src="url" max-height="300px" max-width="300px"></v-img
-            ></v-avatar>
+          <v-row
+            v-if="errorMsg"
+            class="d-flex align-center justify-center ml-5 red--text mt-5"
+          >
+            {{ errorMsg }}
           </v-row>
         </div>
       </v-container>
@@ -72,11 +95,12 @@ export default {
   props: ["closeModal", "editInfo", "isEditing"],
   data() {
     return {
+      currentLogo: undefined,
+      errorMsg: "",
       teamInfo: {
         name: "",
-        logo: ""
-      },
-      url: null
+        logo: 0
+      }
     };
   },
   computed: {
@@ -85,12 +109,28 @@ export default {
     })
   },
   methods: {
-    onFileChanged(event) {
-      this.teamInfo.logo = event.target.files[0];
-      this.url = URL.createObjectURL(this.teamInfo.logo);
+    setLogo(logo) {
+      if (this.currentLogo) {
+        let current = document.getElementById(this.currentLogo);
+        current.style.opacity = 0.3;
+      }
+
+      let selected = document.getElementById(logo);
+      selected.style.opacity = 1;
+
+      this.currentLogo = logo;
     },
     async createTeam() {
-      this.teamInfo.logo = null;
+      if (!this.currentLogo) {
+        this.errorMsg = "All fields are requiered!";
+        setTimeout(() => {
+          this.errorMsg = "";
+        }, 3000);
+        return;
+      }
+
+      this.teamInfo.logo = this.currentLogo[this.currentLogo.length - 1];
+      console.log(this.teamInfo);
       let team = await this.$store.dispatch("teams/createTeam", {
         teamInfo: this.teamInfo,
         userId: this.currentUser.userId
@@ -122,4 +162,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.logo {
+  opacity: 0.3;
+}
+</style>

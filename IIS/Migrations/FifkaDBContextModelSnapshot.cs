@@ -47,6 +47,9 @@ namespace IIS.Migrations
                     b.Property<int?>("HomeUserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Round")
+                        .HasColumnType("int");
+
                     b.Property<string>("Time")
                         .HasColumnType("nvarchar(max)");
 
@@ -72,6 +75,7 @@ namespace IIS.Migrations
                             Date = "2019-10-30",
                             HomeScore = 1,
                             HomeUserId = 1,
+                            Round = 1,
                             Time = "14:00",
                             TournamentId = 2
                         },
@@ -83,6 +87,7 @@ namespace IIS.Migrations
                             Date = "2019-10-31",
                             HomeScore = 9,
                             HomeTeam = "Sicaci",
+                            Round = 1,
                             Time = "14:00",
                             TournamentId = 1
                         });
@@ -155,8 +160,8 @@ namespace IIS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte[]>("Logo")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<int>("Logo")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -169,11 +174,13 @@ namespace IIS.Migrations
                         new
                         {
                             TeamId = 1,
+                            Logo = 1,
                             Name = "Sicaci"
                         },
                         new
                         {
                             TeamId = 2,
+                            Logo = 2,
                             Name = "CastroTeam"
                         });
                 });
@@ -321,6 +328,9 @@ namespace IIS.Migrations
                     b.Property<int?>("TeamId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("isAdmin")
+                        .HasColumnType("bit");
+
                     b.HasKey("UserId");
 
                     b.HasIndex("TeamId");
@@ -335,7 +345,8 @@ namespace IIS.Migrations
                             FirstName = "Daniel",
                             LastName = "Weis",
                             Password = "d87a969ac02af63d199dbebe2c1ab84f4ab99dc60540cb3365c5b75d8b03e031",
-                            TeamId = 1
+                            TeamId = 1,
+                            isAdmin = false
                         },
                         new
                         {
@@ -344,7 +355,8 @@ namespace IIS.Migrations
                             FirstName = "Walter",
                             LastName = "White",
                             Password = "13ed070478ef62c3a7baa36c8d042a9d1cdc0fcbb2af93a795f2ad20ad6e9cb5",
-                            TeamId = 1
+                            TeamId = 1,
+                            isAdmin = false
                         },
                         new
                         {
@@ -353,7 +365,8 @@ namespace IIS.Migrations
                             FirstName = "Adam",
                             LastName = "Pered",
                             Password = "5c85f802591ce72681063e53818edc5cb666d10e30e896f9a08f92e610509d53",
-                            TeamId = 2
+                            TeamId = 2,
+                            isAdmin = true
                         },
                         new
                         {
@@ -362,7 +375,8 @@ namespace IIS.Migrations
                             FirstName = "Alfonz",
                             LastName = "Hrozny",
                             Password = "34d32e3b8517a08f537c46602b523665652c34139b9f14fde389479a2e0c014c",
-                            TeamId = 2
+                            TeamId = 2,
+                            isAdmin = false
                         });
                 });
 

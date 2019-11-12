@@ -39,6 +39,7 @@
           :mobile-breakpoint="0"
           hide-default-footer
           class="elevation-5"
+          no-data-text="There are no upcoming turnaments!"
           @click:row="
             $router.push({
               name: 'tournament',
@@ -64,7 +65,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import RegisterPanel from "@/components/RegisterPanel.vue";
 
 export default {
@@ -88,8 +89,10 @@ export default {
   },
   computed: {
     ...mapState({
-      tournaments: state => state.tournaments.tournaments,
       currentUser: state => state.user.currentUser
+    }),
+    ...mapGetters({
+      tournaments: "tournaments/upcomingTournaments"
     })
   },
   methods: {

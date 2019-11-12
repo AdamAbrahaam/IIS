@@ -1,6 +1,47 @@
 <template>
-  <div>
-    <v-card class="mx-3 my-7 pr-7 mx-sm-12 elevation-5">
+  <div style="background-color: #e7e6e3;">
+    <v-card
+      v-if="
+        !tournament.referee &&
+          currentUser.fullName &&
+          currentUser.fullName !== tournament.organizer
+      "
+      class="mt-5 mx-5 py-3 d-flex flex-column justify-center align-center"
+      color="error"
+      @click="update(currentUser.fullName)"
+    >
+      <div class="white--text display-1 font-weight-bold">
+        !!! Referee needed !!!
+      </div>
+      <div class="white--text">Click to join as a referee!</div>
+    </v-card>
+    <div class="display-1 mt-8 mx-5">Participants</div>
+    <v-divider class="my-2"></v-divider>
+    <div class="d-flex justify-center flex-wrap">
+      <div v-if="tournament.participants.length">
+        <v-chip
+          v-for="participant in tournament.participants"
+          :key="participant.participantId"
+          class="ma-2"
+          color="indigo"
+          text-color="white"
+          @click="participiantInfo(participant.userOrTeam, participant.isUser)"
+        >
+          <v-avatar left>
+            <v-icon v-if="participant.isUser">mdi-account-circle</v-icon>
+            <v-icon v-else>mdi-account-supervisor-circle</v-icon>
+          </v-avatar>
+          {{ participant.name }}
+        </v-chip>
+      </div>
+      <div v-else class="grey--text">
+        No particpants yet!
+      </div>
+    </div>
+
+    <div class="display-1 mt-10 mx-5">Details</div>
+    <v-divider class="my-2"></v-divider>
+    <v-card v-if="tournament.info" class="mx-3 my-7 pr-7 mx-sm-12 elevation-5">
       <v-row>
         <v-icon large class="mx-7 mt-7 d-flex align-self-start"
           >mdi-square-edit-outline</v-icon
@@ -60,7 +101,9 @@ export default {
   computed: {
     ...mapState({
       tournament: state => state.tournaments.tournament,
-      editingState: state => state.tournaments.editing
+      editingState: state => state.tournaments.editing,
+      matches: state => state.matches.matches,
+      currentUser: state => state.user.currentUser
     }),
     isEditing() {
       return !this.editingState;
@@ -121,6 +164,22 @@ export default {
     }
   },
   methods: {
+    participiantInfo(id, isUser) {
+      console.log(id);
+      if (isUser) {
+        this.$store.dispatch("panels/setPanel", {
+          show: true,
+          panel: "profilePanel",
+          profileId: id
+        });
+      } else {
+        this.$store.dispatch("panels/setPanel", {
+          show: true,
+          panel: "teamProfilePanel",
+          teamName: id
+        });
+      }
+    },
     deleteEur() {
       this.details[0].value = this.details[0].value.substring(
         0,
@@ -131,8 +190,9 @@ export default {
         this.details[1].value.length - 1
       );
     },
-    async update() {
+    async update(referee) {
       this.$store.dispatch("tournaments/setEditing", false);
+
       let updatedInfo = {};
       updatedInfo.Info = this.tournament.info;
       updatedInfo.Name = this.tournament.name;
@@ -141,9 +201,16 @@ export default {
         updatedInfo[element.name] = element.value;
       });
 
+      if (referee) {
+        updatedInfo.Referee = referee;
+      }
+      if (updatedInfo.Referee === "TBA") {
+        updatedInfo.Referee = null;
+      }
       this.details[0].value += "€";
       this.details[1].value += "€";
 
+      console.log(updatedInfo);
       await this.$store.dispatch("tournaments/updateTournament", {
         tournamentId: this.tournament.tournamentId,
         updatedInfo: updatedInfo

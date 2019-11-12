@@ -15,9 +15,35 @@
         <span>Tournaments</span>
       </v-btn>
 
-      <v-btn class=" hidden-sm-and-down" text color="#e7e6e3" to="/rankings">
-        <span>Rankings</span>
-      </v-btn>
+      <v-menu close-on-content-click offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            class="white--text hidden-sm-and-down"
+            text
+            color="#e7e6e3"
+            v-on="on"
+          >
+            <span>Rankings<v-icon>mdi-chevron-down</v-icon></span>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item-group>
+            <v-list-item
+              v-for="(item, index) in rankingOptions"
+              :key="index"
+              @click="item.callback"
+            >
+              <v-list-item-content>
+                <v-list-item-title>{{ item.text }}</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-icon>
+                <v-icon v-text="item.icon"></v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
 
       <div v-if="currentUser.email">
         <v-menu close-on-content-click offset-y>
@@ -176,6 +202,18 @@ export default {
     return {
       drawer: null,
       loginDialog: false,
+      rankingOptions: [
+        {
+          text: "Players",
+          icon: "mdi-account",
+          callback: () => this.$router.push("players")
+        },
+        {
+          text: "Teams",
+          icon: "mdi-account-multiple",
+          callback: () => this.$router.push("teams")
+        }
+      ],
       profileOptions: [
         {
           text: "My Profile",
