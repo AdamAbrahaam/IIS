@@ -223,6 +223,32 @@ namespace IIS.Controllers
             return BadRequest("Failed to add team to tournament!");
         }
 
+        [HttpPut("add-referee")]
+        public async Task<IActionResult> AddReferee(int userid, int tournamentid)
+        {
+            try
+            {
+                var tournament = await _repository.GetTournamentById(tournamentid);
+                if (tournament == null) return NotFound("Tournament not found!");
+                var user = await _repository.GetUserById(userid);
+                if (user == null) return NotFound("User not found!");
+                tournament.Referee = user.FullName;
+                if (await _repository.SaveChangesAsync())
+                {
+                    var location = _linkGenerator.GetPathByAction(
+                        "Get",
+                        "Tournaments",
+                        new { id = tournament.TournamentId });
+                    return Created(location, _mapper.Map<TournamentDetailModel>(tournament));
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
+            }
+            return BadRequest("Failed to add team to tournament!");
+        }
+
         [HttpPut("{id:int}")]
         public async Task<ActionResult<TournamentDetailModel>> Put(int id, TournamentDetailModel model)
         {
