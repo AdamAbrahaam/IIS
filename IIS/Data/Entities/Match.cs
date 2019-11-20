@@ -10,9 +10,8 @@ namespace IIS.Data.Entities
         public int MatchId { get; set; }
         public int HomeScore { get; set; }
         public int AwayScore { get; set; } 
-        public string Date { get; set; }
-        public string Time { get; set; }
         public int Round { get; set; }
+        public string Winner { get; set; }
         public User Home { get; set; }
         public User Away { get; set; }
         public string HomeTeam { get; set; }

@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #e7e6e3;">
+  <div>
     <v-card
       v-if="
         !tournament.referee &&
@@ -35,7 +35,7 @@
         </v-chip>
       </div>
       <div v-else class="grey--text">
-        No particpants yet!
+        No participants yet!
       </div>
     </div>
 
@@ -196,10 +196,14 @@ export default {
       let updatedInfo = {};
       updatedInfo.Info = this.tournament.info;
       updatedInfo.Name = this.tournament.name;
-      updatedInfo.tournamentId = this.tournament.tournamentId;
+      updatedInfo.TournamentId = this.tournament.tournamentId;
       this.details.forEach(element => {
         updatedInfo[element.name] = element.value;
       });
+      updatedInfo["Prize"] = updatedInfo["Prize"].replace("€", "");
+      updatedInfo["Entry"] = updatedInfo["Entry"].replace("€", "");
+      updatedInfo["Referee"] = this.tournament.referee;
+      updatedInfo["Organizer"] = this.tournament.organizer;
 
       if (referee) {
         updatedInfo.Referee = referee;
@@ -210,7 +214,6 @@ export default {
       this.details[0].value += "€";
       this.details[1].value += "€";
 
-      console.log(updatedInfo);
       await this.$store.dispatch("tournaments/updateTournament", {
         tournamentId: this.tournament.tournamentId,
         updatedInfo: updatedInfo

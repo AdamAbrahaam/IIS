@@ -85,7 +85,10 @@ export default {
         };
       }
     },
-    async updateTournament({ commit }, { tournamentId, updatedInfo }) {
+    async updateTournament(
+      { commit, dispatch },
+      { tournamentId, updatedInfo }
+    ) {
       try {
         let response = await Api().put(
           `/tournaments/${tournamentId}`,
@@ -94,6 +97,7 @@ export default {
         let tournament = response.data;
 
         commit("SET_TOURNAMENT", tournament);
+        dispatch("getAll");
         return tournament;
       } catch (exp) {
         return {
@@ -103,7 +107,9 @@ export default {
     },
     async deleteTournament({ commit, dispatch }, tournamentId) {
       try {
-        let response = await Api().delete(`/tournaments/${tournamentId}`);
+        let response = await Api().delete(
+          `/tournaments/delete?id=${tournamentId}`
+        );
 
         commit("SET_TOURNAMENT", {});
         dispatch("getAll");

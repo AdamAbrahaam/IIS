@@ -36,7 +36,7 @@
           :items="tournaments"
           :sort-desc="[false, true]"
           multi-sort
-          :mobile-breakpoint="0"
+          :mobile-breakpoint="650"
           hide-default-footer
           class="elevation-5"
           no-data-text="There are no upcoming turnaments!"

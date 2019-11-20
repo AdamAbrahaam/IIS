@@ -93,7 +93,7 @@ namespace IIS.Controllers
         }
 
         [HttpPost("solo_match")]
-        public async Task<ActionResult<MatchModel>> PostSolo(int userid1, int userid2, int tournamentid)
+        public async Task<ActionResult<MatchModel>> PostSolo(int userid1, int userid2, int tournamentid, int round)
         {
             try
             {
@@ -107,7 +107,8 @@ namespace IIS.Controllers
                 {
                     Tournament = _mapper.Map<Tournament>(tournament),
                     Home = _mapper.Map<User>(homeUser),
-                    Away = _mapper.Map<User>(awayUser)
+                    Away = _mapper.Map<User>(awayUser),
+                    Round = round
                 };
                 _repository.Add(match);
 

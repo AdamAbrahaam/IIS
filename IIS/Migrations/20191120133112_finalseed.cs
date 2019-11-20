@@ -2,7 +2,7 @@
 
 namespace IIS.Migrations
 {
-    public partial class logotoint : Migration
+    public partial class finalseed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -98,9 +98,8 @@ namespace IIS.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     HomeScore = table.Column<int>(nullable: false),
                     AwayScore = table.Column<int>(nullable: false),
-                    Date = table.Column<string>(nullable: true),
-                    Time = table.Column<string>(nullable: true),
                     Round = table.Column<int>(nullable: false),
+                    Winner = table.Column<string>(nullable: true),
                     HomeUserId = table.Column<int>(nullable: true),
                     AwayUserId = table.Column<int>(nullable: true),
                     HomeTeam = table.Column<string>(nullable: true),
@@ -252,8 +251,8 @@ namespace IIS.Migrations
 
             migrationBuilder.InsertData(
                 table: "Matches",
-                columns: new[] { "MatchId", "AwayScore", "AwayTeam", "AwayUserId", "Date", "HomeScore", "HomeTeam", "HomeUserId", "Round", "Time", "TournamentId" },
-                values: new object[] { 2, 0, "CastroTeam", null, "2019-10-31", 9, "Sicaci", null, 1, "14:00", 1 });
+                columns: new[] { "MatchId", "AwayScore", "AwayTeam", "AwayUserId", "HomeScore", "HomeTeam", "HomeUserId", "Round", "TournamentId", "Winner" },
+                values: new object[] { 2, 0, "CastroTeam", null, 9, "Sicaci", null, 1, 1, "Home" });
 
             migrationBuilder.InsertData(
                 table: "Participants",
@@ -283,13 +282,13 @@ namespace IIS.Migrations
                     { 1, "weisko123@azet.sk", "Daniel", "Weis", "d87a969ac02af63d199dbebe2c1ab84f4ab99dc60540cb3365c5b75d8b03e031", 1, false },
                     { 2, "breaking@bad.bb", "Walter", "White", "13ed070478ef62c3a7baa36c8d042a9d1cdc0fcbb2af93a795f2ad20ad6e9cb5", 1, false },
                     { 3, "vsetkodobre@gmail.com", "Adam", "Pered", "5c85f802591ce72681063e53818edc5cb666d10e30e896f9a08f92e610509d53", 2, true },
-                    { 4, "fidelio@gmail.com", "Alfonz", "Hrozny", "34d32e3b8517a08f537c46602b523665652c34139b9f14fde389479a2e0c014c", 2, false }
+                    { 4, "js@coco.tv", "Jordan", "Schlansky", "8750b1c70c66ee87a31cede20e17d62a458de31a5f7bbcb5fe5aea08579db229", 2, false }
                 });
 
             migrationBuilder.InsertData(
                 table: "Matches",
-                columns: new[] { "MatchId", "AwayScore", "AwayTeam", "AwayUserId", "Date", "HomeScore", "HomeTeam", "HomeUserId", "Round", "Time", "TournamentId" },
-                values: new object[] { 1, 1, null, 2, "2019-10-30", 1, null, 1, 1, "14:00", 2 });
+                columns: new[] { "MatchId", "AwayScore", "AwayTeam", "AwayUserId", "HomeScore", "HomeTeam", "HomeUserId", "Round", "TournamentId", "Winner" },
+                values: new object[] { 1, 2, null, 2, 1, null, 1, 1, 2, "Away" });
 
             migrationBuilder.InsertData(
                 table: "Statistics",

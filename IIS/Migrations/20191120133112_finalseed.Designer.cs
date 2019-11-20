@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IIS.Migrations
 {
     [DbContext(typeof(FifkaDBContext))]
-    [Migration("20191112135202_logotoint")]
-    partial class logotoint
+    [Migration("20191120133112_finalseed")]
+    partial class finalseed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,9 +37,6 @@ namespace IIS.Migrations
                     b.Property<int?>("AwayUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("HomeScore")
                         .HasColumnType("int");
 
@@ -52,11 +49,11 @@ namespace IIS.Migrations
                     b.Property<int>("Round")
                         .HasColumnType("int");
 
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("TournamentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Winner")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MatchId");
 
@@ -72,26 +69,24 @@ namespace IIS.Migrations
                         new
                         {
                             MatchId = 1,
-                            AwayScore = 1,
+                            AwayScore = 2,
                             AwayUserId = 2,
-                            Date = "2019-10-30",
                             HomeScore = 1,
                             HomeUserId = 1,
                             Round = 1,
-                            Time = "14:00",
-                            TournamentId = 2
+                            TournamentId = 2,
+                            Winner = "Away"
                         },
                         new
                         {
                             MatchId = 2,
                             AwayScore = 0,
                             AwayTeam = "CastroTeam",
-                            Date = "2019-10-31",
                             HomeScore = 9,
                             HomeTeam = "Sicaci",
                             Round = 1,
-                            Time = "14:00",
-                            TournamentId = 1
+                            TournamentId = 1,
+                            Winner = "Home"
                         });
                 });
 
@@ -373,10 +368,10 @@ namespace IIS.Migrations
                         new
                         {
                             UserId = 4,
-                            Email = "fidelio@gmail.com",
-                            FirstName = "Alfonz",
-                            LastName = "Hrozny",
-                            Password = "34d32e3b8517a08f537c46602b523665652c34139b9f14fde389479a2e0c014c",
+                            Email = "js@coco.tv",
+                            FirstName = "Jordan",
+                            LastName = "Schlansky",
+                            Password = "8750b1c70c66ee87a31cede20e17d62a458de31a5f7bbcb5fe5aea08579db229",
                             TeamId = 2,
                             isAdmin = false
                         });

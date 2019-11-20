@@ -32,7 +32,7 @@ namespace IIS.Data
             var password1 = new PasswordHasher("purkyne");
             var password2 = new PasswordHasher("netflix");
             var password3 = new PasswordHasher("heslicko");
-            var password4 = new PasswordHasher("castro123");
+            var password4 = new PasswordHasher("conan");
             bldr.Entity<User>()
                 .HasData(new
                 {
@@ -67,9 +67,9 @@ namespace IIS.Data
                 new
                 {
                     UserId = 4,
-                    FirstName = "Alfonz",
-                    LastName = "Hrozny",
-                    Email = "fidelio@gmail.com",
+                    FirstName = "Jordan",
+                    LastName = "Schlansky",
+                    Email = "js@coco.tv",
                     Password = password4.GetHashedPassword(),
                     TeamId = 2,
                     isAdmin = false
@@ -266,11 +266,10 @@ namespace IIS.Data
                 {
                     MatchId = 1,
                     HomeScore = 1,
-                    AwayScore = 1,
-                    Date = "2019-10-30",
-                    Time = "14:00",
+                    AwayScore = 2,
                     HomeUserId = 1,
                     AwayUserId = 2,
+                    Winner = "Away",
                     TournamentId = 2,
                     Round = 1
                 },
@@ -279,8 +278,7 @@ namespace IIS.Data
                     MatchId = 2,
                     HomeScore = 9,
                     AwayScore = 0,
-                    Date = "2019-10-31",
-                    Time = "14:00",
+                    Winner = "Home",
                     HomeTeam = "Sicaci",
                     AwayTeam = "CastroTeam",
                     TournamentId = 1,

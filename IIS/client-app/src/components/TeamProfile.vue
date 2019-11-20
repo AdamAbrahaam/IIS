@@ -2,6 +2,12 @@
   <v-card>
     <v-card-text>
       <v-container>
+        <div class="d-flex justify-center align-center mt-3">
+          <v-avatar size="90">
+            <img :src="require(`@/static/teamlogos/${team.logo}.png`)" />
+          </v-avatar>
+        </div>
+
         <div class="title d-flex mt-5">
           <v-icon class="mr-2">mdi-account-multiple</v-icon>
           {{ team.name }}

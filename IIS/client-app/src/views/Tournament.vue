@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #e7e6e3;">
+  <div>
     <div id="header">
       {{ tournament.name }}
       <v-btn
@@ -38,7 +38,9 @@
       </div>
 
       <v-btn
-        v-else-if="currentUser.fullName"
+        v-else-if="
+          currentUser.fullName && currentUser.fullName != tournament.referee
+        "
         class="black--text"
         color="#fa5a66"
         @click.prevent="joinTournament()"
@@ -59,23 +61,17 @@
         {{ item.name }}
       </v-tab>
     </v-tabs>
-
     <v-row justify="center">
       <v-col lg="9" class="pa-0">
         <v-tabs-items v-model="tab">
           <v-tab-item
-            transition="slide-y-transition"
-            reverse-transition="slide-y-transition"
+            transition="fade-transition"
+            reverse-transition="fade-transition"
           >
             <TournamentDetails ref="tournamentDetails" /> </v-tab-item
           ><v-tab-item
-            transition="slide-y-transition"
-            reverse-transition="slide-y-transition"
-          >
-            <Brackets :matches="matches" /> </v-tab-item
-          ><v-tab-item
-            transition="slide-y-transition"
-            reverse-transition="slide-y-transition"
+            transition="fade-transition"
+            reverse-transition="fade-transition"
           >
             <Matches />
           </v-tab-item>
@@ -109,7 +105,6 @@
 
 <script>
 import TournamentDetails from "@/components/TournamentDetails.vue";
-import Brackets from "@/components/Brackets.vue";
 import Matches from "@/components/Matches.vue";
 import { mapState } from "vuex";
 
@@ -117,7 +112,6 @@ export default {
   name: "Tournament",
   components: {
     TournamentDetails,
-    Brackets,
     Matches
   },
   props: ["tournamentId"],
@@ -131,10 +125,6 @@ export default {
         {
           name: "Details",
           component: "TournamentDetails"
-        },
-        {
-          name: "Brackets",
-          component: "Brackets"
         },
         {
           name: "Matches",

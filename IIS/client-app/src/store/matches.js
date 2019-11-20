@@ -28,7 +28,7 @@ export default {
     async addMatch({ dispatch }, matchInfo) {
       try {
         let response = await Api().post(
-          `/matches/solo_match?userid1=${matchInfo.Home}&&userid2=${matchInfo.Away}&&tournamentid=${matchInfo.TournamentId}`
+          `/matches/solo_match?userid1=${matchInfo.Home}&&userid2=${matchInfo.Away}&&tournamentid=${matchInfo.TournamentId}&&round=${matchInfo.Round}`
         );
 
         let match = response.data;
@@ -40,6 +40,32 @@ export default {
           error: "Registration failed! Please try again."
         };
       }
+    },
+    async addScore({ dispatch }, matchInfo) {
+      try {
+        let response = await Api().put(
+          `/matches/${matchInfo.matchId}`,
+          matchInfo
+        );
+
+        let match = response.data;
+
+        dispatch("getMatches", matchInfo.tournament.tournamentId);
+        return match;
+      } catch (exp) {
+        return {
+          error: "Registration failed! Please try again."
+        };
+      }
+    }
+  },
+  getters: {
+    setRounds: state => {
+      let rounds = [[], [], [], []];
+      state.matches.forEach(element => {
+        rounds[element.round - 1].push(element);
+      });
+      return rounds;
     }
   }
 };
