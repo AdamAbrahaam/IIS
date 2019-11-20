@@ -29,6 +29,23 @@ namespace IIS.Data
         }
         protected override void OnModelCreating(ModelBuilder bldr)
         {
+            bldr.Entity<Statistics>()
+                .HasOne(t => t.Tournament)
+                .WithMany(t => t.Statistics)
+                .OnDelete(DeleteBehavior.Cascade);
+            bldr.Entity<Match>()
+                .HasOne(t => t.Tournament)
+                .WithMany(t => t.Matches)
+                .OnDelete(DeleteBehavior.Cascade);
+            bldr.Entity<UsersInMatch>()
+                .HasOne(t => t.Match)
+                .WithMany(t => t.UsersInMatches)
+                .OnDelete(DeleteBehavior.Cascade);
+            bldr.Entity<TeamsInMatch>()
+                .HasOne(t => t.Match)
+                .WithMany(t => t.TeamsInMatches)
+                .OnDelete(DeleteBehavior.Cascade);
+
             var password1 = new PasswordHasher("purkyne");
             var password2 = new PasswordHasher("netflix");
             var password3 = new PasswordHasher("heslicko");

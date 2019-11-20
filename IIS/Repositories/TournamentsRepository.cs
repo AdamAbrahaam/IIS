@@ -23,9 +23,12 @@ namespace IIS.Repositories
             _context.Add(entity);
         }
 
-        public void Delete<T>(T entity) where T : class
+        public void Delete(Tournament tournament)
         {
-            _context.Remove(entity);
+            var query = _context.Tournaments.Include(t => t.Matches)
+                .Include(t => t.Statistics)
+                .First(t => t.TournamentId == tournament.TournamentId);
+            _context.Remove(query);
         }
 
         public async Task<Tournament[]> GetAllTournamentsAsync()
