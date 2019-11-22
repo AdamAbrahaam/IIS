@@ -4,7 +4,7 @@ export default {
   namespaced: true,
   state: {
     users: [],
-    currentUser: {},
+    currentUser: JSON.parse(localStorage.getItem("currentUser") || "{}"),
     profile: {},
     editing: false,
     userStats: {}
@@ -12,7 +12,7 @@ export default {
   mutations: {
     SET_CURRENT_USER(state, user) {
       state.currentUser = user;
-      window.localStorage.currentUser = JSON.stringify(user);
+      localStorage.setItem("currentUser", JSON.stringify(state.currentUser));
     },
     SET_AFTER_TEAM_DELETE(state, user) {
       user.team = null;
@@ -23,7 +23,7 @@ export default {
     },
     LOGOUT_USER(state) {
       state.currentUser = {};
-      window.localStorage.currentUser = JSON.stringify({});
+      localStorage.removeItem("currentUser");
     },
     SET_PROFILE(state, profile) {
       delete profile.password;
@@ -45,7 +45,6 @@ export default {
         commit("SET_CURRENT_USER", user);
         return user;
       } catch (exp) {
-        console.log(exp);
         return {
           error: "Registration failed! Please try again."
         };
@@ -100,7 +99,6 @@ export default {
         commit("SET_USER_STATS", stats);
         return stats;
       } catch (exp) {
-        console.log(exp);
         return {
           error: "Registration failed! Please try again."
         };

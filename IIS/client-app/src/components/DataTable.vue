@@ -19,6 +19,7 @@
         :mobile-breakpoint="0"
         hide-default-footer
         class="elevation-5 tournamentTable"
+        no-data-text="Loading data..."
       ></v-data-table>
     </v-container>
   </v-card>

@@ -2,7 +2,7 @@
 
 namespace IIS.Migrations
 {
-    public partial class finalseed : Migration
+    public partial class bldr : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -126,7 +126,7 @@ namespace IIS.Migrations
                         column: x => x.TournamentId,
                         principalTable: "Tournaments",
                         principalColumn: "TournamentId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,7 +159,7 @@ namespace IIS.Migrations
                         column: x => x.TournamentId,
                         principalTable: "Tournaments",
                         principalColumn: "TournamentId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Statistics_Users_UserId",
                         column: x => x.UserId,
@@ -186,7 +186,7 @@ namespace IIS.Migrations
                         column: x => x.MatchId,
                         principalTable: "Matches",
                         principalColumn: "MatchId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TeamsInMatches_Teams_TeamId",
                         column: x => x.TeamId,
@@ -213,7 +213,7 @@ namespace IIS.Migrations
                         column: x => x.MatchId,
                         principalTable: "Matches",
                         principalColumn: "MatchId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UsersInMatches_Users_UserId",
                         column: x => x.UserId,

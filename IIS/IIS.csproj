@@ -47,13 +47,6 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Migrations\20191120212700_delete-behaviour.cs" />
-    <Compile Remove="Migrations\20191120212700_delete-behaviour.Designer.cs" />
-    <Compile Remove="Migrations\20191120213148_del-behavior.cs" />
-    <Compile Remove="Migrations\20191120213148_del-behavior.Designer.cs" />
-  </ItemGroup>
-
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
 
     <Exec Command="node --version" ContinueOnError="true">

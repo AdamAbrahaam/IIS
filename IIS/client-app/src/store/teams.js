@@ -65,7 +65,6 @@ export default {
     },
     async createTeam({ commit, dispatch }, { teamInfo, userId }) {
       try {
-        console.log(teamInfo);
         let response = await Api().post("/teams", teamInfo);
         let team = response.data;
 
@@ -73,7 +72,6 @@ export default {
         dispatch("addUser", { userId: userId, teamName: team.name });
         return team;
       } catch (exp) {
-        console.log(exp);
         return {
           error: "Creation failed! Please try again."
         };
@@ -102,7 +100,6 @@ export default {
         dispatch("getUsersInTeam", teamName);
         return response;
       } catch (exp) {
-        console.log(exp);
         return {
           error: "Delete failed! Please try again."
         };

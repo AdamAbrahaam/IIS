@@ -149,7 +149,6 @@ export default {
   methods: {
     joinTournament() {
       let type = this.$refs.tournamentDetails.tournament.type;
-      let response;
       if (type === "Solo") {
         if (
           this.tournament.participants.find(
@@ -161,7 +160,7 @@ export default {
             this.errorMsg = "";
           }, 3000);
         } else {
-          response = this.$store.dispatch("tournaments/addPlayer", {
+          this.$store.dispatch("tournaments/addPlayer", {
             userId: this.currentUser.userId,
             tournamentId: this.tournament.tournamentId
           });
@@ -178,8 +177,8 @@ export default {
               this.errorMsg = "";
             }, 3000);
           } else {
-            response = this.$store.dispatch("tournaments/addTeam", {
-              teamId: this.currentUser.team.teamid,
+            this.$store.dispatch("tournaments/addTeam", {
+              teamId: this.currentUser.team.teamId,
               tournamentId: this.tournament.tournamentId
             });
           }
@@ -191,7 +190,6 @@ export default {
           });
         }
       }
-      console.log(response);
     },
     edit() {
       this.$store.dispatch("tournaments/setEditing", true);

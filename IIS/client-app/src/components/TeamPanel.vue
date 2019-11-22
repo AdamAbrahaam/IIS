@@ -130,7 +130,6 @@ export default {
       }
 
       this.teamInfo.logo = this.currentLogo[this.currentLogo.length - 1];
-      console.log(this.teamInfo);
       let team = await this.$store.dispatch("teams/createTeam", {
         teamInfo: this.teamInfo,
         userId: this.currentUser.userId

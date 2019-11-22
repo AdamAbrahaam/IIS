@@ -165,7 +165,6 @@ export default {
   },
   methods: {
     participiantInfo(id, isUser) {
-      console.log(id);
       if (isUser) {
         this.$store.dispatch("panels/setPanel", {
           show: true,

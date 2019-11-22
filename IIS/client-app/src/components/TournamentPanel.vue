@@ -26,105 +26,125 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12" class="d-flex flex-wrap">
-            <v-text-field
-              ref="tournamentInfo.prize"
-              v-model="tournamentInfo.prize"
-              label="Prize*"
-              type="text"
-              required
-              :rules="[rules.required, rules.number]"
-              suffix="€"
-              prepend-icon="mdi-trophy"
-              class="mr-sm-3"
-            ></v-text-field>
-            <v-text-field
-              ref="tournamentInfo.entry"
-              v-model="tournamentInfo.entry"
-              label="Entry*"
-              type="text"
-              :rules="[rules.required, rules.number]"
-              required
-              suffix="€"
-              prepend-icon="mdi-cash"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" class="d-flex flex-wrap">
-            <v-combobox
-              v-model="tournamentInfo.capacity"
-              :items="allowedCapacity"
-              label="Capacity*"
-              :rules="[rules.required, rules.capacity]"
-              prepend-icon="mdi-account-group"
-              class="mr-sm-3"
-            ></v-combobox>
-            <v-combobox
-              v-model="tournamentInfo.type"
-              :items="types"
-              label="Type*"
-              :rules="[rules.required, rules.type]"
-              prepend-icon="mdi-account-question"
-            ></v-combobox>
-          </v-col>
-          <v-col cols="12" class="d-flex flex-wrap justify-space-between">
-            <v-menu
-              ref="dateMenu"
-              v-model="dateMenu"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
+            <v-row>
+              <v-col cols="12" lg="6" sm="6">
                 <v-text-field
-                  v-model="tournamentInfo.date"
-                  label="Date*"
-                  prepend-icon="mdi-calendar"
-                  v-on="on"
-                  readonly
-                  :rules="[rules.required]"
+                  ref="tournamentInfo.prize"
+                  v-model="tournamentInfo.prize"
+                  label="Prize*"
+                  type="text"
+                  required
+                  :rules="[rules.required, rules.number]"
+                  suffix="€"
+                  prepend-icon="mdi-trophy"
                   class="mr-sm-3"
                 ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="tournamentInfo.date"
-                :min="new Date().toISOString().substr(0, 10)"
-                no-title
-                @input="dateMenu = false"
-              ></v-date-picker>
-            </v-menu>
-            <v-menu
-              ref="timeMenu"
-              v-model="timeMenu"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              max-width="290px"
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
+              </v-col>
+
+              <v-col cols="12" lg="6" sm="6">
                 <v-text-field
-                  v-model="tournamentInfo.time"
-                  label="Time*"
-                  :rules="[rules.required]"
-                  prepend-icon="mdi-clock"
-                  readonly
-                  v-on="on"
+                  ref="tournamentInfo.entry"
+                  v-model="tournamentInfo.entry"
+                  label="Entry*"
+                  type="text"
+                  :rules="[rules.required, rules.number]"
+                  required
+                  suffix="€"
+                  prepend-icon="mdi-cash"
                 ></v-text-field>
-              </template>
-              <v-time-picker
-                v-if="timeMenu"
-                v-model="tournamentInfo.time"
-                format="24hr"
-                @click:minute="$refs.timeMenu.save(tournamentInfo.time)"
-              ></v-time-picker>
-            </v-menu>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" class="d-flex flex-wrap">
+            <v-row>
+              <v-col cols="12" lg="6" sm="6">
+                <v-select
+                  v-model="tournamentInfo.capacity"
+                  :items="allowedCapacity"
+                  label="Capacity*"
+                  :rules="[rules.required, rules.capacity]"
+                  prepend-icon="mdi-account-group"
+                  class="mr-sm-3"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="12" lg="6" sm="6">
+                <v-select
+                  v-model="tournamentInfo.type"
+                  :items="types"
+                  label="Type*"
+                  :rules="[rules.required, rules.type]"
+                  prepend-icon="mdi-account-question"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" class="d-flex flex-wrap ">
+            <v-row>
+              <v-col cols="12" lg="6" sm="6">
+                <v-menu
+                  ref="dateMenu"
+                  v-model="dateMenu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="tournamentInfo.date"
+                      label="Date*"
+                      prepend-icon="mdi-calendar"
+                      v-on="on"
+                      readonly
+                      :rules="[rules.required]"
+                      class="mr-sm-3"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="tournamentInfo.date"
+                    :min="new Date().toISOString().substr(0, 10)"
+                    no-title
+                    @input="dateMenu = false"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+
+              <v-col cols="12" lg="6" sm="6">
+                <v-menu
+                  ref="timeMenu"
+                  v-model="timeMenu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="tournamentInfo.time"
+                      label="Time*"
+                      :rules="[rules.required]"
+                      prepend-icon="mdi-clock"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker
+                    v-if="timeMenu"
+                    v-model="tournamentInfo.time"
+                    format="24hr"
+                    @click:minute="$refs.timeMenu.save(tournamentInfo.time)"
+                  ></v-time-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
           </v-col>
           <v-col cols="12">
             <v-text-field
               ref="tournamentInfo.sponsors"
               v-model="tournamentInfo.sponsors"
               label="Sponsors"
-              type="text"
               required
               prepend-icon="mdi-account-star"
             ></v-text-field>
@@ -215,8 +235,8 @@ export default {
       this.loading = true;
       let isInError = document.getElementsByClassName("v-messages__message");
       if (isInError.length != 0) {
-        console.log(isInError.length);
         this.tournament.error = "Invalid field(s)!";
+        this.loading = false;
         return;
       }
 

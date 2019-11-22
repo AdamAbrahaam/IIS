@@ -54,6 +54,8 @@
           </div>
 
           <v-btn
+            :loading="loading"
+            :disabled="loading"
             width="50%"
             class="mb-5"
             dark
@@ -184,6 +186,7 @@ export default {
   name: "Matches",
   data() {
     return {
+      loading: false,
       homeScore: 0,
       awayScore: 0,
       scoreShowing: false,
@@ -251,6 +254,7 @@ export default {
       }
     },
     addMatch() {
+      this.loading = true;
       let match = {};
       let type = this.tournament.type;
 
@@ -269,6 +273,7 @@ export default {
       match.TournamentId = this.tournament.tournamentId;
       match.Round = this.round;
       this.$store.dispatch("matches/addMatch", match);
+      this.loading = false;
     }
   }
 };

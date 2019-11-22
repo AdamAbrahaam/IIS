@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IIS.Migrations
 {
     [DbContext(typeof(FifkaDBContext))]
-    [Migration("20191120213750_del-behavior")]
-    partial class delbehavior
+    [Migration("20191120221702_bldr")]
+    partial class bldr
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

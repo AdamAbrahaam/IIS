@@ -206,12 +206,12 @@ export default {
         {
           text: "Players",
           icon: "mdi-account",
-          callback: () => this.$router.push("players")
+          callback: () => this.$router.push("/players")
         },
         {
           text: "Teams",
           icon: "mdi-account-multiple",
-          callback: () => this.$router.push("teams")
+          callback: () => this.$router.push("/teams")
         }
       ],
       profileOptions: [
@@ -290,6 +290,7 @@ export default {
     },
     logout() {
       this.$store.dispatch("user/logout");
+      this.$router.push("/");
     }
   }
 };
