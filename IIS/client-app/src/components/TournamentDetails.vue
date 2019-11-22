@@ -25,7 +25,13 @@
           class="ma-2"
           color="indigo"
           text-color="white"
-          @click="participiantInfo(participant.userOrTeam, participant.isUser)"
+          @click="
+            participiantInfo(
+              participant.userOrTeam,
+              participant.name,
+              participant.isUser
+            )
+          "
         >
           <v-avatar left>
             <v-icon v-if="participant.isUser">mdi-account-circle</v-icon>
@@ -164,7 +170,7 @@ export default {
     }
   },
   methods: {
-    participiantInfo(id, isUser) {
+    participiantInfo(id, name, isUser) {
       if (isUser) {
         this.$store.dispatch("panels/setPanel", {
           show: true,
@@ -175,7 +181,7 @@ export default {
         this.$store.dispatch("panels/setPanel", {
           show: true,
           panel: "teamProfilePanel",
-          teamName: id
+          teamName: name
         });
       }
     },

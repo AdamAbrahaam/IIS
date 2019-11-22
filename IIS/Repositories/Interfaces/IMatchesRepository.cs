@@ -1,4 +1,6 @@
-﻿using IIS.Data.Entities;
+﻿
+using IIS.Data;
+using IIS.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +23,9 @@ namespace IIS.Repositories.Interfaces
         Task<Tournament> GetTournamentById(int id);
         Task<User> GetUserById(int id);
         Task<Team> GetTeamById(int id);
+        Task<Statistics> GetOverallStats(int userId);
+        Task<Statistics> GetTournamentStats(int userId, int tournamentId);
+        Task<Statistics> GetOverallTeamStats(string team);
+        Task<Statistics> GetTournamentTeamStats(string team, int tournamentId);
     }
 }

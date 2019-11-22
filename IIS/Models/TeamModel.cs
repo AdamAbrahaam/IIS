@@ -8,6 +8,7 @@ namespace IIS.Models
 {
     public class TeamModel
     {
+        public int TeamId { get; set; }
         public string Name { get; set; }
         public int Logo { get; set; }
         public ICollection<UserModel> Users { get; set; }

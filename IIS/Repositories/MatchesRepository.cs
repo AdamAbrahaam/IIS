@@ -76,6 +76,18 @@ namespace IIS.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
+        public async Task<Statistics> GetOverallStats(int userId)
+        {
+            var query = _context.Statistics.Where(t => t.User.UserId == userId && t.Tournament == null);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Statistics> GetOverallTeamStats(string team)
+        {
+            var query = _context.Statistics.Where(t => t.Team == team && t.Tournament == null);
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<Match> GetSoloMatchById(int id)
         {
             var query = _context.Matches.Where(t => t.MatchId == id)
@@ -94,6 +106,18 @@ namespace IIS.Repositories
         public async Task<Tournament> GetTournamentById(int id)
         {
             var query = _context.Tournaments.Where(t => t.TournamentId == id);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Statistics> GetTournamentStats(int userId, int tournamentId)
+        {
+            var query = _context.Statistics.Where(t => t.User.UserId == userId && t.Tournament.TournamentId == tournamentId);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Statistics> GetTournamentTeamStats(string team, int tournamentId)
+        {
+            var query = _context.Statistics.Where(t => t.Team == team && t.Tournament.TournamentId == tournamentId);
             return await query.FirstOrDefaultAsync();
         }
 

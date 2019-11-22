@@ -79,6 +79,10 @@
 
     <v-divider class="mb-7"></v-divider>
 
+    <div v-if="!matches.length" class="text-center grey--text">
+      The referee did not add a match yet.
+    </div>
+
     <div v-for="round in matchRounds" :key="round.id">
       <div v-if="round.length" class="mt-8">
         <div class="display-1 ml-12 mb-2">Round {{ round[0].round }}</div>
