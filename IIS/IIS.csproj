@@ -52,6 +52,8 @@
     <Compile Remove="Migrations\20191120212700_delete-behaviour.Designer.cs" />
     <Compile Remove="Migrations\20191120213148_del-behavior.cs" />
     <Compile Remove="Migrations\20191120213148_del-behavior.Designer.cs" />
+    <Compile Remove="Migrations\20191122212545_stats-update.cs" />
+    <Compile Remove="Migrations\20191122212545_stats-update.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

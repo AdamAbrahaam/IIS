@@ -195,6 +195,59 @@ namespace IIS.Controllers
                 var oldMatch = await _repository.GetMatchById(id);
                 if (oldMatch == null) return NotFound("Does not exists!");
                 _mapper.Map(model, oldMatch);
+                int homeScore = oldMatch.HomeScore;
+                int awayScore = oldMatch.AwayScore;
+                Statistics homeStatsOverall;
+                Statistics awayStatsOverall;
+                Statistics homeStats;
+                Statistics awayStats;
+
+                if (oldMatch.TeamsInMatches == null)
+                {
+                    homeStatsOverall = await _repository.GetOverallStats(oldMatch.Home.UserId);
+                    awayStatsOverall = await _repository.GetOverallStats(oldMatch.Away.UserId);
+                    homeStats = await _repository.GetTournamentStats(oldMatch.Home.UserId, oldMatch.Tournament.TournamentId);
+                    awayStats = await _repository.GetTournamentStats(oldMatch.Away.UserId, oldMatch.Tournament.TournamentId);
+                }
+                else
+                {
+                    homeStatsOverall = await _repository.GetOverallTeamStats(oldMatch.HomeTeam);
+                    awayStatsOverall = await _repository.GetOverallTeamStats(oldMatch.AwayTeam);
+                    homeStats = await _repository.GetTournamentTeamStats(oldMatch.HomeTeam, oldMatch.Tournament.TournamentId);
+                    awayStats = await _repository.GetTournamentTeamStats(oldMatch.AwayTeam, oldMatch.Tournament.TournamentId);
+                }
+
+                homeStatsOverall.Goals += homeScore;
+                homeStatsOverall.Games += 1;
+                homeStats.Goals += homeScore;
+                homeStats.Games += homeScore;
+                awayStatsOverall.Goals += awayScore;
+                awayStatsOverall.Games += 1;
+                awayStats.Goals += awayScore;
+                awayStats.Games += awayScore;
+
+                if (homeScore > awayScore)
+                {
+                    homeStatsOverall.Wins += 1;
+                    homeStats.Wins += 1;
+                    awayStatsOverall.Loses += 1;
+                    awayStats.Loses += 1;
+                }
+                else if (homeScore < awayScore)
+                {
+                    homeStatsOverall.Loses += 1;
+                    homeStats.Loses += 1;
+                    awayStatsOverall.Wins += 1;
+                    awayStats.Wins += 1;
+                }
+                else
+                {
+                    homeStatsOverall.Draws += 1;
+                    homeStats.Draws += 1;
+                    awayStatsOverall.Draws += 1;
+                    awayStats.Draws += 1;
+                }
+
                 if (await _repository.SaveChangesAsync())
                 {
                     return _mapper.Map<MatchModel>(oldMatch);
