@@ -202,7 +202,7 @@ namespace IIS.Controllers
                 Statistics homeStats;
                 Statistics awayStats;
 
-                if (oldMatch.TeamsInMatches == null)
+                if (oldMatch.HomeTeam == null)
                 {
                     homeStatsOverall = await _repository.GetOverallStats(oldMatch.Home.UserId);
                     awayStatsOverall = await _repository.GetOverallStats(oldMatch.Away.UserId);
