@@ -7,7 +7,9 @@
     <div id="hero">
       <transition appear name="fade">
         <div class="content">
-          <p>Join a tournament and win amazing prizes!</p>
+          <p class="d-none d-sm-flex">
+            Join a tournament and win amazing prizes!
+          </p>
           <v-btn
             v-if="!currentUser.email"
             x-large
@@ -24,7 +26,12 @@
 
     <div id="tournaments">
       <img src="../static/logo3.png" />
-      <p class="upcoming">Check out our upcoming tournaments below</p>
+      <p class="d-none d-sm-flex" style="text-align:center">
+        Check out our upcoming tournaments below
+      </p>
+      <p class="d-flex d-sm-none" style="text-align:center">
+        Upcoming tournaments
+      </p>
       <a v-scroll-to="'#table'">
         <v-icon size="80px" color="black" class="mt-n10"
           >mdi-menu-down</v-icon
@@ -130,6 +137,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
   height: 100%;
   padding-bottom: 10vh;
   background-image: radial-gradient(

@@ -23,9 +23,10 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 
   color: #3bf8f7;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: bold;
   font-family: "Fifa Font", sans-serif;
   letter-spacing: 0.05em;

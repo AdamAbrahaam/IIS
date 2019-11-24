@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-app-bar flat max-height="65px" color="#252423">
       <v-app-bar-nav-icon
-        class="hidden-md-and-up"
+        class="hidden-md-and-up grey--text"
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
 
@@ -111,7 +111,7 @@
       </div>
       <div v-else>
         <v-btn
-          class="white--text hidden-sm-and-down mx-5 "
+          class="white--text mx-5"
           outlined
           color="#e7e6e3"
           @click.stop="loginDialog = true"
@@ -163,10 +163,58 @@
     <v-navigation-drawer
       id="drawer"
       v-model="drawer"
-      temporary
       absolute
+      temporary
+      color="#252423"
       width="100vw"
-    ></v-navigation-drawer>
+    >
+      <div
+        class="d-flex flex-column display-1 grey--text"
+        style="cursor: pointer; height:100%; "
+      >
+        <p class="d-flex align-self-center mt-5" @click="drawer = false">
+          <v-icon x-large color="grey">mdi-close</v-icon> CLOSE
+        </p>
+
+        <router-link to="/" @click="drawer = false" class="d-flex">
+          <p class="mt-12">HOME</p>
+        </router-link>
+
+        <router-link to="/tournaments" @click="drawer = false" class="d-flex">
+          <p class="mb-12" @click="drawer = false">TOURNAMENTS</p>
+        </router-link>
+
+        <div class="my-12">
+          <router-link to="/players" @click="drawer = false" class="d-flex">
+            <p>PLAYER RANKINGS</p>
+          </router-link>
+          <router-link to="/teams" @click="drawer = false" class="d-flex">
+            <p>TEAM RANKINGS</p>
+          </router-link>
+        </div>
+
+        <div>
+          <div>
+            <a
+              @click="
+                drawer = false;
+                openTournamentPanel();
+              "
+              >CREATE TOURNAMENT</a
+            >
+          </div>
+          <div>
+            <a
+              @click="
+                drawer = false;
+                openTeamPanel();
+              "
+              >CREATE TEAM</a
+            >
+          </div>
+        </div>
+      </div>
+    </v-navigation-drawer>
 
     <v-content>
       <router-view />
@@ -247,22 +295,12 @@ export default {
         {
           text: "Tournament",
           icon: "mdi-trophy-variant",
-          callback: () =>
-            this.$store.dispatch("panels/setPanel", {
-              show: true,
-              panel: "tournamentPanel",
-              profileId: null
-            })
+          callback: () => this.openTournamentPanel()
         },
         {
           text: "Team",
           icon: "mdi-account-multiple",
-          callback: () =>
-            this.$store.dispatch("panels/setPanel", {
-              show: true,
-              panel: "teamPanel",
-              profileId: null
-            })
+          callback: () => this.openTeamPanel()
         }
       ]
     };
@@ -285,6 +323,20 @@ export default {
   },
 
   methods: {
+    openTournamentPanel() {
+      this.$store.dispatch("panels/setPanel", {
+        show: true,
+        panel: "tournamentPanel",
+        profileId: null
+      });
+    },
+    openTeamPanel() {
+      this.$store.dispatch("panels/setPanel", {
+        show: true,
+        panel: "teamPanel",
+        profileId: null
+      });
+    },
     closeModal() {
       this.loginDialog = false;
     },
@@ -303,6 +355,11 @@ export default {
   src: url("static/fonts/fifafont-webfont.woff") format("woff"),
     url("static/fonts/fifafont-webfont.svg") format("svg"),
     url("static/fonts/fifafont-webfont.ttf") format("truetype");
+}
+
+a {
+  text-decoration: none;
+  color: #e7e6e3 !important;
 }
 
 #title {
