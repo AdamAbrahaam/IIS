@@ -72,8 +72,6 @@ export default {
     },
     async addTeam({ commit }, { teamId, tournamentId }) {
       try {
-        console.log(teamId);
-        console.log(tournamentId);
         let response = await Api().put(
           `/tournaments/add-team?teamid=${teamId}&&tournamentid=${tournamentId}`
         );

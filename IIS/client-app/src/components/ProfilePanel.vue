@@ -7,13 +7,19 @@
           Information
           <v-spacer></v-spacer>
           <v-icon
-            v-if="profile.userId === currentUser.userId && !isEditing"
+            v-if="
+              (profile.userId === currentUser.userId && !isEditing) ||
+                (currentUser.isAdmin && !isEditing)
+            "
             style="cursor: pointer"
             @click="isEditing = true"
             >mdi-square-edit-outline</v-icon
           >
           <div
-            v-else-if="profile.userId === currentUser.userId && isEditing"
+            v-else-if="
+              (profile.userId === currentUser.userId && isEditing) ||
+                (currentUser.isAdmin && isEditing)
+            "
             class="mb-2"
           >
             <v-btn

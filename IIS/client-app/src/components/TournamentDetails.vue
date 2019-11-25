@@ -97,6 +97,90 @@
         </v-row>
       </v-card>
     </div>
+
+    <v-dialog v-model="participantStatsPanel" max-width="600px">
+      <v-card>
+        <v-card-text>
+          <v-container>
+            <div class="title mt-5">
+              <v-icon class="mr-2">mdi-chart-line</v-icon>
+              <span v-if="participantStats.team">{{
+                participantStats.team
+              }}</span>
+              <span v-else> {{ participantStats.userFullName }}</span
+              >'s statistics
+            </div>
+            <v-divider></v-divider>
+            <v-row class="d-flex align-center ml-5">
+              <v-col cols="2">Points:</v-col>
+              <v-col cols="4">
+                <v-text-field
+                  class="mb-n7"
+                  :value="participantStats.points"
+                  solo
+                  flat
+                  :readonly="true"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">Games:</v-col>
+              <v-col cols="4">
+                <v-text-field
+                  class="mb-n7"
+                  :value="participantStats.games"
+                  solo
+                  flat
+                  :readonly="true"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row class="d-flex align-center ml-5">
+              <v-col cols="2">Wins:</v-col>
+              <v-col cols="4">
+                <v-text-field
+                  class="mb-n7"
+                  :value="participantStats.wins"
+                  solo
+                  flat
+                  :readonly="true"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">Loses:</v-col>
+              <v-col cols="4">
+                <v-text-field
+                  class="mb-n7"
+                  :value="participantStats.loses"
+                  solo
+                  flat
+                  :readonly="true"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row class="d-flex align-center ml-5">
+              <v-col cols="2">Draws:</v-col>
+              <v-col cols="4">
+                <v-text-field
+                  class="mb-n7"
+                  :value="participantStats.draws"
+                  solo
+                  flat
+                  :readonly="true"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">Goals:</v-col>
+              <v-col cols="4">
+                <v-text-field
+                  class="mb-n7"
+                  :value="participantStats.goals"
+                  solo
+                  flat
+                  :readonly="true"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -104,12 +188,18 @@
 import { mapState } from "vuex";
 export default {
   name: "TournamentDetails",
+  data() {
+    return {
+      participantStatsPanel: false
+    };
+  },
   computed: {
     ...mapState({
       tournament: state => state.tournaments.tournament,
       editingState: state => state.tournaments.editing,
       matches: state => state.matches.matches,
-      currentUser: state => state.user.currentUser
+      currentUser: state => state.user.currentUser,
+      participantStats: state => state.statistics.participantStats
     }),
     isEditing() {
       return !this.editingState;
@@ -172,18 +262,18 @@ export default {
   methods: {
     participiantInfo(id, name, isUser) {
       if (isUser) {
-        this.$store.dispatch("panels/setPanel", {
-          show: true,
-          panel: "profilePanel",
-          profileId: id
+        this.$store.dispatch("statistics/userTournamentStats", {
+          userId: id,
+          tournamentId: this.tournament.tournamentId
         });
       } else {
-        this.$store.dispatch("panels/setPanel", {
-          show: true,
-          panel: "teamProfilePanel",
-          teamName: name
+        this.$store.dispatch("statistics/teamTournamentStats", {
+          name: name,
+          tournamentId: this.tournament.tournamentId
         });
       }
+
+      this.participantStatsPanel = true;
     },
     deleteEur() {
       this.details[0].value = this.details[0].value.substring(

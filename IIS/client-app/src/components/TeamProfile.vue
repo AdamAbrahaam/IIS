@@ -21,8 +21,9 @@
           <v-col cols="9">
             <div
               v-if="
-                currentUser &&
-                  teamMembers.find(t => t.userId === currentUser.userId)
+                (currentUser &&
+                  teamMembers.find(t => t.userId === currentUser.userId)) ||
+                  currentUser.isAdmin
               "
             >
               <v-chip
@@ -56,8 +57,9 @@
         <v-row
           class="d-flex align-center ml-5"
           v-if="
-            currentUser &&
-              teamMembers.find(t => t.userId === currentUser.userId)
+            (currentUser &&
+              teamMembers.find(t => t.userId === currentUser.userId)) ||
+              currentUser.isAdmin
           "
         >
           <v-col cols="3">Add user:</v-col>

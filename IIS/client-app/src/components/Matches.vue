@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="tournament.referee == currentUser.fullName"
+      v-if="tournament.referee == currentUser.fullName || currentUser.isAdmin"
       class="mx-xs-12 mt-8"
     >
       <v-card class="elevation-12">

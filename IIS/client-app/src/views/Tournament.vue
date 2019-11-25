@@ -3,7 +3,10 @@
     <div id="header">
       {{ tournament.name }}
       <v-btn
-        v-if="currentUser.fullName == tournament.organizer && !editingState"
+        v-if="
+          (currentUser.fullName == tournament.organizer && !editingState) ||
+            (currentUser.isAdmin && !editingState)
+        "
         class="black--text"
         color="#fbff09"
         @click="edit()"
@@ -11,7 +14,10 @@
         <span>Edit details!</span>
       </v-btn>
       <div
-        v-else-if="currentUser.fullName == tournament.organizer && editingState"
+        v-else-if="
+          (currentUser.fullName == tournament.organizer && editingState) ||
+            (currentUser.isAdmin && editingState)
+        "
         class="d-flex flex-column"
       >
         <v-btn class="black--text" color="error" @click="deleteModal = true">
