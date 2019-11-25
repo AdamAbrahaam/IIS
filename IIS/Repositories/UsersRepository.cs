@@ -67,10 +67,10 @@ namespace IIS.Repositories
             _context.Add(entity);
         }
 
-        public async Task<Statistics[]> GetStatisticsInTournament(int userid, int tournamentid)
+        public async Task<Statistics> GetStatisticsInTournament(int userid, int tournamentid)
         {
             var query = _context.Statistics.Where(t => t.Tournament.TournamentId == tournamentid && t.User.UserId == userid);
-            return await query.ToArrayAsync();
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<Team> GetTeamByIdAsync(string name)

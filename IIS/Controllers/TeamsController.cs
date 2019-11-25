@@ -101,6 +101,21 @@ namespace IIS.Controllers
             }
         }
 
+        [HttpGet("stats-for-team-in-tournament")]
+        public async Task<ActionResult<StatisticsModel>> GetStatsInTournament(string name, int tournamentid)
+        {
+            try
+            {
+                var result = await _repository.GetTournamentStatisticsAsync(name, tournamentid);
+                if (result == null) return NotFound("Statistics not found!");
+                return _mapper.Map<StatisticsModel>(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure!");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<TeamModel>> Post(TeamModel model)
         {
