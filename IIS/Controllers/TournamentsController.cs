@@ -251,17 +251,29 @@ namespace IIS.Controllers
 
         [HttpPut("{id:int}")]
         public async Task<ActionResult<TournamentDetailModel>> Put(int id, TournamentDetailModel model)
-        {
+      {
             try
             {
                 var oldTournament = await _repository.GetTournamentById(id);
                 if (oldTournament == null) return NotFound("Tournament does not exists!");
-                _mapper.Map(model, oldTournament);
+                oldTournament.Location = model.Location;
+                oldTournament.Prize = model.Prize;
+                oldTournament.Entry = model.Entry;
+                oldTournament.Capacity = model.Capacity;
+                oldTournament.Type = model.Type;
+                oldTournament.Organizer = model.Organizer;
+                oldTournament.Referee = model.Referee;
+                oldTournament.Sponsors = model.Sponsors;
+                oldTournament.Info = model.Info;
+                oldTournament.Date = model.Date;
+                oldTournament.Time = model.Time;
                 if (await _repository.SaveChangesAsync())
                 {
                     return _mapper.Map<TournamentDetailModel>(oldTournament);
                 }
             }
+            
+            
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Failure!");
