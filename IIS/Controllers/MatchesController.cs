@@ -220,11 +220,11 @@ namespace IIS.Controllers
                 homeStatsOverall.Goals += homeScore;
                 homeStatsOverall.Games += 1;
                 homeStats.Goals += homeScore;
-                homeStats.Games += homeScore;
+                homeStats.Games += 1;
                 awayStatsOverall.Goals += awayScore;
                 awayStatsOverall.Games += 1;
                 awayStats.Goals += awayScore;
-                awayStats.Games += awayScore;
+                awayStats.Games += 1;
 
                 if (homeScore > awayScore)
                 {
